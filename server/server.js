@@ -11,7 +11,7 @@ var conn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'namma-bangalore'
+    database: 'namma_bangalore'
 });
 
 app.use(bodyParser.json());
@@ -22,6 +22,18 @@ app.use("/assests", express.static(path.join(__dirname, '../assests')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
+})
+.post('/register-general', (req, res) => {
+    conn.connect((err) => {
+        if (err) {
+            res.sendStatus(500);
+        } else {
+            conn.query(`
+            insert into user values (${ req.body.uid }, "${ req.body.email }", "${ req.body.phone_num }",
+            "${ req.body.password }")
+            `)
+        }
+    });
 });
 
 app.listen(PORT, () => {
