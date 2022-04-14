@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register Here/</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css">
+    <script>
+
+        $(function ()
+        {
+            $("input[name='radio']").click(function(){
+                if($("#local").is(":checked")){
+                    $("#ad").show();
+                    $("#address").show();
+                }else{
+                    $("#ad").hide();
+                    $("#address").hide();
+                }
+            
+        });
+    });
+
+    function onRadioChanged(e){
+        if(document.getElementById("guRadio").checked){
+            document.getElementById('ad').style.display='none';
+            document.getElementById('address').style.display='none';
+        }
+        if(document.getElementById("lbRadio").checked){
+            document.getElementById('ad').style.display='block';
+            document.getElementById('address').style.display='block';
+        }
+    }
+        
+    </script>
+</head>
+
+<body>
+    <div class="registration-form">
+        <form onsubmit="validate()">
+            <div>
+                <h2 class="d-flex justify-content-center" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">New Here? </h2>
+            </div>
+            <div>
+                <h6 class="d-flex justify-content-center text-secondary mb-4">Register Below!</h6>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control item" id="fullname" placeholder=" Name "
+                    onkeyup="validateName()" onkeydown="testname(event)"><span style="font-weight:bolder" STYLE="font-size:30.0pt"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="text" class="form-control item" id="email" placeholder="Email id..."
+                    onkeyup="validateEmail()"><span style="font-weight:bolder" STYLE="font-size:30.0pt"></span>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control item" id="phone" placeholder="Phone-No...  "
+                    onkeyup="validatePhone()" onkeydown="testphone(event)"><span style="font-weight:bolder"></span>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control item" id="password" placeholder="Password..."
+                    onkeyup="validatePassword()"><span style="font-weight:bolder" STYLE="font-size:18.0pt" STYLE="font-size:30.0pt" id="strengthDisplay"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="interest">Would like to register As</label>
+                <ul id="interest" class="form-control item">
+                    <li><input type="radio" name="iu" id="guRadio" checked="checked" onchange="onRadioChanged()">&nbsp;General User</li>
+                    <li><input type="radio" id="lbRadio" name="iu" onchange="onRadioChanged()" >&nbsp;Local Business</li>
+                </ul>
+            </div>
+            <div id="ad" class="form-group" style="display: none;">
+                <input type="text" class="form-control item" id="adhaarnumber" placeholder="Adhaar Number." onkeyup="validateadhaar()">
+                <span style="font-weight:bolder" STYLE="font-size:30.0pt"></span>
+            </div>
+
+            <div id="address" class="form-group" style="display: none;" >
+                <input  type="text" class="form-control item" id="address" placeholder="Address" onkeyup="validateaddress()">
+                <span style="font-weight:bolder" STYLE="font-size:30.0pt"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-block submit"
+                    onclick="  validate();  return false;">Submit</button>
+                <button type="submit" class="btn btn-danger btn-block reset">Reset</button>
+            </div>
+
+           
+
+        </form>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="./script.js"></script>
+</body>
+
+</html>

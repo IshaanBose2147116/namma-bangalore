@@ -1,0 +1,75 @@
+body {
+    background-color: #dee9ff;
+    background-image: url('bangalore4.jpg');
+    background-repeat: no-repeat;
+    background-size: 2000px 1000px;
+}
+
+.registration-form {
+    padding: 50px 0;
+}
+
+
+
+
+.registration-form form {
+    background-color: #fff;
+    max-width: 500px;
+    margin: auto;
+    padding: 50px 70px;
+    border-radius: 30px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+    
+    
+    
+}
+
+span {
+    font-size: 12px;
+}
+
+.registration-form .item {
+    border-radius: 10px;
+    margin-bottom: 0px;
+    padding: 10px;
+}
+
+.registration-form .submit {
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #5791ff;
+    border: none;
+    color: white;
+    margin-top: 20px;
+}
+
+.registration-form .reset {
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #5791ff;
+    border: none;
+    color: white;
+    margin-top: 20px;
+}
+
+li {
+    list-style-type: none;
+}
+
+
+@media (max-width: 576px) {
+    .registration-form form {
+        padding: 50px 20px;
+    }
+
+    .registration-form .form-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 30px;
+        line-height: 70px;
+    }
+}
