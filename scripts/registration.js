@@ -1,3 +1,5 @@
+
+
 var fullname = document.getElementById('fullname');
 var email = document.getElementById('email');
 var password = document.getElementById('password');
