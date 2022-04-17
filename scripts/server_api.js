@@ -19,8 +19,14 @@ class ServerAPI {
      *     "test@test.com", "password", "1234567890", "First", null, "Last", false, response => {
      *          if (response.status === 200) {
      *              console.log("Successfully registered");
+     *          } else if (response.status === 400) {
+     *              if (response.errCode === 100) {
+     *                  alert("Duplicate email");
+     *              } else {
+     *                  alert("Duplicate phone number");
+     *              }
      *          } else {
-     *              console.log("Failed to register");
+     *              console.log(response);
      *          }
      *      }
      * )
@@ -61,8 +67,14 @@ class ServerAPI {
      *     "test@test.com", "password", "1234567890", "Address1", "Address2", null, "400051", "Business", "111111111111", response => {
      *          if (response.status === 200) {
      *              console.log("Successfully registered");
+     *          } else if (response.status === 400) {
+     *              if (response.errCode === 100) {
+     *                  alert("Duplicate email");
+     *              } else {
+     *                  alert("Duplicate phone number");
+     *              }
      *          } else {
-     *              console.log("Failed to register");
+     *              console.log(response);
      *          }
      *      }
      * )
@@ -91,11 +103,12 @@ class ServerAPI {
     /**
      * Checks if user exists in database and if user credentials are correct.
      * 
-     * @param {string} email email of user trying to login
+     * @param {string} key email/phone number of user trying to login
      * @param {string} password password of user trying to login
+     * @param {boolean} isEmail if key is email true, else false
      * @param {responseCallback} callback function that receives response
      * @example
-     * ServerAPI.loginUser(email, password, response => {
+     * ServerAPI.loginUser(email, password, true, response => {
      *      if (response.status === 404) {
      *          console.log(response.msg);
      *      } else if (response.status === 200) {
@@ -108,25 +121,47 @@ class ServerAPI {
      * @callback responseCallback
      * @param {object} response contains members: status and msg or is of type mysql.QueryError or Error
      */
-    static loginUser(email, password, callback) {
-        fetch("http://localhost:5000/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                email: email,
-                password: password
+    static loginUser(key, password, isEmail, callback) {
+        if (isEmail) {
+            fetch("http://localhost:5000/login-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: key,
+                    password: password
+                })
+            }).then(response => {
+                if (response.status === 404) {
+                    response.json().then(data => {
+                        callback({ status: 404, msg: data.msg });
+                    });
+                } else if (response.status === 500) {
+                    callback(response);
+                } else {
+                    callback({ status: 200, msg: "OK" });
+                }
+            });
+        } else {
+            fetch("http://localhost:5000/login-phone", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    phonenum: key,
+                    password: password
+                })
+            }).then(response => {
+                if (response.status === 404) {
+                    response.json().then(data => {
+                        callback({ status: 404, msg: data.msg });
+                    });
+                } else if (response.status === 500) {
+                    callback(response);
+                } else {
+                    callback({ status: 200, msg: "OK" });
+                }
             })
-        }).then(response => {
-            if (response.status === 404) {
-                response.json().then(data => {
-                    callback({ status: 404, msg: data.msg });
-                });
-            } else if (response.status === 500) {
-                callback(response);
-            } else {
-                callback({ status: 200, msg: "OK" });
-            }
-        })
+        }
+        
     }
 }
 
