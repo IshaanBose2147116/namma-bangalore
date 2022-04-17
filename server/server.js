@@ -3,7 +3,6 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const crypto = require('crypto');
-const { send } = require('process');
 
 const app = express();
 const PORT = 5000;
@@ -72,6 +71,12 @@ app.get('/', (req, res) => {
 .get('/test', (req, res) => {
     res.sendFile(path.join(__dirname, '../test.html'));
 })
+.get('/registration', (req, res) => {
+    res.sendFile(path.join(__dirname, '../registration.html'))
+})
+.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, '../login.html'))
+})
 .post('/register-user/:type', (req, res) => {
     conn.connect((err) => {
         if (err) {
@@ -95,7 +100,16 @@ app.get('/', (req, res) => {
                                 "${ password }", "${ salt }")`, (err, result) => {
                                     if (err) {
                                         console.log(err);
-                                        res.status(500).send(err);
+                                        
+                                        if (err.code === 'ER_DUP_ENTRY') {
+                                            if (err.sqlMessage.includes('user.email')) {
+                                                res.status(400).send({ msg: 'Duplicate email', errCode: 100 });
+                                            } else {
+                                                res.status(400).send({ msg: 'Duplicate phone number', errCode: 101 });
+                                            }
+                                        } else {
+                                            res.status(500).send(err);
+                                        }
                                     } else {
                                         req.body.uid = uid;
 
@@ -128,7 +142,7 @@ app.get('/', (req, res) => {
         }
     });
 })
-.post("/login", (req, res) => {
+.post("/login-email", (req, res) => {
     conn.connect(err => {
         if (err) {
             console.log(err);
@@ -140,6 +154,37 @@ app.get('/', (req, res) => {
                 } else {
                     if (result.length === 0) {
                         res.status(404).send({ msg: "Invalid email" });
+                    } else {
+                        crypto.scrypt(req.body.password, result[0].salt_value, 32, (err, derivedKey) => {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).send(err);
+                            } else {
+                                if (result[0].password === derivedKey.toString('base64')) {
+                                    res.sendStatus(200);
+                                } else {
+                                    res.status(404).send({ msg: "Incorrect password" });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+})
+.post('/login-phone', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query(`select password, salt_value from user where phone_num="${ req.body.phonenum }"`, (err, result) => {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    if (result.length === 0) {
+                        res.status(404).send({ msg: "Invalid phone number" });
                     } else {
                         crypto.scrypt(req.body.password, result[0].salt_value, 32, (err, derivedKey) => {
                             if (err) {
