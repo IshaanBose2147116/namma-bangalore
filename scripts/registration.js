@@ -47,7 +47,7 @@ function validate() {
 
   }
   else {
-    window.open("./registration.html", "_self")
+    window.open('/registration', "_self")
   }
 }
 
