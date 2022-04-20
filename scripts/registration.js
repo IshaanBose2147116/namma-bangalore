@@ -38,7 +38,8 @@ function scrollToTop() {
   window.scrollTo(0, 0);
 }
 
-function validate() {
+function validate() 
+{
   if (fullname.value == "" || email.value == "" || password.value == "" || phone.value == "") {
     scrollToTop();
     validateName();
@@ -49,19 +50,14 @@ function validate() {
   else 
   {
     if (document.getElementById("guRadio").checked) {
-      ServerAPI.registerGeneralUser()
+      ServerAPI.registerGeneralUser("mitra66ananya@gmail.com","antique","9876543234","Ananya","Mitra","null", response=> window.open('/registration', "_self") )
 
     }
     if (document.getElementById("lbRadio").checked) {
-      ServerAPI.registerLocalBusiness()
+      ServerAPI.registerLocalBusiness("th12@gmail.com","local","9378965434","INDIRANAGAR","Bangalore","560043","TKSTORE","785623459756",Response=> response=> window.open('/registration', "_self") )
 
     }
-    else {
-      window.open('/registration', "_self")
   }
-}
-
-
 
 }
   
