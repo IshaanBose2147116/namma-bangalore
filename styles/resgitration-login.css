@@ -2,13 +2,18 @@ body {
     background-color: #dee9ff;
     background-image: url('/assests/images/bangalore4.jpg');
     background-repeat: no-repeat;
-    background-size: 2000px 1000px;
+    background-size: 2000px 1000px; 
+    background-attachment: fixed;
 }
 
 .registration-form {
     padding: 50px 0;
     display: flex;
     justify-content: center;
+}
+
+.form-group {
+    width: 20em;
 }
 
 .registration-form form {
