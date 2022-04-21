@@ -103,9 +103,9 @@ app.get('/', (req, res) => {
                                         
                                         if (err.code === 'ER_DUP_ENTRY') {
                                             if (err.sqlMessage.includes('user.email')) {
-                                                res.status(400).send({ msg: 'Duplicate email', errCode: 100 });
+                                                res.status(400).send({ msg: 'Duplicate email', errCode: 1000 });
                                             } else {
-                                                res.status(400).send({ msg: 'Duplicate phone number', errCode: 101 });
+                                                res.status(400).send({ msg: 'Duplicate phone number', errCode: 1001 });
                                             }
                                         } else {
                                             res.status(500).send(err);
@@ -153,7 +153,7 @@ app.get('/', (req, res) => {
                     res.status(500).send(err);
                 } else {
                     if (result.length === 0) {
-                        res.status(404).send({ msg: "Invalid email" });
+                        res.status(404).send({ msg: "Invalid email", errCode: 1010 });
                     } else {
                         crypto.scrypt(req.body.password, result[0].salt_value, 32, (err, derivedKey) => {
                             if (err) {
@@ -163,7 +163,7 @@ app.get('/', (req, res) => {
                                 if (result[0].password === derivedKey.toString('base64')) {
                                     res.sendStatus(200);
                                 } else {
-                                    res.status(404).send({ msg: "Incorrect password" });
+                                    res.status(404).send({ msg: "Incorrect password", errCode: 1011 });
                                 }
                             }
                         });
@@ -184,7 +184,7 @@ app.get('/', (req, res) => {
                     res.status(500).send(err);
                 } else {
                     if (result.length === 0) {
-                        res.status(404).send({ msg: "Invalid phone number" });
+                        res.status(404).send({ msg: "Invalid phone number", errCode: 1012 });
                     } else {
                         crypto.scrypt(req.body.password, result[0].salt_value, 32, (err, derivedKey) => {
                             if (err) {
@@ -194,7 +194,7 @@ app.get('/', (req, res) => {
                                 if (result[0].password === derivedKey.toString('base64')) {
                                     res.sendStatus(200);
                                 } else {
-                                    res.status(404).send({ msg: "Incorrect password" });
+                                    res.status(404).send({ msg: "Incorrect password", errCode: 1011 });
                                 }
                             }
                         });
@@ -203,7 +203,25 @@ app.get('/', (req, res) => {
             });
         }
     });
-});
+})
+// .get('/available-vehicles', (req, res) => {
+//     if (Object.keys(req.query).length < 2) {
+//         res.status(400).send({ 
+//             msg: "Query string must contain at least 2 arguments." ,
+//             errCode: 2000
+//         });
+//     }
+//     else {
+//         if (req.query.from_time === undefined || req.query.to_time === undefined) {
+//             res.status(400).send({ 
+//                 msg: "Invalid arguments passed! Arguments allowed: 'from_time' (required), 'to_time' (required), and 'type'." ,
+//                 errCode: 2001
+//             });
+//         } else {
+//             res.sendStatus(200);
+//         }
+//     }
+// });
 
 app.listen(PORT, () => {
     console.log(`Visit: http://localhost:${ PORT }`);
