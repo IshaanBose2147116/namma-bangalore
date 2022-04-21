@@ -1,18 +1,63 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = 5000;
+const MIN_UID = 1;
+const MAX_UID = 999999;
 
 var conn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'namma-bangalore'
+    database: 'namma_bangalore'
 });
+
+/**
+ * 
+ * @param {mysql.RowDataPacket[]} resultSet 
+ * @param {int} max 
+ * @param {int} min 
+ * @returns Array containing unique ID and a unique salt value
+ */
+function generateUniqueIDAndSalt(resultSet, max, min) {
+    var id = Math.floor(Math.random() * (max - min + 1)) + min;
+    var idArray = [], saltArray = [];
+
+    for (var i = 0; i < resultSet.length; i++) {
+        idArray.push(resultSet[i].uid);
+        saltArray.push(resultSet[i].salt_value);
+    }
+
+    while (idArray.includes(id)) {
+        id = Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    var salt = crypto.randomBytes(16).toString('base64');
+
+    while (saltArray.includes(salt)) {
+        salt = crypto.randomBytes(16).toString('base64');
+    }
+
+    return [ id, salt ];
+}
+
+function registerGeneral(conn, data, callback) {
+    conn.query(`insert into general_user values (${ data.uid }, "${ data.fname }", 
+        "${ data.mname }", "${ data.lname }", ${ data.is_admin ? 1 : 0 })`, (err, result) => {
+            callback(err);
+        });
+}
+
+function registerLocalBusiness(conn, data, callback) {
+    conn.query(`insert into local_business values (${ data.uid }, "${ data.address_line1 }", "${ data.address_line2 }",
+        "${ data.address_line3 }", "${ data.pincode }", "${ data.business_name }", "${ data.aadhaar_num }")`, (err, result) => {
+            callback(err);
+        });
+}
 
 app.use(bodyParser.json());
 
@@ -22,9 +67,163 @@ app.use("/assests", express.static(path.join(__dirname, '../assests')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
+})
+.get('/test', (req, res) => {
+    res.sendFile(path.join(__dirname, '../test.html'));
+})
+.get('/registration', (req, res) => {
+    res.sendFile(path.join(__dirname, '../registration.html'))
+})
+.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, '../login.html'))
+})
+.post('/register-user/:type', (req, res) => {
+    conn.connect((err) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            conn.query('select uid, salt_value from user', (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    const [ uid, salt ] = generateUniqueIDAndSalt(result, MAX_UID, MIN_UID);
+                    
+                    crypto.scrypt(req.body.password, salt, 32, (err, derivedKey) => {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).send(err);
+                        } else {
+                            var password = derivedKey.toString('base64');
+                            
+                            conn.query(`insert into user values (${ uid }, "${ req.body.email }", "${ req.body.phone_num }",
+                                "${ password }", "${ salt }")`, (err, result) => {
+                                    if (err) {
+                                        console.log(err);
+                                        
+                                        if (err.code === 'ER_DUP_ENTRY') {
+                                            if (err.sqlMessage.includes('user.email')) {
+                                                res.status(400).send({ msg: 'Duplicate email', errCode: 1000 });
+                                            } else {
+                                                res.status(400).send({ msg: 'Duplicate phone number', errCode: 1001 });
+                                            }
+                                        } else {
+                                            res.status(500).send(err);
+                                        }
+                                    } else {
+                                        req.body.uid = uid;
+
+                                        if (req.params.type === 'general') {
+                                            registerGeneral(conn, req.body, error => {
+                                                if (error) {
+                                                    console.log(error);
+                                                    res.status(500).send(error);
+                                                } else {
+                                                    res.sendStatus(200);
+                                                }
+                                            });
+                                        } else {
+                                            registerLocalBusiness(conn, req.body, error => {
+                                                if (error) {
+                                                    console.log(error);
+                                                    res.status(500).send(error);
+                                                } else {
+                                                    res.sendStatus(200);
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                        }
+                    });
+                    
+                }
+            });
+        }
+    });
+})
+.post("/login-email", (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query(`select password, salt_value from user where email="${ req.body.email }"`, (err, result) => {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    if (result.length === 0) {
+                        res.status(404).send({ msg: "Invalid email", errCode: 1010 });
+                    } else {
+                        crypto.scrypt(req.body.password, result[0].salt_value, 32, (err, derivedKey) => {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).send(err);
+                            } else {
+                                if (result[0].password === derivedKey.toString('base64')) {
+                                    res.sendStatus(200);
+                                } else {
+                                    res.status(404).send({ msg: "Incorrect password", errCode: 1011 });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+})
+.post('/login-phone', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query(`select password, salt_value from user where phone_num="${ req.body.phonenum }"`, (err, result) => {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    if (result.length === 0) {
+                        res.status(404).send({ msg: "Invalid phone number", errCode: 1012 });
+                    } else {
+                        crypto.scrypt(req.body.password, result[0].salt_value, 32, (err, derivedKey) => {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).send(err);
+                            } else {
+                                if (result[0].password === derivedKey.toString('base64')) {
+                                    res.sendStatus(200);
+                                } else {
+                                    res.status(404).send({ msg: "Incorrect password", errCode: 1011 });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+})
+.get('/available-vehicles', (req, res) => {
+    if (Object.keys(req.query).length < 2) {
+        res.status(400).send({ 
+            msg: "Query string must contain at least 2 arguments." ,
+            errCode: 2000
+        });
+    }
+    else {
+        if (req.query.from_time === undefined || req.query.to_time === undefined) {
+            res.status(400).send({ 
+                msg: "Invalid arguments passed! Arguments allowed: 'from_time' (required), 'to_time' (required), and 'type'." ,
+                errCode: 2001
+            });
+        } else {
+            res.sendStatus(200);
+        }
+    }
 });
 
 app.listen(PORT, () => {
-    console.log(`Listening on port: ${ PORT }`);
-    console.log(`Visit: http://localhost:${ PORT }`)
+    console.log(`Visit: http://localhost:${ PORT }`);
+    console.log("Remember to change MySQL username/password. Go to line 14 and 15.");
 });
