@@ -20,7 +20,7 @@ class ServerAPI {
      *          if (response.status === 200) {
      *              console.log("Successfully registered");
      *          } else if (response.status === 400) {
-     *              if (response.errCode === 100) {
+     *              if (response.errCode === 1000) {
      *                  alert("Duplicate email");
      *              } else {
      *                  alert("Duplicate phone number");
@@ -68,7 +68,7 @@ class ServerAPI {
      *          if (response.status === 200) {
      *              console.log("Successfully registered");
      *          } else if (response.status === 400) {
-     *              if (response.errCode === 100) {
+     *              if (response.errCode === 1000) {
      *                  alert("Duplicate email");
      *              } else {
      *                  alert("Duplicate phone number");
@@ -110,7 +110,14 @@ class ServerAPI {
      * @example
      * ServerAPI.loginUser(email, password, true, response => {
      *      if (response.status === 404) {
-     *          console.log(response.msg);
+     *          if (response.errCode === 1010)
+     *              console.log("Invalid email.");
+     *          else if (response.errCode === 1012)
+     *              console.log("Invalid phone number.");
+     *          else
+     *              console.log("Invalid password.");
+     * 
+     *          console.log(response.msg); // contains message describing cause of status code
      *      } else if (response.status === 200) {
      *          alert("LOGGED IN");
      *      } else {
@@ -133,7 +140,7 @@ class ServerAPI {
             }).then(response => {
                 if (response.status === 404) {
                     response.json().then(data => {
-                        callback({ status: 404, msg: data.msg });
+                        callback({ status: 404, msg: data.msg, errCode: data.errCode });
                     });
                 } else if (response.status === 500) {
                     callback(response);
@@ -152,7 +159,7 @@ class ServerAPI {
             }).then(response => {
                 if (response.status === 404) {
                     response.json().then(data => {
-                        callback({ status: 404, msg: data.msg });
+                        callback({ status: 404, msg: data.msg, errCode: data.errCode });
                     });
                 } else if (response.status === 500) {
                     callback(response);
