@@ -204,24 +204,24 @@ app.get('/', (req, res) => {
         }
     });
 })
-// .get('/available-vehicles', (req, res) => {
-//     if (Object.keys(req.query).length < 2) {
-//         res.status(400).send({ 
-//             msg: "Query string must contain at least 2 arguments." ,
-//             errCode: 2000
-//         });
-//     }
-//     else {
-//         if (req.query.from_time === undefined || req.query.to_time === undefined) {
-//             res.status(400).send({ 
-//                 msg: "Invalid arguments passed! Arguments allowed: 'from_time' (required), 'to_time' (required), and 'type'." ,
-//                 errCode: 2001
-//             });
-//         } else {
-//             res.sendStatus(200);
-//         }
-//     }
-// });
+.get('/available-vehicles', (req, res) => {
+    if (Object.keys(req.query).length < 2) {
+        res.status(400).send({ 
+            msg: "Query string must contain at least 2 arguments." ,
+            errCode: 2000
+        });
+    }
+    else {
+        if (req.query.from_time === undefined || req.query.to_time === undefined) {
+            res.status(400).send({ 
+                msg: "Invalid arguments passed! Arguments allowed: 'from_time' (required), 'to_time' (required), and 'type'." ,
+                errCode: 2001
+            });
+        } else {
+            res.sendStatus(200);
+        }
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`Visit: http://localhost:${ PORT }`);
