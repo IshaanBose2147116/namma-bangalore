@@ -12,7 +12,7 @@ const MAX_UID = 999999;
 var conn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '0767',
+    password: 'root',
     database: 'namma_bangalore'
 });
 

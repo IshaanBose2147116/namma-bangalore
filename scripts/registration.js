@@ -50,7 +50,10 @@ function validate()
   else 
   {
     if (document.getElementById("guRadio").checked) {
-      ServerAPI.registerGeneralUser("mitra66ananya@gmail.com","antique","9876543234","Ananya","Mitra","null", response=> window.open('/registration', "_self") )
+      ServerAPI.registerGeneralUser(
+        email.value, password.value, phone.value, "Ananya","Mitra","null", response => {
+
+        });
 
     }
     if (document.getElementById("lbRadio").checked) {

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Register Here/</title>
+    <title>Register</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"
         rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -30,16 +30,16 @@
         if(document.getElementById("guRadio").checked){
             document.getElementById('ad').style.display='none';
             document.getElementById('address').style.display='none';
+            document.getElementById("fullname").placeholder = 'Name';
         }
         if(document.getElementById("lbRadio").checked){
             document.getElementById('ad').style.display='block';
             document.getElementById('address').style.display='block';
+            document.getElementById("fullname").placeholder = 'Business Name';
         }
     }
-        
     </script>
 </head>
-
 <body>
     <div class="registration-form">
         <form onsubmit="validate()">
@@ -86,18 +86,16 @@
 
             <div class="form-group">
                 <button type="submit" class="btn btn-success btn-block submit"
-                    onclick="  validate();  return false;">Submit</button>
+                    onclick="validate()">Submit</button>
                 <button type="submit" class="btn btn-danger btn-block reset">Reset</button>
             </div>
-
-           
-
         </form>
     </div>
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-    <script type="module" src="scripts/registration.js"></script>
+    <script type="module" src="./scripts/registration.js"></script>
 </body>
 
 </html>
