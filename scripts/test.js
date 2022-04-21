@@ -7,6 +7,8 @@ document.getElementById("register").onclick = (event) => {
     var name = document.getElementById("name").value;
 
     name = name.trim();
+    name += ' ';
+    console.log(/^([a-zA-Z]+\s){2,3}$/.test(name));
     // var spaceCount = (name.match(/\s/g) || []).length
 
     // if (spaceCount > 2) {
