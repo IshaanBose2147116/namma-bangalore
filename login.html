@@ -9,11 +9,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"
         rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/resgitration-login.css">
 </head>
 <body>
     <div class="registration-form">
-        <form onsubmit=" validate()">
+        <form id="login-form">
             <div>
                 <h1 class="d-flex justify-content-center">Login </h1><br>
             </div>
@@ -31,8 +31,7 @@
                 <input type="password" class="form-control item" id="password" placeholder="Password"
                     onkeyup="validatePassword()"><span style="font-weight:bolder"></span>
             <div class="form-group">
-                <button id="login" type="submit" class="btn btn-success btn-block submit"
-                    onclick="validate()">Submit</button>
+                <button id="login" type="submit" class="btn btn-success btn-block submit">Submit</button>
                 <!--button type="submit" class="btn btn-danger btn-block reset">Reset</button-->
             </div>
         </form>

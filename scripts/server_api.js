@@ -12,11 +12,11 @@ class ServerAPI {
      * @param {string} fname (required)
      * @param {string} mname (can be null)
      * @param {string} lname (can be null)
-     * @param {boolean} isAdmin true if user is admin, false if not
+     * @param {boolean} isAdmin true if user is admin, false if not (default=false)
      * @param {function} callback function that receives response
      * @example
      * ServerAPI.registerGeneralUser(
-     *     "test@test.com", "password", "1234567890", "First", null, "Last", false, response => {
+     *     "test@test.com", "password", "1234567890", "First", null, "Last", response => {
      *          if (response.status === 200) {
      *              console.log("Successfully registered");
      *          } else if (response.status === 400) {
@@ -31,7 +31,7 @@ class ServerAPI {
      *      }
      * )
      */
-    static registerGeneralUser(email, password, phoneNum, fname, mname, lname, isAdmin, callback) {
+    static registerGeneralUser(email, password, phoneNum, fname, mname, lname, callback, isAdmin=false) {
         fetch("http://localhost:5000/register-user/general", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -45,7 +45,15 @@ class ServerAPI {
                 is_admin: isAdmin
             })
         }).then(response => {
-            callback(response);
+            if (response.status === 400) {
+                response.json().then(data => {
+                    callback({ status: 400, msg: data.msg, errCode: data.errCode });
+                });
+            } else if (response.status === 200) {
+                callback({ status: 200, msg: 'OK'});
+            } else {
+                callback(response);
+            }
         });
     }
 
@@ -96,7 +104,15 @@ class ServerAPI {
                 aadhaar_num: aadhaarNum
             })
         }).then(response => {
-            callback(response);
+            if (response.status === 400) {
+                response.json().then(data => {
+                    callback({ status: 400, msg: data.msg, errCode: data.errCode });
+                });
+            } else if (response.status === 200) {
+                callback({ status: 200, msg: 'OK'});
+            } else {
+                callback(response);
+            }
         });
     }
 

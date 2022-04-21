@@ -5,20 +5,39 @@ var email = document.getElementById('email');
 var password = document.getElementById('password');
 var phone = document.getElementById('phone');
 var adhaar = document.getElementById('adhaarnumber');
-var address = document.getElementById('address');
+var address1 = document.getElementById('address-1');
+var address2 = document.getElementById('address-2');
+var address3 = document.getElementById('address-3');
+var pincode = document.getElementById('pincode');
 var span = document.getElementsByTagName('span');
 
-function testname(event) {
-  let code = event.which;
-  if (code > 47 && code < 58) {
-    span[0].innerText = "Numkey not allowed!";
-    span[0].style.color = "red";
-    return false;
+fullname.onkeyup = validateName; fullname.onkeydown = event => {
+  if (event.which > 47 && event.which < 58 && event.key !== 'Backspace') {
+    event.preventDefault();
   }
+};
+email.onkeyup = validateEmail;
+phone.onkeyup = validatePhone; phone.onkeydown = event => {
+  if ((event.which > 58 || event.which < 47) && event.key !== 'Backspace') {
+    event.preventDefault();
+  }
+};
+password.onkeyup = validatePassword;
+adhaar.onkeyup = validateadhaar; adhaar.onkeydown = event => {
+  if ((event.which > 58 || event.which < 47) && event.key !== 'Backspace') {
+    event.preventDefault();
+  }
+}
+address1.onkeyup = validateaddress;
+pincode.onkeyup = validatePincode; pincode.onkeydown = event => {
+  if ((event.which > 58 || event.which < 47) && event.key !== 'Backspace') {
+    event.preventDefault();
+  }
+}
 
-  else
-    return true;
-
+document.getElementById("reg-form").onsubmit = event => {
+  event.preventDefault();
+  validate();
 }
 
 function testphone(event) {
@@ -26,207 +45,244 @@ function testphone(event) {
   if (pcode > 58 && pcode < 47) {
     span[2].innerText = "characters not allowed!!";
     span[2].style.color = "red";
-    return false;
   }
-
-  else
-    return true;
-
 }
 
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
 
-function validate() 
+function validate()
 {
-  if (fullname.value == "" || email.value == "" || password.value == "" || phone.value == "") {
-    scrollToTop();
-    validateName();
-    validateaddress();
+  if (document.getElementById("guRadio").checked) {
+    if (validateName() && validatePhone() && validateEmail() && validatePassword()) {
+      var name = document.getElementById("fullname").value.trim();
+      name = name.split(' ');
 
+      if (name.length <= 2) {
+        name.splice(1, 0, null);
 
-  }
-  else 
-  {
-    if (document.getElementById("guRadio").checked) {
+        if (name.length == 2) {
+          name.splice(1, 0, null);
+        }
+      }
+
       ServerAPI.registerGeneralUser(
-        email.value, password.value, phone.value, "Ananya","Mitra","null", response => {
-
+        email.value, password.value, phone.value, name[0], name[1], name[2], response => {
+          if (response.status === 200) {
+            window.open('/login', "_self");
+          } else if (response.status === 400) {
+            console.log(response);
+            if (response.errCode === 1000) {
+              span[1].innerText = "Email already registered!";
+              span[1].style.color = "red";
+              email.style.border = "1px red solid";
+              console.log("here");
+            } else {
+              span[2].innerText = "Phone number already registered!";
+              span[2].style.color = "red";
+              phone.style.border = "1px red solid";
+              console.log("here1");
+            }
+          } else {
+            console.log(response);
+            alert("Internal server error! Please try again later.");
+          }
         });
-
     }
-    if (document.getElementById("lbRadio").checked) {
-      ServerAPI.registerLocalBusiness("th12@gmail.com","local","9378965434","INDIRANAGAR","Bangalore","560043","TKSTORE","785623459756",Response=> response=> window.open('/registration', "_self") )
-
+  } else {
+    if (validateName() && validatePhone() && validateEmail() && validatePassword() && validateaddress() && validateadhaar()) {
+      ServerAPI.registerLocalBusiness(
+        email.value, password.value, phone.value, address1.value, address2.value, address3.value, pincode.value, fullname.value, adhaar.value, response => {
+          if (response.status === 200) {
+            window.open('/login', "_self");
+          } else if (response.status === 400) {
+            if (response.errCode === 1000) {
+              span[1].innerText = "Email already registered!";
+              span[1].style.color = "red";
+              email.style.border = "1px red solid";
+            } else {
+              span[2].innerText = "Phone number already registered!";
+              span[2].style.color = "red";
+              phone.style.border = "1px red solid";
+            }
+          } else {
+            console.log(response);
+            alert("Internal server error! Please try again later.");
+          }
+        });
     }
   }
-
 }
+
+function validateName() {
+  const regex = /^([a-zA-Z]+\s){1,3}$/;
+  var name = fullname.value.trim();
+
+  if (name == "" || name == null) {
+    span[0].innerText = "*mandatory";
+    span[0].style.color = "red";
+    fullname.style.border = "1px red solid";
+    return false;
+  }
+
+  if (regex.test(name + " ")) {
+    span[0].innerText = "Valid Name!";
+    span[0].style.color = "lime";
+    fullname.style.border = "1px lime solid";
+    return true;
+  }
+
+  span[0].innerText = "Invalid Name!";
+  span[0].style.color = "red";
+  fullname.style.border = "1px red solid";
+
+  return false;
+}
+
+function validatePhone() {
+  const regex_num = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
+
+  if (phone.value.trim() == "" || phone.value.trim() == null) {
+    span[2].innerText = "*mandatory";
+    span[2].style.color = "red";
+    phone.style.border = "1px red solid";
+    return false;
+  }
+
+  if (regex_num.test(phone.value)) {
+    span[2].innerText = "Your number is Valid!";
+    span[2].style.color = "lime";
+    phone.style.border = "1px lime solid";
+    return true;
+  }
+
+  span[2].innertext = "Invalid Phone number";
+  span[2].style.color = "red";
+  phone.style.border = "1px red solid";
   
+  return false;
+}
 
+//^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$/
+function validatePassword() {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,30}$/;
 
-  function validateName() {
-    const regex = /^[(A-Za-z\s.)]+$/;
-    fullname = fullname.split(' ');
-    console.log(fullname);
-    if (fullname.length == 2) {
-      fullname.splice(1, 0, null);
-    }
+  if (password.value.trim() == "" || password.value.trim() == null) {
+    span[3].innerText = "*mandatory";
+    span[3].style.color = "red";
+    password.style.border = "1px red solid";
 
-    if (fullname.value.trim() == "" || fullname.value.trim() == null) {
-      span[0].innerText = "*mandatory";
-      span[0].style.color = "red";
-      fullname.style.border = "1px red solid";
-      validateEmail();
-      validatePhone();
-
-    }
-    else if (regex.test(fullname.value.trim())) {
-      span[0].innerText = "Valid Name!";
-      span[0].style.color = "lime";
-      fullname.style.border = "1px lime solid";
-      validateEmail();
-    }
-    else {
-      span[0].innerText = "Invalid Name!";
-      span[0].style.color = "red";
-      fullname.style.border = "1px red solid";
-      return false;
-    }
+    return false;
   }
 
-  function validatePhone() {
-    const regex_num = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
-    if (phone.value.trim() == "" || phone.value.trim() == null) {
-      span[2].innerText = "*mandatory";
-      span[2].style.color = "red";
-      phone.style.border = "1px red solid";
-      return false;
-    }
-    if (regex_num.test(phone.value)) {
+  if (regex.test(password.value.trim())) {
+      span[3].innerText = "Strong Password!";
+      span[3].style.color = "lime";
+      password.style.border = "1px lime solid";
 
-      span[2].innerText = "Your number is Valid!";
-      span[2].style.color = "lime";
-      phone.style.border = "1px lime solid";
-    }
-    else {
-      span[2].innertext = "Invalid Phone number";
-      span[2].style.color = "red";
-      phone.style.border = "1px red solid";
-    }
-
-  }
-
-
-
-
-
-
-
-  //^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$/
-
-  function validatePassword() {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,20})/;
-    if (password.value.trim() == "" || password.value.trim() == null) {
-      span[3].innerText = "*mandatory";
-      span[3].style.color = "red";
-      password.style.border = "1px red solid";
-      return false;
-    }
-    else if (regex.test(password.value.trim())) {
-      if (password.value.trim().length >= 8 && password.value.trim().length <= 15) {
-        span[3].innerText = "Strong Password!";
-        span[3].style.color = "lime";
-        password.style.border = "1px lime solid";
-        return true;
-      }
-
-      else {
-        span[3].innerText = "Too long password!";
-        span[3].style.color = "red";
-        password.style.border = "1px red solid";
-        return false;
-      }
-    }
-    else if (password.value.trim().length < 8) {
-      span[3].innerText = "Weak Password!";
-      span[3].style.color = "orange";
-      password.style.border = "1px orange solid";
-      return false;
-      validatePhone();
-    }
-    else {
-      span[3].innerText = "Invalid!";
-      span[3].style.color = "red";
-      password.style.border = "1px red solid";
-      return false;
-      validatePhone();
-    }
-  }
-
-
-  function validateEmail() {
-    //const regex = /^\w+([\.-]?\w+)+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-    const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-
-    if (email.value.trim() == "" || email.value.trim() == null) {
-      span[1].innerText = "*mandatory";
-      span[1].style.color = "red";
-      email.style.border = "1px red solid";
-      validatePassword();
-
-    }
-    if (regex.test(email.value.trim())) {
-      span[1].innerText = "Valid Email!";
-      span[1].style.color = "lime";
-      email.style.border = "1px lime solid";
-      validatePassword();
-    }
-    else {
-      span[1].innerText = "Invalid Email!";
-      span[1].style.color = "red";
-      email.style.border = "1px red solid";
-      return false;
-    }
-  }
-
-
-  // hereby validating adhaar no..
-  function validateadhaar() {
-    adreg = /^[2-9]{1}[0-9]{3}\s[0-9]{4}\s[0-9]{4}$/;
-    if (adhaar.value.trim() == "" || adhaar.value.trim() == null) {
-      span[4].innerText = "*mandatory";
-      span[4].style.color = "red";
-      adhaar.style.border = "1px red solid";
-      return false;
-    }
-    if (adreg.test(adhaar.value)) {
-
-      span[4].innerText = "Adhaar number is Valid!";
-      span[4].style.color = "lime";
-      adhaar.style.border = "1px lime solid";
-      validateaddress();
-    }
-    else {
-      span[4].innertext = "Invalid Adhaar number";
-      span[4].style.color = "red";
-      adhaar.style.border = "1px red solid";
-      return false;
-    }
-
-  }
-
-  function validateaddress() {
-    if (address.value == "" || address.value == null) {
-      span[5].innerText = "Blank Space not allowed";
-      span[5].style.color = "red";
-      adhaar.style.border = "1px red solid";
-      return false;
-    }
-
-    else
       return true;
   }
+  else if (password.value.trim().length > 30) {
+      span[3].innerText = "Too long password!";
+      span[3].style.color = "red";
+      password.style.border = "1px red solid";
+      
+      return false;
+  }
+  else {
+    span[3].innerText = "Weak Password!";
+    span[3].style.color = "orange";
+    password.style.border = "1px orange solid";
 
+    return true;
+  }
+}
+
+function validateEmail() {
+  const regex = /^.+@.+\.[a-z]{2,3}$/;
+
+
+  if (email.value.trim() == "" || email.value.trim() == null) {
+    span[1].innerText = "*mandatory";
+    span[1].style.color = "red";
+    email.style.border = "1px red solid";
+
+    return true;
+  }
+  if (regex.test(email.value.trim())) {
+    span[1].innerText = "Valid Email!";
+    span[1].style.color = "lime";
+    email.style.border = "1px lime solid";
+    
+    return true;
+  }
+  else {
+    span[1].innerText = "Invalid Email!";
+    span[1].style.color = "red";
+    email.style.border = "1px red solid";
+
+    return false;
+  }
+}
+
+// hereby validating adhaar no..
+function validateadhaar() {
+  if (adhaar.value.trim() == "" || adhaar.value.trim() == null) {
+    span[4].innerText = "*i";
+    span[4].style.color = "red";
+    adhaar.style.border = "1px red solid";
+
+    return false;
+  }
+  if (adhaar.value.length === 12) {
+    span[4].innerText = "Adhaar number is Valid!";
+    span[4].style.color = "lime";
+    adhaar.style.border = "1px lime solid";
+    
+    return true;
+  }
+
+  span[4].innerText = "Invalid aadhaar number!";
+  span[4].style.color = "red";
+  adhaar.style.border = "1px red solid";
+  
+  return false;
+}
+
+function validateaddress() {
+  if (address1.value == "" || address1.value == null) {
+    span[5].innerText = "Blank Space not allowed";
+    span[5].style.color = "red";
+    address1.style.border = "1px red solid";
+    return false;
+  }
+
+  span[5].innerText = "Address is Valid!";
+  span[5].style.color = "lime";
+  address1.style.border = "1px lime solid";
+
+  return true;
+}
+
+function validatePincode() {
+  if (pincode.value == "" || pincode.value == null) {
+    span[8].innerText = "Blank Space not allowed";
+    span[8].style.color = "red";
+    pincode.style.border = "1px red solid";
+    return false;
+  }
+  
+  if (pincode.value.includes('-')) {
+    span[8].innerText = "Negative numbers not allowed";
+    span[8].style.color = "red";
+    pincode.style.border = "1px red solid";
+    return false;
+  }
+
+  span[8].innerText = "Pincode is Valid!";
+  span[8].style.color = "lime";
+  pincode.style.border = "1px lime solid";
+
+  return true;
+}
