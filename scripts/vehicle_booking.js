@@ -1,6 +1,5 @@
 import ServerAPI from "./server_api.js";
 
-const defaultHTML = document.getElementById("content-container").innerHTML;
 var data = {};
 var vehicleDetails = {};
 
@@ -118,15 +117,6 @@ function showConfirmation(evt) {
     $(".confirmation-popup").off('click', '.action-button');
     $(".confirmation-popup .action-button").attr("id", evt.currentTarget.id);
     $(".confirmation-popup").on('click', '.action-button', book);
-    // document.getElementById("popup-from-time").innerText = data.fromTime.split("+")[0] + " " + data.fromTime.split("+")[1];
-
-    // ServerAPI.bookVehicle(sessionStorage.getItem("uid"), data.fromTime, data.toTime, evt.currentTarget.id, response => {
-    //     if (response.status === 200) {
-    //         getAndViewVehicles();
-    //     } else {
-    //         alert(response);
-    //     }
-    // });
 }
 
 function book(evt) {
