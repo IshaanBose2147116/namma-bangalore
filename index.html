@@ -23,19 +23,16 @@
         <link href="./styles/aos.css" rel="stylesheet">
 
         <link href="./styles/templatemo-nomad-force.css" rel="stylesheet">
-<!--
-Namma Bengaluru Website
---><style>
-    h5{
-        color: white;
-    }
-</style>
+
+        <link href="./styles/index.css" rel="stylesheet">
+        <style>
+            h5{
+                color: white;
+            }
+        </style>
     </head>
-    
     <body>
-
         <main>
-
             <section class="hero" id="hero">
                 <div class="heroText">
                     <h1 class="text-white mt-5 mb-lg-4" data-aos="zoom-in" data-aos-delay="800">
@@ -46,10 +43,6 @@ Namma Bengaluru Website
                         Explore the Silicon Valley of <strong class="custom-underline">India</strong>
                     </p>
                 </div>
-
-                <!--<div class ="scroll-container">
-                    <div class="scroll-page" id="page-1">India</div>
-                </div>-->
 
                 <div class="videoWrapper">
                     <video autoplay="" loop="" muted="" class="custom-video" poster="videos/792bd98f3e617786c850493560e11c45.jpg">
@@ -63,49 +56,60 @@ Namma Bengaluru Website
             </section>
 
             <nav class="navbar navbar-expand-lg bg-light shadow-lg">
-                <div class="container">
-                    <a class="navbar-brand" href="index.html">
-                        <img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75" height="50">
-                    </a>
+                <div class="cust-container">
+                    <div>
+                        <a class="navbar-brand" id="phone-logo" href="/">
+                            <img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75" height="50">
+                        </a>
+    
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="margin-left: auto;">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+    
+                    </div>
+                    <div>
+                        <a class="navbar-brand" id="laptop-logo" href="/">
+                            <img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75" height="50">
+                        </a>
 
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav mx-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#hero">Home</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#about">About Bengaluru</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#hotels">Hotels</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#news">Travel & Tourism</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#news">Book a Vehicle</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#news">Local Employment</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#news">Offers</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#contact">Contact Us</a>
-                            </li>
-                        </ul>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav mx-auto">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="#hero">Home</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#about">About Bengaluru</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#portfolio">Hotels</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#news">Travel & Tourism</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/vehicle-booking">Book a Vehicle</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#news">Local Employment</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#news">Offers</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" id="login-link" href="/login">Login</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <span id="user-name"></span>
                     </div>
                 </div>
             </nav>
@@ -258,13 +262,13 @@ Namma Bengaluru Website
                         </div>
                         <div class="col-lg-6 col-12 mb-5 mb-lg-0">
                             <div class="news-thumb" data-aos="fade-up">
-                                <a href="tourism.html" class="news-image-hover news-image-hover-warning">
+                                <a href="/tourism" class="news-image-hover news-image-hover-warning">
                                     <img src="./assests/images/bang-images/lal.jpg" class="img-fluid large-news-image news-image" alt="lal bagh image">
                                 </a>
                                 <div class="news-category bg-warning text-white">Tourism</div>        
                                 <div class="news-text-info">
                                     <h5 class="news-title">
-                                        <a href="tourism.html" class="news-title-link">Lal Bagh is an old botanical garden in Bangalore, India.</a>
+                                        <a href="/tourism" class="news-title-link">Lal Bagh is an old botanical garden in Bangalore, India.</a>
                                     </h5>
                                     <span class="text-muted">22 hours ago</span>
                                 </div>
@@ -274,7 +278,7 @@ Namma Bengaluru Website
                             <div class="news-thumb news-two-column d-flex flex-column flex-lg-row" data-aos="fade-up">
                                 <div class="news-top w-100">
                                     
-                                    <a href="tourism.html" class="news-image-hover news-image-hover-primary">
+                                    <a href="/tourism" class="news-image-hover news-image-hover-primary">
                                         <img src="./assests/images/bang-images/bmtc-bang.jpg" class="img-fluid news-image" alt="">
                                     </a>
 
@@ -284,7 +288,7 @@ Namma Bengaluru Website
                                 <div class="news-bottom w-100">
                                     <div class="news-text-info">
                                         <h5 class="news-title">
-                                            <a href="tourism.html" class="news-title-link">Travel By Bus</a>
+                                            <a href="/tourism" class="news-title-link">Travel By Bus</a>
                                         </h5>
 
                                         <div class="d-flex flex-wrap">
@@ -301,7 +305,7 @@ Namma Bengaluru Website
                             <div class="news-thumb news-two-column d-flex flex-column flex-lg-row" data-aos="fade-up">
                                 <div class="news-top w-100" data-aos="fade-up">
                                     
-                                    <a href="tourism.html" class="news-image-hover news-image-hover-success">
+                                    <a href="/tourism" class="news-image-hover news-image-hover-success">
                                         <img src="./assests/images/bang-images/heritage-img-bang.jpg" class="img-fluid news-image" alt="">
                                     </a>
 
@@ -311,7 +315,7 @@ Namma Bengaluru Website
                                 <div class="news-bottom w-100">
                                     <div class="news-text-info">
                                         <h5 class="news-title">
-                                            <a href="tourism.html" class="news-title-link">Where is Tipu Sultan's Summer Palace?</a>
+                                            <a href="/tourism" class="news-title-link">Where is Tipu Sultan's Summer Palace?</a>
                                         </h5>
                                         <span class="text-muted">6 days ago</span>
                                     </div>
@@ -331,7 +335,7 @@ Namma Bengaluru Website
 
                             <h2 class="mb-4 text-center" data-aos="fade-up">Dont' be shy, write to us</h2>
 
-                            <form action="#" method="post" class="contact-form" role="form" data-aos="fade-up">
+                            <form action="#" method="get" class="contact-form" role="form" data-aos="fade-up">
 
                                 <div class="row">
                                     
@@ -352,28 +356,7 @@ Namma Bengaluru Website
 
                                         <textarea name="message" rows="6" class="form-control" id="message" placeholder="Provide your feedback" required></textarea>
                                         
-                                    </div>
-                                   <!--  <div class="col-lg-4 col-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" id="checkbox1" name="checkbox1" class="form-check-input">
-
-                                            <label class="form-check-label" for="checkbox1">Branding</label>
-                                          </div>
-                                    </div>
-                                    <div class="col-lg-4 col-12 my-2 my-lg-0">
-                                        <div class="form-check">
-                                            <input type="checkbox" id="checkbox2" name="checkbox2" class="form-check-input">
-                                            <label class="form-check-label" for="checkbox2">Digital Experiences</label>
-                                          </div>
-                                    </div>
-                                    <div class="col-lg-4 col-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" id="checkbox3" name="checkbox3" class="form-check-input">
-
-                                            <label class="form-check-label" for="checkbox3">Web Development</label>
-                                          </div>
-                                    </div>
-                                </div> -->
+                                    </div>  
                                 <div class="col-lg-5 col-12 mx-auto mt-5">
                                     <button type="submit" class="form-control">Send Message</button>
                                 </div>
@@ -425,6 +408,7 @@ Namma Bengaluru Website
         <script src="./scripts/magnific-popup-options.js"></script>
         <script src="./scripts/scrollspy.min.js"></script>
         <script src="./scripts/custom.js"></script>
+        <script src="./scripts/index.js"></script>
         
     </body>
 
