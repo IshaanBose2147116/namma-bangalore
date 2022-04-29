@@ -72,14 +72,21 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../test.html'));
 })
 .get('/registration', (req, res) => {
-    res.sendFile(path.join(__dirname, '../registration.html'))
+    res.sendFile(path.join(__dirname, '../registration.html'));
 })
 .get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, '../login.html'))
+    res.sendFile(path.join(__dirname, '../login.html'));
+})
+.get('/tourism', (req, res) => {
+    res.sendFile(path.join(__dirname, '../tourism.html'));
+})
+.get('/vehicle-booking', (req, res) => {
+    res.sendFile(path.join(__dirname, '../vehicle_booking.html'));
 })
 .post('/register-user/:type', (req, res) => {
     conn.connect((err) => {
         if (err) {
+            console.log(err);
             res.status(500).send(err);
         } else {
             conn.query('select uid, salt_value from user', (err, result) => {
@@ -108,6 +115,7 @@ app.get('/', (req, res) => {
                                                 res.status(400).send({ msg: 'Duplicate phone number', errCode: 1001 });
                                             }
                                         } else {
+                                            console.log(err);
                                             res.status(500).send(err);
                                         }
                                     } else {
@@ -150,6 +158,7 @@ app.get('/', (req, res) => {
         } else {
             conn.query(`select password, salt_value from user where email="${ req.body.email }"`, (err, result) => {
                 if (err) {
+                    console.log(err);
                     res.status(500).send(err);
                 } else {
                     if (result.length === 0) {
@@ -179,8 +188,11 @@ app.get('/', (req, res) => {
             console.log(err);
             res.status(500).send(err);
         } else {
-            conn.query(`select password, salt_value from user where phone_num="${ req.body.phonenum }"`, (err, result) => {
+            conn.query(`select uid, password, salt_value from user where phone_num="${ req.body.phonenum }"`, (err, result) => {
+                const uid = result[0].uid;
+
                 if (err) {
+                    console.log(err);
                     res.status(500).send(err);
                 } else {
                     if (result.length === 0) {
@@ -192,7 +204,35 @@ app.get('/', (req, res) => {
                                 res.status(500).send(err);
                             } else {
                                 if (result[0].password === derivedKey.toString('base64')) {
-                                    res.sendStatus(200);
+                                    conn.query('select fname, mname, lname from general_user where uid=?', uid, (err, result) => {
+                                        if (err) {
+                                            console.log(err);
+                                            res.status(500).send(err);
+                                        } else {
+                                            if (result.length === 0) {
+                                                conn.query('select business_name from local_business where uid=?', uid, (err, result) => {
+                                                    if (err) {
+                                                        console.log(err);
+                                                        res.status(500).send(err);
+                                                    } else {
+                                                        res.status(200).send({ uid: uid, name: result[0].business_name });
+                                                    }
+                                                });
+                                            } else {
+                                                var name = result[0].fname;
+
+                                                if (result[0].mname !== "null") {
+                                                    name = name.concat(" ", result[0].mname);
+                                                }
+
+                                                if (result[0].lname !== "null") {
+                                                    name = name.concat(" ", result[0].lname);
+                                                }
+                                                
+                                                res.status(200).send({ uid: uid, name: name });
+                                            }
+                                        }
+                                    });
                                 } else {
                                     res.status(404).send({ msg: "Incorrect password", errCode: 1011 });
                                 }
@@ -210,20 +250,115 @@ app.get('/', (req, res) => {
             msg: "Query string must contain at least 2 arguments." ,
             errCode: 2000
         });
-    }
-    else {
+    } else if (Object.keys(req.query).length > 3) {
+        res.status(400).send({ 
+            msg: "Query string cannot have more than 3 arguments." ,
+            errCode: 2001
+        });
+    } else {
         if (req.query.from_time === undefined || req.query.to_time === undefined) {
             res.status(400).send({ 
                 msg: "Invalid arguments passed! Arguments allowed: 'from_time' (required), 'to_time' (required), and 'type'." ,
-                errCode: 2001
+                errCode: 2002
             });
         } else {
-            res.sendStatus(200);
+            var query;
+
+            if (req.query.type === undefined) {
+                query = 
+                    `select v.vehicle_id, v.license_plate, v.colour, v.type, 
+                    concat_ws(' ', d.fname, d.mname, d.lname) as driver_name, d.phone_num from vehicle v join driver d 
+                    on v.driver_id=d.driver_id where v.vehicle_id not in 
+                    (select b.vehicle_id from vehicle_booking b where b.from_date <= ? and b.till_date >= ?)`;
+            } else {
+                query = 
+                    `select v.vehicle_id, v.license_plate, v.colour, v.type, 
+                    concat_ws(' ', d.fname, d.mname, d.lname) as driver_name, d.phone_num from vehicle v join driver d 
+                    on v.driver_id=d.driver_id where v.vehicle_id not in 
+                    (select b.vehicle_id from vehicle_booking b where b.from_date <= ? and b.till_date >= ?) and type = ?`;
+            }
+
+            conn.connect((err) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    var filters = [ req.query.to_time, req.query.from_time ];
+                    
+                    if (req.query.type !== undefined)
+                        filters.push(req.query.type);
+                    
+                    conn.query(query, filters, (err, result) => {
+                        if (err) {
+                            if (err.errno === 1525) {
+                                res.status(400).send({
+                                    msg: err.sqlMessage,
+                                    errCode: 1020
+                                });
+                            } else {
+                                console.log(err);
+                                res.status(500).send(err);
+                            }
+                        } else {
+                            var resResults = [];
+                            console.log(result);
+
+                            for (var i = 0; i < result.length; i++) {
+                                resResults.push({
+                                    vehicle_details: {
+                                        vehicle_id: result[i].vehicle_id,
+                                        license_plate: result[i].license_plate,
+                                        colour: result[i].colour,
+                                        type: result[i].type
+                                    },
+                                    driver_details: {
+                                        name: result[i].driver_name,
+                                        phone: result[i].phone_num
+                                    }
+                                });
+                            }
+
+                            res.status(200).send(resResults);
+                        }
+                    });
+                }
+            });
         }
     }
+})
+.post('/book-vehicle', (req, res) => {
+    conn.connect((err) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('select vehicle_id from vehicle where license_plate=?', req.body.license_plate, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    if (result.length === 0) {
+                        res.status(400).send({ msg: "License plate not registered", errCode: 1030 });
+                    } else {
+                        const vehicleID = result[0].vehicle_id;
+    
+                        conn.query('insert into vehicle_booking values (default, ?, ?, ?, ?)', 
+                            [ req.body.booked_by, req.body.from_date, req.body.till_date, vehicleID ], (err, result) => {
+                                if (err) {
+                                    console.log(err);
+                                    res.status(500).send(err);
+                                } else {
+                                    res.sendStatus(200);
+                                }
+                        });
+                    }
+                }
+            });
+        }
+    });
 });
 
 app.listen(PORT, () => {
-    console.log(`Visit: http://localhost:${ PORT }`);
+    console.log(`Visit: http://localhost:${PORT}`);
     console.log("Remember to change MySQL username/password. Go to line 14 and 15.");
 });

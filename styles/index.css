@@ -1,0 +1,37 @@
+.cust-container {
+    width: 100%;
+    display: flex;
+    padding: 1em;
+    flex-direction: column;
+}
+
+.cust-container div {
+    display: flex;
+}
+
+#user-name {
+    margin-left: auto;
+    margin-right: 6em;
+}
+
+#phone-logo {
+    display: none;
+}
+
+#laptop-logo {
+    display:inherit;
+}
+
+@media (max-width: 576px) {
+    #laptop-logo {
+        display: none;
+    }
+
+    #phone-logo {
+        display: inherit;
+    }
+
+    #user-name {
+        margin-right: 0em;
+    }
+}

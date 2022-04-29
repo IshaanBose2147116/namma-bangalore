@@ -180,11 +180,56 @@ class ServerAPI {
                 } else if (response.status === 500) {
                     callback(response);
                 } else {
-                    callback({ status: 200, msg: "OK" });
+                    response.json().then(data => {
+                        callback({ status: 200, uid: data.uid, name: data.name });
+                    });
                 }
             })
         }
-        
+    }
+
+    static getVehicles(fromTime, toTime, type, callback) {
+        var url;
+
+        if (type === null) {
+            url = `http://localhost:5000/available-vehicles?from_time=${ fromTime }&to_time=${ toTime }`;
+        } else {
+            url = `http://localhost:5000/available-vehicles?from_time=${ fromTime }&to_time=${ toTime }&type=${ type }`;
+        }
+
+        fetch(url, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        }).then(response => {
+            if (response.status === 200) {
+                response.json().then(data => {
+                    callback({ status: 200, data: data });
+                });
+            }
+        });
+    }
+
+    static bookVehicle(bookedBy, fromDate, tillDate, licensePlate, callback) {
+        fetch("http://localhost:5000/book-vehicle", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                booked_by: bookedBy,
+                from_date: fromDate,
+                till_date: tillDate,
+                license_plate: licensePlate
+            })
+        }).then(response => {
+            if (response.status === 400) {
+                response.json().then(data => {
+                    callback({ status: 400, errCode: data.errCode, msg: data.msg });
+                });
+            } else if (response.status === 200) {
+                callback({ status: 200, msg: "OK" });
+            } else {
+                callback(response);
+            }
+        });
     }
 }
 
