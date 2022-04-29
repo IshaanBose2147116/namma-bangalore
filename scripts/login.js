@@ -17,12 +17,12 @@ phone.onkeydown = (event) => {
 phone.onkeyup = validatePhone;
 password.onkeyup = () => {
     if (password.value.length === 0) {
-        span[1].innerText= "*Mandatory";
-        span[1].style.color="red";
+        document.getElementById("password-err").innerText= "*Mandatory";
+        document.getElementById("password-err").style.color="red";
         password.style.border="2px red solid";
     } else {
-        span[1].innerText= "";
-        span[1].style.color="red";
+        document.getElementById("password-err").innerText= "";
+        document.getElementById("password-err").style.color="red";
         password.style.border="2px lime solid";
     }
 }
@@ -35,24 +35,26 @@ function validate() {
     if (!validatePhone() || password.value === "" ) {
         console.log(password.value);
         scrollToTop();
-        span[1].innerText= "* Mandatory";
-        span[1].style.color="red";
+        document.getElementById("password-err").innerText= "* Mandatory";
+        document.getElementById("password-err").style.color="red";
         password.style.border="2px red solid";
     }
     else {
         ServerAPI.loginUser(phone.value, password.value, false, response => {
             if (response.status === 404) {
                 if (response.errCode === 1012) {
-                    span[0].innerText = "Unregistered phone number!";
-                    span[0].style.color = "red";
+                    document.getElementById("phone-err").innerText = "Unregistered phone number!";
+                    document.getElementById("phone-err").style.color = "red";
                     phone.style.border = "1px red solid";
                 }
                 else {
-                    span[1].innerText = "Incorrect password!";
-                    span[1].style.color = "red";
+                    document.getElementById("password-err").innerText = "Incorrect password!";
+                    document.getElementById("password-err").style.color = "red";
                     password.style.border = "1px red solid";
                 }
             } else if (response.status === 200) {
+                sessionStorage.setItem("name", response.name);
+                sessionStorage.setItem("uid", response.uid);
                 window.open('/', "_self");
             } else {
                 alert("Internal server error! Please try again later.");
@@ -66,22 +68,22 @@ function validatePhone() {
     const regex_num = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
 
     if (phone.value.trim() == "" || phone.value.trim() == null) {
-        span[0].innerText = "*mandatory";
-        span[0].style.color = "red";
+        document.getElementById("phone-err").innerText = "*mandatory";
+        document.getElementById("phone-err").style.color = "red";
         phone.style.border = "1px red solid";
         return false;
     }
 
     if (regex_num.test(phone.value)) {
-        span[0].innerText = "Your number is Valid!";
-        span[0].style.color = "lime";
+        document.getElementById("phone-err").innerText = "Your number is Valid!";
+        document.getElementById("phone-err").style.color = "lime";
         phone.style.border = "1px lime solid";
         console.log("hiya");
         return true;
     }
 
-    span[0].innertext = "Invalid Phone number";
-    span[0].style.color = "red";
+    document.getElementById("phone-err").innertext = "Invalid Phone number";
+    document.getElementById("phone-err").style.color = "red";
     phone.style.border = "1px red solid";
     
     return false;

@@ -171,7 +171,7 @@ def createTables():
 
     cursor.execute(
         ("create table vehicle_booking("
-        "booking_id int primary key,"
+        "booking_id int primary key auto_increment,"
         "booked_by int not null,"
         "from_date datetime,"
         "till_date datetime,"
