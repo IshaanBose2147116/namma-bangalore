@@ -7,9 +7,11 @@ $(document).ready(() => {
     if (sessionStorage.getItem("name") === null) {
         $("#no-login").css("display", "flex");
         $("#filters-container").hide();
+        $(".show-booked-container").hide();
     } else {
         $("#no-login").hide();
         $("#filters-container").css("display", "flex");
+        $(".show-booked-container").css("display", "flex");
     }
 
     $("#none-available").hide();
