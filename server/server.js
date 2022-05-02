@@ -15,16 +15,7 @@ const MIN_UID = 1;
 const MAX_UID = 999999;
 const dbDetailsPath = './db_details.json';
 
-<<<<<<< HEAD
-var conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Logeshn009',
-    database: 'namma_bangalore'
-});
-=======
 let conn = null;
->>>>>>> f24761b09ed7a304c50263dec61d3314e7aa7f9d
 
 /**
  * 
