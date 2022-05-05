@@ -4,13 +4,20 @@
     }
 
     .dropbtn {
-        background-color:#ffc107 ;
-        color: white;
+        background-color:#f8f9fa ;
+        color: #717275;
         padding: 16px;
+        font-weight: bold;
         font-size: 16px;
+        display: inline-block;
         border: none;
-        cursor: pointer;
+       
     }
+    .dropbtn:hover{
+        color: black;
+        cursor: pointer;
+    } 
+
 
     .dropdown {
         position: relative;
