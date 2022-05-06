@@ -42,8 +42,8 @@ html, body {
     margin-top: 1em;
     margin-bottom: 2em;
     padding: 1em;
-    background-color: rgb(255, 255, 243);
-    box-shadow: 0 0 10px rgb(158, 158, 158);
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 12px 35px rgb(158, 158, 158);
     border-radius: 5px;
 }
 
