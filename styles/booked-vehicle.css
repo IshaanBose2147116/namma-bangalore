@@ -1,0 +1,8 @@
+.action-button {
+    height: 30%;
+    margin-left: auto;
+}
+
+.details-container div .action-button {
+    margin-left: 0;
+}

@@ -1,524 +1,445 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Namma Bengaluru ">
+        <meta name="author" content="Ananya Mitra, Ishaan Bose, Logesh N">
+        <title>Namma Bengaluru</title>
+        <link rel="icon" type="image/x-icon" href="./assests/logo/favicon-16x16.png">
+        <!-- CSS FILES -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Namma Bengaluru ">
-    <meta name="author" content="Ananya Mitra, Ishaan Bose, Logesh N">
-    <title>Namma Bengaluru</title>
-    <link rel="icon" type="image/x-icon" href="./assests/logo/favicon-16x16.png">
-    <!-- CSS FILES -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap" rel="stylesheet">
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="./styles/bootstrap.min.css" rel="stylesheet">
+        
+        <link href="./styles/bootstrap-icons.css" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap"
-        rel="stylesheet">
+        <link rel="stylesheet" href="./styles/magnific-popup.css">
 
-    <link href="./styles/bootstrap.min.css" rel="stylesheet">
+        <link href="./styles/aos.css" rel="stylesheet">
 
-    <link href="./styles/bootstrap-icons.css" rel="stylesheet">
+        <link href="./styles/templatemo-nomad-force.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="./styles/magnific-popup.css">
+        <link href="./styles/topbtn.css" rel="stylesheet">
 
-    <link href="./styles/aos.css" rel="stylesheet">
+        <link href="./styles/downbtn.css" rel="stylesheet">
 
-    <link href="./styles/templatemo-nomad-force.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+        <link href="./styles/index.css" rel="stylesheet">
+        
+        <style>
+            h5{
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <main>
+            <section class="hero" id="hero">
+                <div class="heroText">
+                    <h1 class="text-white mt-5 mb-lg-4" data-aos="zoom-in" data-aos-delay="800">
+                       Namma Bengaluru
+                    </h1>
 
-    <link href="./styles/mystyle.css" rel="stylesheet"-->
-    <!--
-Namma Bengaluru Website
--->
-    <!-- <style>
-        h5 {
-            color: white;
-        }
-
-        .dropbtn {
-            background-color: #adaf4c;
-            color: white;
-            padding: 16px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: blueviolet;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-
-        /* .dropdown:hover .dropbtn {
-  background-color: #3e8e41;
-} */
-    </style> -->
-</head>
-
-<body>
-
-    <main>
-
-        <section class="hero" id="hero">
-            <div class="heroText">
-                <h1 class="text-white mt-5 mb-lg-4" data-aos="zoom-in" data-aos-delay="800">
-                    Namma Bengaluru
-                </h1>
-
-                <p class="text-secondary-white-color" data-aos="fade-up" data-aos-delay="1000">
-                    Explore the Silicon Valley of <strong class="custom-underline">India</strong>
-                </p>
-            </div>
-
-            <!--<div class ="scroll-container">
-                    <div class="scroll-page" id="page-1">India</div>
-                </div>-->
-
-            <div class="videoWrapper">
-                <video autoplay="" loop="" muted="" class="custom-video"
-                    poster="videos/792bd98f3e617786c850493560e11c45.jpg">
-                    <source src="./assests/video/bang-city.mp4" type="video/mp4">
-
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-
-            <div class="overlay"></div>
-        </section>
-
-        <nav class="navbar navbar-expand-lg bg-light shadow-lg">
-            <div class="container">
-                <a class="navbar-brand" href="index.html">
-                    <img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75"
-                        height="50">
-                </a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#hero">Home</a>
-                        </li>
-
-                        <li class="dropdown">
-                            <button class="dropbtn">About Bengaluru</button>
-                            <div class="dropdown-content">
-                                <a href="introduction.html">Introduction</a>
-                                <a href="history and heritage.html">History and Heritage</a>
-                                <a href="economy.html">Economy</a>
-                                <a href="festival.html">Festivals</a>
-                                <a href="sports.html">Sports</a>
-                                <a href="health.html">Health And Medicine</a>
-
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#portfolio">Hotels</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#news">Travel & Tourism</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#news">Book a Vehicle</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#news">Local Employment</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#news">Offers</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#contact">Contact Us</a>
-                        </li>
-                    </ul>
+                    <p class="text-secondary-white-color" data-aos="fade-up" data-aos-delay="1000">
+                        Explore the Silicon Valley of <strong class="custom-underline">India</strong>
+                    </p>
+                    <section id="section03" class="demo">
+                        <a href="#about"><span></span></a>
+                    </section>
                 </div>
-            </div>
-        </nav>
 
-        <section class="section-padding pb-0" id="about">
-            <div class="container mb-5 pb-lg-5">
-                <div class="row">
-                    <div class="col-12">
-                        <h2 class="mb-3" data-aos="fade-up">About Us</h2>
-                    </div>
+                <div class="videoWrapper">
+                    <video autoplay="" loop="" muted="" class="custom-video" poster="videos/792bd98f3e617786c850493560e11c45.jpg">
+                        <source src="./assests/video/bang-city.mp4" type= "video/mp4">
 
-                    <div class="col-lg-6 col-12 mt-3 mb-lg-5">
-                        <p class="me-4" data-aos="fade-up" data-aos-delay="300"><a rel="nofollow"
-                                href="https://nammabengaluru.com" target="_blank">Namma Bengaluru</a> is a website that
-                            aims to provide a one-stop website for information about Bangalore. The website provides
-                            information about accommodations, tourist spots, colleges and universities, and local events
-                            and happenings. It allows users to rent cars for a specified time period, and allows local
-                            businesses to post about offers and discounts. </p>
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+
+                <div class="overlay"></div>
+            </section>
+
+            <nav class="navbar navbar-expand-lg bg-light shadow-lg">
+                <div class="cust-container">
+                    <div>
+                        <a class="navbar-brand" id="phone-logo" href="/">
+                            <img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75" height="50">
+                        </a>
+    
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="margin-left: auto;">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+    
                     </div>
-                    <div class="col-lg-6 col-12 mt-lg-3 mb-lg-5">
-                        <p data-aos="fade-up" data-aos-delay="500">The main goal of our website is to consolidate all
-                            relevant information about Bangalore that tourists or locals would need into one spot. This
-                            would allow tourists to feel comfortable in a new city quicker, and benefit locals by
-                            keeping them informed about events happening in their city.</p>
+                    <div>
+                        <a class="navbar-brand" id="laptop-logo" href="/">
+                            <img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75" height="50">
+                        </a>
+
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav mx-auto">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/#hero">Home</a>
+                                </li>
+    
+                                <li class="dropdown">
+                                    <button class="dropbtn">About Bengaluru</button>
+                                    <div class="dropdown-content">
+                                        <a href="introduction.html">Introduction</a>
+                                        <a href="history and heritage.html">History and Heritage</a>
+                                        <a href="economy.html">Economy</a>
+                                        <a href="festival.html">Festivals</a>
+                                        <a href="sports.html">Sports</a>
+                                        <a href="health.html">Health And Medicine</a>
+                                    </div>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/#portfolio">Hotels</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/#news">Travel & Tourism</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/vehicle-booking">Book a Vehicle</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/#news">Local Employment</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/#news">Offers</a>
+                                </li>
+    
+                                <li class="nav-item">
+                                    <a class="nav-link" id="login-link" href="/login">Login</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <span id="user-name"></span>
+                    </div>
+                </div>
+            </nav>
+
+            <section class="section-padding pb-0" id="about">
+                <div class="container mb-5 pb-lg-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="mb-3" data-aos="fade-up">About Us</h2>
+                        </div>
+
+                        <div class="col-lg-6 col-12 mt-3 mb-lg-5">
+                            <p class="me-4" data-aos="fade-up" data-aos-delay="300"><a rel="nofollow" href="https://nammabengaluru.com" target="_blank">Namma Bengaluru</a> is a website that aims to provide a one-stop website for information about Bangalore. The website provides information about accommodations, tourist spots, colleges and universities, and local events and happenings. It allows users to rent cars for a specified time period, and allows local businesses to post about offers and discounts. </p>
+                        </div>
+                        <div class="col-lg-6 col-12 mt-lg-3 mb-lg-5">
+                            <p data-aos="fade-up" data-aos-delay="500">The main goal of our website is to consolidate all relevant information about Bangalore that tourists or locals would need into one spot. This would allow tourists to feel comfortable in a new city quicker, and benefit locals by keeping them informed about events happening in their city.</p>
+                        </div>
+
                     </div>
 
                 </div>
+                
 
-            </div>
-
-
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-3 col-12 p-0">
-                        <img src="./assests/images/bang-images/bang-img1.jpg" class="img-fluid about-image" alt="">
-                    </div>
-
-                    <div class="col-lg-3 col-12 bg-dark">
-                        <div
-                            class="d-flex flex-column flex-wrap justify-content-center h-100 py-5 px-4 pt-lg-4 pb-lg-0">
-                            <h3 class="text-white mb-3" data-aos="fade-up">Bengaluru is the garden city of India</h3>
-
-                            <p class="text-secondary-white-color" data-aos="fade-up">Want to know more!</p>
-
-                            <div class="mt-3 custom-links">
-                                <a href="/registration" class="text-white custom-link" data-aos="zoom-in"
-                                    data-aos-delay="300">New User <h5>Register</h5></a>
-                                <br><br>
-                                <a href="/login" class="text-white custom-link" data-aos="zoom-in"
-                                    data-aos-delay="100">Exsiting User<h5>Login</h5></a>
-                            </div>
-
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-3 col-12 p-0">      
+                            <img src="./assests/images/bang-images/bang-img1.jpg" class="img-fluid about-image" alt="">
                         </div>
-                    </div>
 
-                    <div class="col-lg-6 col-12 p-0">
-                        <section id="myCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img src="./assests/images/bang-images/heritage-img-bang.jpg"
-                                        class="img-fluid team-image" alt="heritage site in bengaluru">
-                                    <div class="team-thumb bg-warning">
-                                        <h3 class="text-white mb-0">Heritage Sites</h3>
-                                    </div>
+                        <div class="col-lg-3 col-12 bg-dark">  
+                            <div class="d-flex flex-column flex-wrap justify-content-center h-100 py-5 px-4 pt-lg-4 pb-lg-0">
+                                <h3 class="text-white mb-3" data-aos="fade-up">Bengaluru is the garden city of India</h3>
+
+                                <p class="text-secondary-white-color" data-aos="fade-up">Want to know more!</p>
+
+                                <div class="mt-3 custom-links">
+                                    <a href="/registration" class="text-white custom-link" data-aos="zoom-in" data-aos-delay="300">New User <h5>Register</h5></a>   
+                                    <br><br>
+                                    <a href="/login" class="text-white custom-link" data-aos="zoom-in" data-aos-delay="100">Exsiting User<h5>Login</h5></a>
                                 </div>
-                                <div class="carousel-item">
-                                    <img src="./assests/images/bang-images/festival-img-bang.jpg"
-                                        class="img-fluid team-image" alt="festivals in bangalore">
-                                    <div class="team-thumb bg-primary">
-                                        <h3 class="text-white mb-0">Festivals</h3>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./assests/images/bang-images/education-img-bang.jpg"
-                                        class="img-fluid team-image" alt="education in bangalore">
-                                    <div class="team-thumb bg-success">
-                                        <h3 class="text-white mb-0">Education</h3>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./assests/images/bang-images/sports-img-bang.jpg"
-                                        class="img-fluid team-image" alt="Sports in bangalore">
-                                    <div class="team-thumb bg-info">
-                                        <h3 class="text-white mb-0">Sports</h3>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./assests/images/bang-images/helth-img-bang.jpg"
-                                        class="img-fluid team-image" alt="health in bangalore">
-                                    <div class="team-thumb bg-danger">
-                                        <h3 class="text-white mb-0">Health-care</h3>
-                                    </div>
-                                </div>
+
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel"
-                                data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel"
-                                data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </section>
+                        </div>
+
+                        <div class="col-lg-6 col-12 p-0">  
+                            <section id="myCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="./assests/images/bang-images/heritage-img-bang.jpg" class="img-fluid team-image" alt="heritage site in bengaluru">
+                                        <div class="team-thumb bg-warning">
+                                            <h3 class="text-white mb-0">Heritage Sites</h3>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="./assests/images/bang-images/festival-img-bang.jpg" class="img-fluid team-image" alt="festivals in bangalore">
+                                        <div class="team-thumb bg-primary">
+                                            <h3 class="text-white mb-0">Festivals</h3>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="./assests/images/bang-images/education-img-bang.jpg" class="img-fluid team-image" alt="education in bangalore">
+                                        <div class="team-thumb bg-success">
+                                            <h3 class="text-white mb-0">Education</h3>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="./assests/images/bang-images/sports-img-bang.jpg" class="img-fluid team-image" alt="Sports in bangalore">
+                                        <div class="team-thumb bg-info">
+                                            <h3 class="text-white mb-0">Sports</h3>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="./assests/images/bang-images/helth-img-bang.jpg" class="img-fluid team-image" alt="health in bangalore">
+                                        <div class="team-thumb bg-danger">
+                                            <h3 class="text-white mb-0">Health-care</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                      <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                      <span class="visually-hidden">Next</span>
+                                </button>
+                            </section>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <section class="section-padding" id="portfolio">
-            <div class="container">
-                <div class="row">
+            </section>
+            <section class="section-padding" id="portfolio">
+                <div class="container">
+                    <div class="row">
 
-                    <div class="col-12">
-                        <h2 class="mb-5 text-center" data-aos="fade-up">Hotels</h2>
-                    </div>
-                    <div class="col-lg-6 col-12">
-                        <div class="portfolio-thumb mb-5" data-aos="fade-up">
-                            <a href="./assests/images/bang-images/hotel-img-bang2.jpg" class="image-popup">
-                                <img src="./assests/images/bang-images/hotel-img-bang2.jpg"
-                                    class="img-fluid portfolio-image" alt="">
-                            </a>
-                            <div class="portfolio-info">
-                                <h4 class="portfolio-title mb-0">Taj Hotels</h4>
-                                <p class="text-danger">Guest-room</p>
-                            </div>
+                        <div class="col-12">
+                            <h2 class="mb-5 text-center" data-aos="fade-up">Hotels</h2>
                         </div>
-                        <div class="portfolio-thumb" data-aos="fade-up">
-                            <a href="./assests/images/bang-images/hotel-img-bang4.jpg" class="image-popup">
-                                <img src="./assests/images/bang-images/hotel-img-bang4.jpg"
-                                    class="img-fluid portfolio-image" alt="">
-                            </a>
-                            <div class="portfolio-info">
-                                <h4 class="portfolio-title mb-0">JW Marriott</h4>
-                                <p class="text-success">Hotels</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-12">
-                        <div class="portfolio-thumb mt-5 mt-lg-0 mb-5" data-aos="fade-up">
-                            <a href="./assests/images/bang-images/hotel-img-bang1.jpg" class="image-popup">
-                                <img src="./assests/images/bang-images/hotel-img-bang1.jpg"
-                                    class="img-fluid portfolio-image" alt="hotel image1">
-                            </a>
-                            <div class="portfolio-info">
-                                <h4 class="portfolio-title mb-0">Shangri-la Hotels</h4>
-                                <p class="text-warning">Hotels</p>
-                            </div>
-                        </div>
-                        <div class="portfolio-thumb" data-aos="fade-up">
-                            <a href="./assests/images/bang-images/hotel-img-bang5.jpg" class="image-popup">
-                                <img src="./assests/images/bang-images/hotel-img-bang5.jpg"
-                                    class="img-fluid portfolio-image" alt="">
-                            </a>
-                            <div class="portfolio-info">
-                                <h4 class="portfolio-title mb-0">Courtyard</h4>
-                                <p class="text-info">Hotels</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </section>
-
-        <section class="news section-padding" id="news">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <h2 class="mb-5 text-center" data-aos="fade-up">Travel & Tourism</h2>
-                    </div>
-                    <div class="col-lg-6 col-12 mb-5 mb-lg-0">
-                        <div class="news-thumb" data-aos="fade-up">
-                            <a href="tourism.html" class="news-image-hover news-image-hover-warning">
-                                <img src="./assests/images/bang-images/lal.jpg"
-                                    class="img-fluid large-news-image news-image" alt="lal bagh image">
-                            </a>
-                            <div class="news-category bg-warning text-white">Tourism</div>
-                            <div class="news-text-info">
-                                <h5 class="news-title">
-                                    <a href="tourism.html" class="news-title-link">Lal Bagh is an old botanical garden
-                                        in Bangalore, India.</a>
-                                </h5>
-                                <span class="text-muted">22 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-12">
-                        <div class="news-thumb news-two-column d-flex flex-column flex-lg-row" data-aos="fade-up">
-                            <div class="news-top w-100">
-
-                                <a href="tourism.html" class="news-image-hover news-image-hover-primary">
-                                    <img src="./assests/images/bang-images/bmtc-bang.jpg" class="img-fluid news-image"
-                                        alt="">
+                        <div class="col-lg-6 col-12">
+                            <div class="portfolio-thumb mb-5" data-aos="fade-up">
+                                <a href="/hotels">
+                                    <img src="./assests/images/bang-images/hotel-img-bang2.jpg" class="img-fluid portfolio-image" alt="">
                                 </a>
+                                <div class="portfolio-info">                     
+                                    <h4 class="portfolio-title mb-0">Taj Hotels</h4>
+                                    <p class="text-danger">Guest-room</p>
+                                </div>
+                            </div> 
+                            <div class="portfolio-thumb" data-aos="fade-up">
+                                <a href="/hotels">
+                                    <img src="./assests/images/bang-images/hotel-img-bang4.jpg" class="img-fluid portfolio-image" alt="">
+                                </a>
+                                <div class="portfolio-info">                     
+                                    <h4 class="portfolio-title mb-0">JW Marriott</h4>
+                                    <p class="text-success">Hotels</p>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-lg-6 col-12">
+                            <div class="portfolio-thumb mt-5 mt-lg-0 mb-5" data-aos="fade-up">
+                                <a href="/hotels">
+                                    <img src="./assests/images/bang-images/hotel-img-bang1.jpg" class="img-fluid portfolio-image" alt="hotel image1">
+                                </a>
+                                <div class="portfolio-info">                     
+                                    <h4 class="portfolio-title mb-0">Shangri-la Hotels</h4>
+                                    <p class="text-warning">Hotels</p>
+                                </div>
+                            </div> 
+                            <div class="portfolio-thumb" data-aos="fade-up">
+                                <a href="/hotels">
+                                    <img src="./assests/images/bang-images/hotel-img-bang5.jpg" class="img-fluid portfolio-image" alt="">
+                                </a>
+                                <div class="portfolio-info">                     
+                                    <h4 class="portfolio-title mb-0">Courtyard</h4>
+                                    <p class="text-info">Hotels</p>
+                                </div>
+                            </div> 
+                        </div>
 
-                                <div class="news-category bg-primary text-white">Travel</div>
-                            </div>
-
-                            <div class="news-bottom w-100">
+                    </div>
+                </div>
+                
+            </section>
+           
+            <section class="news section-padding" id="news">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="mb-5 text-center" data-aos="fade-up">Travel & Tourism</h2>
+                        </div>
+                        <div class="col-lg-6 col-12 mb-5 mb-lg-0">
+                            <div class="news-thumb" data-aos="fade-up">
+                                <a href="/tourism" class="news-image-hover news-image-hover-warning">
+                                    <img src="./assests/images/bang-images/lal.jpg" class="img-fluid large-news-image news-image" alt="lal bagh image">
+                                </a>
+                                <div class="news-category bg-warning text-white">Tourism</div>        
                                 <div class="news-text-info">
                                     <h5 class="news-title">
-                                        <a href="tourism.html" class="news-title-link">Travel By Bus</a>
+                                        <a href="/tourism" class="news-title-link">Lal Bagh is an old botanical garden in Bangalore, India.</a>
                                     </h5>
+                                    <span class="text-muted">22 hours ago</span>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-lg-6 col-12">
+                            <div class="news-thumb news-two-column d-flex flex-column flex-lg-row" data-aos="fade-up">
+                                <div class="news-top w-100">
+                                    
+                                    <a href="/tourism" class="news-image-hover news-image-hover-primary">
+                                        <img src="./assests/images/bang-images/bmtc-bang.jpg" class="img-fluid news-image" alt="">
+                                    </a>
 
-                                    <div class="d-flex flex-wrap">
-                                        <span class="text-muted me-2">
-                                            <i class="bi-geo-alt-fill me-1 mb-2 mb-lg-0"></i>
-                                            Mavalli, Bengaluru, Karnataka 560 004.
-                                        </span>
-                                        <span class="text-muted">2 days ago</span>
+                                    <div class="news-category bg-primary text-white">Travel</div>
+                                </div>
+                                
+                                <div class="news-bottom w-100">
+                                    <div class="news-text-info">
+                                        <h5 class="news-title">
+                                            <a href="/tourism" class="news-title-link">Travel By Bus</a>
+                                        </h5>
+
+                                        <div class="d-flex flex-wrap">
+                                            <span class="text-muted me-2">
+                                                <i class="bi-geo-alt-fill me-1 mb-2 mb-lg-0"></i>
+                                                Mavalli, Bengaluru, Karnataka 560 004.
+                                            </span>
+                                            <span class="text-muted">2 days ago</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </div> 
 
-                        <div class="news-thumb news-two-column d-flex flex-column flex-lg-row" data-aos="fade-up">
-                            <div class="news-top w-100" data-aos="fade-up">
+                            <div class="news-thumb news-two-column d-flex flex-column flex-lg-row" data-aos="fade-up">
+                                <div class="news-top w-100" data-aos="fade-up">
+                                    
+                                    <a href="/tourism" class="news-image-hover news-image-hover-success">
+                                        <img src="./assests/images/bang-images/heritage-img-bang.jpg" class="img-fluid news-image" alt="">
+                                    </a>
 
-                                <a href="tourism.html" class="news-image-hover news-image-hover-success">
-                                    <img src="./assests/images/bang-images/heritage-img-bang.jpg"
-                                        class="img-fluid news-image" alt="">
-                                </a>
-
-                                <div class="news-category bg-success text-white">Tourism</div>
-                            </div>
-
-                            <div class="news-bottom w-100">
-                                <div class="news-text-info">
-                                    <h5 class="news-title">
-                                        <a href="tourism.html" class="news-title-link">Where is Tipu Sultan's Summer
-                                            Palace?</a>
-                                    </h5>
-                                    <span class="text-muted">6 days ago</span>
+                                    <div class="news-category bg-success text-white">Tourism</div>
                                 </div>
-                            </div>
+                                
+                                <div class="news-bottom w-100">
+                                    <div class="news-text-info">
+                                        <h5 class="news-title">
+                                            <a href="/tourism" class="news-title-link">Where is Tipu Sultan's Summer Palace?</a>
+                                        </h5>
+                                        <span class="text-muted">6 days ago</span>
+                                    </div>
+                                </div>
+                            </div> 
                         </div>
+
                     </div>
-
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section class=" contact section-padding" id="contact">
-            <div class="container">
-                <div class="row">
+            <section class=" contact section-padding" id="contact">
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-lg-7 col-12 mx-auto">
 
-                    <div class="col-lg-7 col-12 mx-auto">
+                            <h2 class="mb-4 text-center" data-aos="fade-up">Dont' be shy, write to us</h2>
 
-                        <h2 class="mb-4 text-center" data-aos="fade-up">Dont' be shy, write to us</h2>
+                            <form action="#" method="get" class="contact-form" role="form" data-aos="fade-up">
 
-                        <form action="#" method="post" class="contact-form" role="form" data-aos="fade-up">
+                                <div class="row">
+                                    
+                                    <div class="col-lg-6 col-6">
+                                        <label for="name" class="form-label">Name <sup class="text-danger">*</sup></label>
 
-                            <div class="row">
-
-                                <div class="col-lg-6 col-6">
-                                    <label for="name" class="form-label">Name <sup class="text-danger">*</sup></label>
-
-                                    <input type="text" name="name" id="name" class="form-control"
-                                        placeholder="Full name" required>
-                                </div>
-
-                                <div class="col-lg-6 col-6">
-                                    <label for="email" class="form-label">Email <sup class="text-danger">*</sup></label>
-
-                                    <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*"
-                                        class="form-control" placeholder="Email address" required>
-                                </div>
-
-                                <div class="col-12 my-4">
-                                    <label for="message" class="form-label">Provide Feedback</label>
-
-                                    <textarea name="message" rows="6" class="form-control" id="message"
-                                        placeholder="Provide your feedback" required></textarea>
-
-                                </div>
-                                <!--  <div class="col-lg-4 col-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" id="checkbox1" name="checkbox1" class="form-check-input">
-
-                                            <label class="form-check-label" for="checkbox1">Branding</label>
-                                          </div>
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="Full name" required>
                                     </div>
-                                    <div class="col-lg-4 col-12 my-2 my-lg-0">
-                                        <div class="form-check">
-                                            <input type="checkbox" id="checkbox2" name="checkbox2" class="form-check-input">
-                                            <label class="form-check-label" for="checkbox2">Digital Experiences</label>
-                                          </div>
-                                    </div>
-                                    <div class="col-lg-4 col-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" id="checkbox3" name="checkbox3" class="form-check-input">
 
-                                            <label class="form-check-label" for="checkbox3">Web Development</label>
-                                          </div>
+                                    <div class="col-lg-6 col-6">
+                                        <label for="email" class="form-label">Email <sup class="text-danger">*</sup></label>
+
+                                        <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email address" required>
                                     </div>
-                                </div> -->
+
+                                    <div class="col-12 my-4">
+                                        <label for="message" class="form-label">Provide Feedback</label>
+
+                                        <textarea name="message" rows="6" class="form-control" id="message" placeholder="Provide your feedback" required></textarea>
+                                        
+                                    </div>  
                                 <div class="col-lg-5 col-12 mx-auto mt-5">
                                     <button type="submit" class="form-control">Send Message</button>
                                 </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-
-        <section class="google-map">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d248849.8865403854!2d77.4908520976513!3d12.953959986824177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1650565679982!5m2!1sen!2sin"
-                class="map-iframe" width="100%" height="400" style="border:0;" allowfullscreen=""
-                loading="lazy"></iframe>
-        </section>
-    </main>
-    <footer class="site-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h5 class="text-white">
-                        <i class="bi-geo-alt-fill me-2"></i>
-                        Bengaluru, Karnataka, India.
-                    </h5>
-                    <a href="mailto:nammabengaluru.com" class="custom-link mt-3 mb-5">
-                        nammabengaluru.com
-                    </a>
-                </div>
-                <div class="col-6">
-                    <p class="copyright-text mb-0">Copyright © nammabengaluru 2021
-                </div>
-                <div class="col-lg-3 col-5 ms-auto">
-                    <ul class="social-icon">
-                        <li><a href="#" class="social-icon-link bi-facebook"></a></li>
-                        <li><a href="#" class="social-icon-link bi-twitter"></a></li>
-                        <li><a href="#" class="social-icon-link bi-whatsapp"></a></li>
-                        <li><a href="#" class="social-icon-link bi-instagram"></a></li>
-                        <li><a href="#" class="social-icon-link bi-youtube"></a></li>
-                    </ul>
-                </div>
-            </div>
             </section>
-    </footer>
 
-    <!-- JAVASCRIPT FILES -->
-    <script src="./scripts/jquery.min.js"></script>
-    <script src="./scripts/bootstrap.bundle.min.js"></script>
-    <script src="./scripts/jquery.sticky.js"></script>
-    <script src="./scripts/aos.js"></script>
-    <script src="./scripts/jquery.magnific-popup.min.js"></script>
-    <script src="./scripts/magnific-popup-options.js"></script>
-    <script src="./scripts/scrollspy.min.js"></script>
-    <script src="./scripts/custom.js"></script>
+            
+            <section class="google-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d248849.8865403854!2d77.4908520976513!3d12.953959986824177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1650565679982!5m2!1sen!2sin" class="map-iframe" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </section>
 
-</body>
+        </main>
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="text-white">
+                            <i class="bi-geo-alt-fill me-2"></i>
+                            Bengaluru, Karnataka, India.
+                        </h5>
+                        <a href="mailto:nammabengaluru.com" class="custom-link mt-3 mb-5">
+                            nammabengaluru.com
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <p class="copyright-text mb-0">Copyright © nammabengaluru 2021 
+                    </div>
+                    <div class="col-lg-3 col-5 ms-auto">
+                        <ul class="social-icon">
+                            <li><a href="#" class="social-icon-link bi-facebook"></a></li>
+                            <li><a href="#" class="social-icon-link bi-twitter"></a></li>
+                            <li><a href="#" class="social-icon-link bi-whatsapp"></a></li>
+                            <li><a href="#" class="social-icon-link bi-instagram"></a></li>
+                            <li><a href="#" class="social-icon-link bi-youtube"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </footer>
+        <!-- <button type="button" class="btn btn-danger btn-floating btn-lg" id="btn-back-to-top">
+        <i class="fas fa-arrow-up"></i>
+        </button>
+
+         <div class="container mt-4 text-center" style="height: 2000px"></div> -->
+
+         <button id = "btnscrolltotop">
+             <i class ="material-icons">arrow_upward</i>
+         </button>
+        <!-- JAVASCRIPT FILES -->
+        <script src="./scripts/jquery.min.js"></script>
+        <script src="./scripts/bootstrap.bundle.min.js"></script>
+        <script src="./scripts/jquery.sticky.js"></script>
+        <script src="./scripts/aos.js"></script>
+        <script src="./scripts/jquery.magnific-popup.min.js"></script>
+        <script src="./scripts/magnific-popup-options.js"></script>
+        <script src="./scripts/scrollspy.min.js"></script>
+        <script src="./scripts/custom.js"></script>
+        <script src="./scripts/index.js"></script>
+        <script src="./scripts/topbtn.js"></script>
+        <script src="./scripts/downbtn.js"></script>
+        
+    </body>
 
 </html>
