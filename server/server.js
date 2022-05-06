@@ -3,18 +3,19 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const crypto = require('crypto');
+const fs = require('fs');
+const readline = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});  
 
 const app = express();
 const PORT = 5000;
 const MIN_UID = 1;
 const MAX_UID = 999999;
+const dbDetailsPath = './db_details.json';
 
-var conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Logeshn009',
-    database: 'namma_bangalore'
-});
+let conn = null;
 
 /**
  * 
@@ -82,6 +83,9 @@ app.get('/', (req, res) => {
 })
 .get('/vehicle-booking', (req, res) => {
     res.sendFile(path.join(__dirname, '../vehicle_booking.html'));
+})
+.get('/hotels', (req, res) => {
+    res.sendFile(path.join(__dirname, '../hotels.html'));
 })
 .post('/register-user/:type', (req, res) => {
     conn.connect((err) => {
@@ -358,7 +362,29 @@ app.get('/', (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Visit: http://localhost:${PORT}`);
-    console.log("Remember to change MySQL username/password. Go to line 14 and 15.");
-});
+function main() {
+    if (fs.existsSync(dbDetailsPath)) {
+        conn = mysql.createConnection(JSON.parse(fs.readFileSync(dbDetailsPath, 'utf8')));
+
+        app.listen(PORT, () => {
+            console.log(`Visit: http://localhost:${PORT}`);
+        });
+    } else {
+        readline.question('Enter db password: ', password => {
+            var dbDetails = {
+                host: 'localhost',
+                user: 'root',
+                password: password,
+                database: 'namma_bangalore'
+            }
+
+            readline.close();
+
+            fs.writeFileSync(dbDetailsPath, JSON.stringify(dbDetails, null, 4), 'utf8', () => {
+                main();
+            });
+        });
+    }
+}
+
+main();
