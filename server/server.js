@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const crypto = require('crypto');
 const fs = require('fs');
+const { get } = require('https');
 const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -66,7 +67,14 @@ app.use("/styles", express.static(path.join(__dirname, '../styles')));
 app.use("/scripts", express.static(path.join(__dirname, '../scripts')));
 app.use("/assests", express.static(path.join(__dirname, '../assests')));
 
-app.get('/', (req, res) => {
+const ROUTER = express.Router({
+    caseSensitive: true,
+    strict       : true
+});
+
+app.use(ROUTER);
+
+ROUTER.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 })
 .get('/test', (req, res) => {
@@ -86,6 +94,35 @@ app.get('/', (req, res) => {
 })
 .get('/hotels', (req, res) => {
     res.sendFile(path.join(__dirname, '../hotels.html'));
+})
+.get('/booked-vehicles/:uid?', (req, res) => {
+    if (!req.params.uid) {
+        res.sendFile(path.join(__dirname, '../booked_vehicles.html'));
+    } else {
+        conn.connect(err => {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+            } else {
+                conn.query(`select b.booking_id, b.from_date, b.till_date, v.license_plate, v.colour, v.type, 
+                    concat_ws(' ', d.fname, d.mname, d.lname) as driver_name, d.phone_num from vehicle_booking b 
+                    join vehicle v on b.vehicle_id=v.vehicle_id join driver d on v.driver_id=d.driver_id where 
+                    b.booked_by=? order by b.from_date`, [ req.params.uid ], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).send(err);
+                        } else {
+                            if (result.length === 0) {
+                                res.sendStatus(204);
+                            } else {
+                                res.status(200).send(result);
+                            }
+                        }
+                    }
+                );
+            }
+        });
+    }
 })
 .post('/register-user/:type', (req, res) => {
     conn.connect((err) => {
@@ -360,6 +397,74 @@ app.get('/', (req, res) => {
             });
         }
     });
+})
+.delete('/cancel-booking/:booking_id', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('delete from vehicle_booking where booking_id=?', [ req.params.booking_id ], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
+        }
+    });
+})
+.get("/get-hotels-info", (req, res) => {
+    let query = null;
+    let filters = [];
+
+    if (Object.keys(req.query).length == 2) {
+        if (req.params.lowest_price === undefined || req.params.highest_price === undefined) {
+            res.status(400).send({ msg: "Query string must contain 'lowest_price' and 'highest_price'.", errCode: 2002 });
+            return;
+        }
+
+        query = 'select * from hotel where lowest_price >= ? and highest_price <= ?';
+        filters.push(parseFloat(req.params.lowest_price));
+        filters.push(parseFloat(req.params.highest_price));
+    } else {
+        query = 'select * from hotel';
+    }
+
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query(query, filters, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result);
+                }
+            });
+        }
+    });
+})
+.get('/feedback-on/:id', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query(`select f.comment, f.rating, f.given_on, concat_ws(" ", u.fname, u.mname, u.lname) as name
+            from feedback f join general_user u on f.given_by=u.uid where f.feedback_for=?`, [ req.params.id ], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result);
+                }
+            });
+        }
+    });
 });
 
 function main() {
@@ -386,5 +491,9 @@ function main() {
         });
     }
 }
+
+app.use((req, res, next) => {
+    res.sendStatus(404);
+});
 
 main();
