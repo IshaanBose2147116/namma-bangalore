@@ -7,11 +7,11 @@ $(document).ready(() => {
     if (sessionStorage.getItem("name") === null) {
         $("#no-login").css("display", "flex");
         $("#filters-container").hide();
-        $(".show-booked-container").hide();
+        $(".top-banner").hide();
     } else {
         $("#no-login").hide();
         $("#filters-container").css("display", "flex");
-        $(".show-booked-container").css("display", "flex");
+        $(".top-banner").css("display", "flex");
     }
 
     $("#none-available").hide();
@@ -102,6 +102,9 @@ function getAndViewVehicles() {
 
                 document.getElementById("cars-container").innerHTML += vehicleBox;
             }
+
+            document.getElementById("cars-container").innerHTML += "<span id='bottom'></span>";
+            location.replace("http://localhost:5000/vehicle-booking#bottom");
 
             $("#cars-container").on('click', 'button', showConfirmation);   
         }
