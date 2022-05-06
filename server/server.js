@@ -95,6 +95,24 @@ ROUTER.get('/', (req, res) => {
 .get('/hotels', (req, res) => {
     res.sendFile(path.join(__dirname, '../hotels.html'));
 })
+.get('/introduction', (req, res) => {
+    res.sendFile(path.join(__dirname, '../introduction.html'));
+})
+.get('/history-and-heritage', (req, res) => {
+    res.sendFile(path.join(__dirname, '../history_and_heritage.html'));
+})
+.get('/economy', (req, res) => {
+    res.sendFile(path.join(__dirname, '../economy.html'));
+})
+.get('/festival', (req, res) => {
+    res.sendFile(path.join(__dirname, '../festival.html'));
+})
+.get('/sports', (req, res) => {
+    res.sendFile(path.join(__dirname, '../sports.html'));
+})
+.get('/health', (req, res) => {
+    res.sendFile(path.join(__dirname, '../health.html'));
+})
 .get('/booked-vehicles/:uid?', (req, res) => {
     if (!req.params.uid) {
         res.sendFile(path.join(__dirname, '../booked_vehicles.html'));
