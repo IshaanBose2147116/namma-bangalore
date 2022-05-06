@@ -231,6 +231,77 @@ class ServerAPI {
             }
         });
     }
+
+    static getBookedVehicles(bookedBy, callback) {
+        fetch(`http://localhost:5000/booked-vehicles/${ bookedBy }`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        }).then(response => {
+            if (response.status === 500) {
+                callback(response);
+            } else if (response.status === 204) {
+                callback({ status: 204, msg: "No vehicles booked" });
+            } else {
+                response.json().then(data => {
+                    callback({ status: 200, data: data });
+                });
+            }
+        });
+    }
+
+    static cancelBooking(bookingID, callback) {
+        fetch(`http://localhost:5000/cancel-booking/${ bookingID }`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" }
+        }).then(response => {
+            callback(response);
+        });
+    }
+
+    static getHotels(callback) {
+        fetch(`http://localhost:5000/get-hotels-info`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        }).then(response => {
+            if (response.status === 200) {
+                response.json().then(data => {
+                    callback({ status: 200, data: data });
+                });
+            } else {
+                callback(response);
+            }
+        });
+    }
+
+    static getHotelsWithinRange(lowestPrice, highestPrice, callback) {
+        fetch(`http://localhost:5000/get-hotels-info?lowest_price=${ lowestPrice }&highest_price=${ highestPrice }`, { 
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        }).then(response => {
+            if (response.status === 200) {
+                response.json().then(data => {
+                    callback({ status: 200, data: data });
+                });
+            } else {
+                callback(response);
+            }
+        });
+    }
+
+    static getFeedbackOn(resourceID, callback) {
+        fetch(`http://localhost:5000/feedback-on/${ resourceID }`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        }).then(response => {
+            if (response.status === 200) {
+                response.json().then(data => {
+                    callback({ status: 200, data: data });
+                });
+            } else {
+                callback(response);
+            }
+        });
+    }
 }
 
 export default ServerAPI;
