@@ -3,9 +3,9 @@
     flex-direction: column;
     margin-bottom: 3em;
     padding: 2em;
-    background-color: rgb(255, 255, 243);
+    background-color: rgb(255, 255, 255);
     border-radius: 10px;
-    box-shadow: 0 0 10px rgb(158, 158, 158);
+    box-shadow: 0 0 5px rgb(158, 158, 158);
     row-gap: 1em;
     width: 80%;
 }

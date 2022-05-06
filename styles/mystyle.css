@@ -3,7 +3,7 @@
         color: black;
     }
 
-    .dropbtn {
+    /* .dropbtn {
         background-color:#f8f9fa ;
         color: #717275;
         padding: 16px;
@@ -13,11 +13,11 @@
         border: none;
         text-size-adjust: 50;
        
-    }
-    .dropbtn:hover{
+    } */
+    /* .dropbtn:hover{
         color: black;
         cursor: pointer;
-    } 
+    }  */
 
 
     .dropdown {
@@ -26,7 +26,7 @@
     }
 
     .dropdown-content {
-        display: none;
+        display: none !important;
         font-style: oblique;
         ruby-position: before;
         list-style-position: outside;
@@ -51,6 +51,6 @@
     }
 
     .dropdown:hover .dropdown-content {
-        display: block;
+        display: block !important;
     }
 
