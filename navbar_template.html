@@ -5,11 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Namma Bengaluru ">
         <meta name="author" content="Ananya Mitra, Ishaan Bose, Logesh N">
-
-        <title>Namma Bengaluru - Vehicle Booking</title>
-
+        <title>Namma Bengaluru</title>
         <link rel="icon" type="image/x-icon" href="./assests/logo/favicon-16x16.png">
-
+        
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap" rel="stylesheet">
@@ -19,10 +17,6 @@
         <link href="./styles/magnific-popup.css" rel="stylesheet">
         <link href="./styles/aos.css" rel="stylesheet">
         <link href="./styles/templatemo-nomad-force.css" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" rel="stylesheet">
-        
-        <link href="./styles/common_vehicle.css" rel="stylesheet">
-        <link href="./styles/vehicle_booking.css" rel="stylesheet">
         <link href="./styles/index.css" rel="stylesheet">
         <style>
             h5{
@@ -51,7 +45,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav mx-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="/">Home</a>
+                                <a class="nav-link" href="/#hero">Home</a>
                             </li>
 
                             <li class="nav-item">
@@ -71,11 +65,11 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#news">Local Employment</a>
+                                <a class="nav-link" href="/#news">Local Employment</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#news">Offers</a>
+                                <a class="nav-link" href="/#news">Offers</a>
                             </li>
 
                             <li class="nav-item">
@@ -90,82 +84,7 @@
             </div>
         </nav>
 
-        <div class="content-container" id="content-container">
-            <div class="no-login" id="no-login">
-                <h1>Not logged in!</h1>
-                <div>You need to be logged in to book a vehicle. <a href="/login">Login.</a></div>
-            </div>
-
-            <div class="top-banner">
-                <h1>Already booked a vehicle?</h1>
-                <a href="/booked-vehicles">Click here to check your bookings!</a>
-            </div>
-
-            <div class="filters-container" id="filters-container">
-                <table>
-                    <tr>
-                        <td>From:</td>
-                        <td><input type="datetime-local" id="from-time" /></td>
-                        <td><span class="filter-error" id="from-time-error"></span></td>
-                    </tr>
-                    <tr>
-                        <td>To:</td>
-                        <td><input type="datetime-local" id="to-time" /></td>
-                        <td><span class="filter-error" id="to-time-error"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Type:</td>
-                        <td>
-                            <select id="car-type">
-                                <option value="None">No Preference</option>
-                                <option value="Sedan">Sedan</option>
-                                <option value="SUV">SUV</option>
-                                <option value="Minivan">Minivan</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3"><button class="action-button" id="find-vehicles">Find Vehicles</button></td>
-                    </tr>
-                </table>
-            </div>
-
-            <span id="none-available" style="margin-bottom: 2em;">No vehicles available!</span>
-        </div>
-
-        <div id="cars-container">
-
-        </div>
-
-        <div class="confirmation-popup-container">
-            <div class="confirmation-popup">
-                <div class="popup-header">
-                    <span>Confirm Booking Details</span>
-                    <button id="close-popup"><span class="icon-close"></span></button>
-                </div>
-                <div class="details-container">
-                    <div>
-                        From: <span id="popup-from-time"></span>
-                    </div>
-                    <div>
-                        To: <span id="popup-to-time"></span>
-                    </div>
-                    <div>
-                        Colour: <span id="popup-colour"></span>
-                    </div>
-                    <div>
-                        License Plate Number: <span id="popup-license"></span>
-                    </div>
-                    <div>
-                        Driver Name: <span id="popup-driver-name"></span>
-                    </div>
-                    <div>
-                        <button class="action-button">Confirm</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <!-- JAVASCRIPT FILES -->
         <script src="./scripts/jquery.min.js"></script>
         <script src="./scripts/bootstrap.bundle.min.js"></script>
         <script src="./scripts/jquery.sticky.js"></script>
@@ -175,6 +94,7 @@
         <script src="./scripts/scrollspy.min.js"></script>
         <script src="./scripts/custom.js"></script>
         <script src="./scripts/index.js"></script>
-        <script type="module" src="./scripts/vehicle_booking.js"></script>
+        
     </body>
+
 </html>
