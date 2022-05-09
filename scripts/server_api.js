@@ -181,7 +181,7 @@ class ServerAPI {
                     callback(response);
                 } else {
                     response.json().then(data => {
-                        callback({ status: 200, uid: data.uid, name: data.name });
+                        callback({ status: 200, uid: data.uid, name: data.name, isAdmin: data.isAdmin });
                     });
                 }
             })

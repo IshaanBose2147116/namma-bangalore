@@ -11,3 +11,5 @@
 2000 = (for vehicle booking) not enough query string parameters
 2001 = (for vehicle booking) too many query string parameters
 2002 = invalid query string parameters passed
+2003 = parameter missing
+2004 = invalid parameter passed
