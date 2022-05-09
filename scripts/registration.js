@@ -40,18 +40,6 @@ document.getElementById("reg-form").onsubmit = event => {
   validate();
 }
 
-function testphone(event) {
-  let pcode = event.which;
-  if (pcode > 58 && pcode < 47) {
-    span[2].innerText = "characters not allowed!!";
-    span[2].style.color = "red";
-  }
-}
-
-function scrollToTop() {
-  window.scrollTo(0, 0);
-}
-
 function validate()
 {
   if (document.getElementById("guRadio").checked) {
@@ -74,13 +62,13 @@ function validate()
           } else if (response.status === 400) {
             console.log(response);
             if (response.errCode === 1000) {
-              span[1].innerText = "Email already registered!";
-              span[1].style.color = "red";
+              document.getElementById("email-err").innerText = "Email already registered!";
+              document.getElementById("email-err").style.color = "red";
               email.style.border = "1px red solid";
               console.log("here");
             } else {
-              span[2].innerText = "Phone number already registered!";
-              span[2].style.color = "red";
+              document.getElementById("phone-err").innerText = "Phone number already registered!";
+              document.getElementById("phone-err").style.color = "red";
               phone.style.border = "1px red solid";
               console.log("here1");
             }
@@ -98,12 +86,12 @@ function validate()
             window.open('/login', "_self");
           } else if (response.status === 400) {
             if (response.errCode === 1000) {
-              span[1].innerText = "Email already registered!";
-              span[1].style.color = "red";
+              document.getElementById("email-err").innerText = "Email already registered!";
+              document.getElementById("email-err").style.color = "red";
               email.style.border = "1px red solid";
             } else {
-              span[2].innerText = "Phone number already registered!";
-              span[2].style.color = "red";
+              document.getElementById("phone-err").innerText = "Phone number already registered!";
+              document.getElementById("phone-err").style.color = "red";
               phone.style.border = "1px red solid";
             }
           } else {
@@ -120,21 +108,21 @@ function validateName() {
   var name = fullname.value.trim();
 
   if (name == "" || name == null) {
-    span[0].innerText = "*mandatory";
-    span[0].style.color = "red";
+    document.getElementById("name-err").innerText = "*mandatory";
+    document.getElementById("name-err").style.color = "red";
     fullname.style.border = "1px red solid";
     return false;
   }
 
   if (regex.test(name + " ")) {
-    span[0].innerText = "Valid Name!";
-    span[0].style.color = "lime";
+    document.getElementById("name-err").innerText = "Valid Name!";
+    document.getElementById("name-err").style.color = "lime";
     fullname.style.border = "1px lime solid";
     return true;
   }
 
-  span[0].innerText = "Invalid Name!";
-  span[0].style.color = "red";
+  document.getElementById("name-err").innerText = "Invalid Name!";
+  document.getElementById("name-err").style.color = "red";
   fullname.style.border = "1px red solid";
 
   return false;
@@ -144,21 +132,21 @@ function validatePhone() {
   const regex_num = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
 
   if (phone.value.trim() == "" || phone.value.trim() == null) {
-    span[2].innerText = "*mandatory";
-    span[2].style.color = "red";
+    document.getElementById("phone-err").innerText = "*mandatory";
+    document.getElementById("phone-err").style.color = "red";
     phone.style.border = "1px red solid";
     return false;
   }
 
   if (regex_num.test(phone.value)) {
-    span[2].innerText = "Your number is Valid!";
-    span[2].style.color = "lime";
+    document.getElementById("phone-err").innerText = "Your number is Valid!";
+    document.getElementById("phone-err").style.color = "lime";
     phone.style.border = "1px lime solid";
     return true;
   }
 
-  span[2].innertext = "Invalid Phone number";
-  span[2].style.color = "red";
+  document.getElementById("phone-err").innertext = "Invalid Phone number";
+  document.getElementById("phone-err").style.color = "red";
   phone.style.border = "1px red solid";
   
   return false;
@@ -169,30 +157,30 @@ function validatePassword() {
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,30}$/;
 
   if (password.value.trim() == "" || password.value.trim() == null) {
-    span[3].innerText = "*mandatory";
-    span[3].style.color = "red";
+    document.getElementById("strengthDisplay").innerText = "*mandatory";
+    document.getElementById("strengthDisplay").style.color = "red";
     password.style.border = "1px red solid";
 
     return false;
   }
 
   if (regex.test(password.value.trim())) {
-      span[3].innerText = "Strong Password!";
-      span[3].style.color = "lime";
+      document.getElementById("strengthDisplay").innerText = "Strong Password!";
+      document.getElementById("strengthDisplay").style.color = "lime";
       password.style.border = "1px lime solid";
 
       return true;
   }
   else if (password.value.trim().length > 30) {
-      span[3].innerText = "Too long password!";
-      span[3].style.color = "red";
+      document.getElementById("strengthDisplay").innerText = "Too long password!";
+      document.getElementById("strengthDisplay").style.color = "red";
       password.style.border = "1px red solid";
       
       return false;
   }
   else {
-    span[3].innerText = "Weak Password!";
-    span[3].style.color = "orange";
+    document.getElementById("strengthDisplay").innerText = "Weak Password!";
+    document.getElementById("strengthDisplay").style.color = "orange";
     password.style.border = "1px orange solid";
 
     return true;
@@ -204,22 +192,22 @@ function validateEmail() {
 
 
   if (email.value.trim() == "" || email.value.trim() == null) {
-    span[1].innerText = "*mandatory";
-    span[1].style.color = "red";
+    document.getElementById("email-err").innerText = "*mandatory";
+    document.getElementById("email-err").style.color = "red";
     email.style.border = "1px red solid";
 
     return true;
   }
   if (regex.test(email.value.trim())) {
-    span[1].innerText = "Valid Email!";
-    span[1].style.color = "lime";
+    document.getElementById("email-err").innerText = "Valid Email!";
+    document.getElementById("email-err").style.color = "lime";
     email.style.border = "1px lime solid";
     
     return true;
   }
   else {
-    span[1].innerText = "Invalid Email!";
-    span[1].style.color = "red";
+    document.getElementById("email-err").innerText = "Invalid Email!";
+    document.getElementById("email-err").style.color = "red";
     email.style.border = "1px red solid";
 
     return false;
@@ -229,22 +217,22 @@ function validateEmail() {
 // hereby validating adhaar no..
 function validateadhaar() {
   if (adhaar.value.trim() == "" || adhaar.value.trim() == null) {
-    span[4].innerText = "*i";
-    span[4].style.color = "red";
+    document.getElementById("aadhaar-err").innerText = "*i";
+    document.getElementById("aadhaar-err").style.color = "red";
     adhaar.style.border = "1px red solid";
 
     return false;
   }
   if (adhaar.value.length === 12) {
-    span[4].innerText = "Adhaar number is Valid!";
-    span[4].style.color = "lime";
+    document.getElementById("aadhaar-err").innerText = "Adhaar number is Valid!";
+    document.getElementById("aadhaar-err").style.color = "lime";
     adhaar.style.border = "1px lime solid";
     
     return true;
   }
 
-  span[4].innerText = "Invalid aadhaar number!";
-  span[4].style.color = "red";
+  document.getElementById("aadhaar-err").innerText = "Invalid aadhaar number!";
+  document.getElementById("aadhaar-err").style.color = "red";
   adhaar.style.border = "1px red solid";
   
   return false;
@@ -252,14 +240,14 @@ function validateadhaar() {
 
 function validateaddress() {
   if (address1.value == "" || address1.value == null) {
-    span[5].innerText = "Blank Space not allowed";
-    span[5].style.color = "red";
+    document.getElementById("address-err").innerText = "Blank Space not allowed";
+    document.getElementById("address-err").style.color = "red";
     address1.style.border = "1px red solid";
     return false;
   }
 
-  span[5].innerText = "Address is Valid!";
-  span[5].style.color = "lime";
+  document.getElementById("address-err").innerText = "Address is Valid!";
+  document.getElementById("address-err").style.color = "lime";
   address1.style.border = "1px lime solid";
 
   return true;
@@ -267,21 +255,21 @@ function validateaddress() {
 
 function validatePincode() {
   if (pincode.value == "" || pincode.value == null) {
-    span[8].innerText = "Blank Space not allowed";
-    span[8].style.color = "red";
+    document.getElementById("pincode-err").innerText = "Blank Space not allowed";
+    document.getElementById("pincode-err").style.color = "red";
     pincode.style.border = "1px red solid";
     return false;
   }
   
   if (pincode.value.includes('-')) {
-    span[8].innerText = "Negative numbers not allowed";
-    span[8].style.color = "red";
+    document.getElementById("pincode-err").innerText = "Negative numbers not allowed";
+    document.getElementById("pincode-err").style.color = "red";
     pincode.style.border = "1px red solid";
     return false;
   }
 
-  span[8].innerText = "Pincode is Valid!";
-  span[8].style.color = "lime";
+  document.getElementById("pincode-err").innerText = "Pincode is Valid!";
+  document.getElementById("pincode-err").style.color = "lime";
   pincode.style.border = "1px lime solid";
 
   return true;
