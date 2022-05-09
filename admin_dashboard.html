@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NB - Admin Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="../assests/logo/favicon-16x16.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link href="../styles/templatemo-nomad-force.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href="../styles/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <a href="/"><img src="../assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75" height="50"></a>
+            <span class="menu-title">Tables</span>
+            <div class="menu-item selected" id="hotels">Hotels</div>
+            <div class="menu-item" id="vehicle">Vehicle</div>
+            <div class="menu-item" id="driver">Driver</div>
+            <div class="menu-item" id="tourist-spots">Tourist Spot</div>
+            <div class="menu-item" id="lb-certificates">Local Business Certificates</div>
+            <div class="menu-item" id="feedback">Feedback</div>
+        </div>
+        <div class="content-container">
+            <div class="navbar">
+                <span class="admin-name">Welcome <span id="admin-name">Admin!</span></span>
+                <button id="logout">Logout</button>
+            </div>
+            <div class="table-actions">
+                <button class="action-button">Add Row</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="popup-container">
+                <div class="popup"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/jquery.min.js"></script>
+    <script type="module" src="../scripts/admin.js"></script>
+</body>
+</html>
