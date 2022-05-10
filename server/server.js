@@ -651,10 +651,10 @@ ROUTER.get('/', (req, res) => {
                 console.log(err);
                 res.status(500).send(err);
             } else {
-                conn.query(`update hotel set hotel_id=?, name=?, address_line1=?, address_line2=?, address_line3=?,
-                pincode=?, highest_price=?, lowest_price=? where hotel_id=?`, 
-                [ req.body.hotel_id, req.body.name, req.body.address_line1, req.body.address_line2, req.body.address_line3, 
-                req.body.pincode, req.body.highest_price, req.body.lowest_price, req.params.hotel_id ], (err, result) => {
+                conn.query(`update tourist_spot set id=?, name=?, address_line1=?, address_line2=?, address_line3=?,
+                pincode=?, description=?, opening_time=?, closing_time=? where id=?`, 
+                [ req.body.id, req.body.name, req.body.address_line1, req.body.address_line2, req.body.address_line3, 
+                req.body.pincode, req.body.opening_time, req.body.closing_time, req.params.id ], (err, result) => {
                     if (err) {
                         console.log(err);
                         res.status(500).send(err);
@@ -666,6 +666,93 @@ ROUTER.get('/', (req, res) => {
         });
     }
 })
+.post('/add-hotel', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('insert into hotel values (?, ?, ?, ?, ?, ?, ?, ?)', [ req.body.hotel_id, req.body.name, 
+            req.body.address_line1, req.body.address_line2, req.body.address_line3, req.body.pincode, 
+            req.body.highest_price, req.body.lowest_price ], (err, result) => {
+                if (err) {
+                    res.status(400).send(err);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
+        }
+    });
+})
+.post('/add-vehicle', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('insert into vehicle values (?, ?, ?, ?, ?)', [ req.body.vehicle_id, req.body.license_plate, 
+            req.body.colour, req.body.type, req.body.driver_id ], (err, result) => {
+                if (err) {
+                    res.status(400).send(err);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
+        }
+    });
+})
+.post('/add-driver', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('insert into driver values (?, ?, ?, ?, ?, ?)', [ req.body.driver_id, req.body.fname, 
+            req.body.mname, req.body.lname, req.body.phone_num, req.body.license_num ], (err, result) => {
+                if (err) {
+                    res.status(400).send(err);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
+        }
+    });
+})
+.post('/add-tourist-spot', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('insert into tourist_spot values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [ req.body.id, req.body.name, 
+            req.body.address_line1, req.body.address_line2, req.body.address_line3, req.body.pincode, 
+            req.body.description, req.body.opening_time, req.body.closing_time ], (err, result) => {
+                if (err) {
+                    res.status(400).send(err);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
+        }
+    });
+})
+.delete('/delete/:table/:idname/:id', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query(`delete from ${ req.params.table } where ${ req.params.idname } = ?`, [ req.params.id ], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
+        }
+    });
+});
 
 function main() {
     if (fs.existsSync(dbDetailsPath)) {

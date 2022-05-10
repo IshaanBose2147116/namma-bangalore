@@ -48,12 +48,29 @@ const tableHeader = {
         <th></th>`
 };
 
+const tableCols = {
+    hotel: [ "hotel_id", "name", "address_line1", "address_line2", "address_line3", "pincode", 'highest_price', 
+        "lowest_price" ],
+    vehicle: [ "vehicle_id", "license_plate", "colour", "type", "driver_id" ],
+    driver: [ "driver_id", "fname", "mname", "lname", "phone_num", "license_num" ],
+    tourist_spot: [ "id", "name", "address_line1", "address_line2", "address_line3", "pincode", 'description', 
+    "opening_time", "closing_time" ]
+}
+
 let currentTableData = undefined;
 
 $(document).ready(() => {
+    if (sessionStorage.getItem("name") === null) {
+        alert("Access denied, not logged in!");
+        window.open("http://localhost:5000", "_self");
+
+        return;
+    }
+
     $("#admin-name").text(`${ sessionStorage.getItem("name") }!`);
+    $(".action-button").click(showAddPopup);
     
-    displayTableHeader("hotels");
+    displayTableHeader("hotel");
 
     $(".popup-container").on('click', '#close-popup', () => {
         $(".popup-container").hide();
@@ -77,7 +94,7 @@ function displayTableHeader(id) {
     const thead = document.getElementsByTagName("thead")[0];
 
     switch (id) {
-        case "hotels":
+        case "hotel":
             thead.innerHTML = `<tr>${ tableHeader.hotel }</tr>`;
             break;
         case "vehicle":
@@ -86,7 +103,7 @@ function displayTableHeader(id) {
         case "driver":
             thead.innerHTML = `<tr>${ tableHeader.driver }</tr>`;
             break;
-        case "tourist-spots":
+        case "tourist_spot":
             thead.innerHTML = `<tr>${ tableHeader.touristSpot }</tr>`;
             break;
         case "lb-certificates":
@@ -102,7 +119,7 @@ function displayTableHeader(id) {
 
 function getDataFrom(table) {
     switch (table) {
-        case "hotels":
+        case "hotel":
             ServerAPI.getHotels(response => {
                 let data = response.data;
                 currentTableData = data;
@@ -134,7 +151,7 @@ function getDataFrom(table) {
                 })
             });
             break;
-        case "tourist-spots":
+        case "tourist_spot":
             fetch('http://localhost:5000/get-tourist-spots', {
                 method: 'GET',
                 headers: { "Content-Type": "application/json" }
@@ -190,6 +207,23 @@ function displayData(data) {
             showEditPopup(evt);
         });
 
+        $(document).on('click', `#delete-${ i }`, (evt) =>{
+            const row = currentTableData[evt.currentTarget.id.split('-')[1]];
+            console.log(row[Object.keys(row)[0]], Object.keys(row)[0], currentTableData.currentTable);
+            fetch(`http://localhost:5000/delete/${ currentTableData.currentTable }/${ Object.keys(row)[0] }/${ row[Object.keys(row)[0]] }`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" }
+            }).then(response => {
+                if (response.status === 200) {
+                    getDataFrom(currentTableData.currentTable);
+                } else {
+                    response.json().then(data => {
+                        console.log(data);
+                    });
+                }
+            });
+        });
+
         tbody.innerHTML += row;
     }
 }
@@ -230,14 +264,40 @@ function showEditPopup(evt) {
     });
 }
 
+function showAddPopup() {
+    $(".popup-container").css("display", "flex");
+
+    let rowData = currentTableData[0];
+    const popup = document.querySelector(".popup");
+    popup.innerHTML = `
+    <div class="popup-title">
+        <span>Add</span>
+        <button id="close-popup"><span class="material-icons">close</span></button>
+    </div>
+    <div class="popup-fields">
+    `;
+
+    for (let i = 0; i < tableCols[currentTableData.currentTable].length; i++) {
+        document.querySelector(".popup-fields").innerHTML += `
+        <div>
+            ${ tableCols[currentTableData.currentTable][i] }: <input type="text" id="${ tableCols[currentTableData.currentTable][i] }"/>
+        </div>
+        `;
+    }
+
+    document.querySelector(".popup-fields").innerHTML += `<button class="action-button">Save</button>`;
+
+    popup.innerHTML += '</div>';
+
+    $(".popup-container").on('click', '.action-button', addData);
+}
+
 function saveEdit(evt, rowData) {
     var bodyData = {};
 
     for (let key in rowData) {
         bodyData[key] = document.getElementById(key).value.length === 0 ? null : document.getElementById(key).value;
     }
-
-    console.log(bodyData);
 
     switch (currentTableData.currentTable) {
         case "hotel":
@@ -282,6 +342,99 @@ function saveEdit(evt, rowData) {
                     getDataFrom(currentTableData.currentTable);
                 } else {
                     console.log(response);
+                }
+            });
+            break;
+        case "tourist_spot":
+            fetch(`http://localhost:5000/update-tourist-spot/${ evt.currentTarget.id }`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bodyData)
+            }).then(response => {
+                if (response.status === 200) {
+                    $(".popup-container").hide();
+                    console.log(currentTableData.currentTable);
+                    getDataFrom(currentTableData.currentTable);
+                } else {
+                    console.log(response);
+                }
+            });
+            break;
+    }
+}
+
+function addData() {
+    var bodyData = {};
+
+    for (let i = 0; i < tableCols[currentTableData.currentTable].length; i++) {
+        var key = tableCols[currentTableData.currentTable][i];
+        bodyData[key] = document.getElementById(key).value.length === 0 ? null : document.getElementById(key).value;
+    }
+
+    console.log(currentTableData.currentTable);
+
+    switch (currentTableData.currentTable) {
+        case "hotel":
+            fetch('http://localhost:5000/add-hotel', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bodyData)
+            }).then(response => {
+                if (response.status === 200) {
+                    $(".popup-container").hide();
+                    getDataFrom(currentTableData.currentTable);
+                } else {
+                    response.json().then(data => {
+                        console.log(data);
+                    });
+                }
+            });
+            break;
+        case "vehicle":
+            fetch('http://localhost:5000/add-vehicle', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bodyData)
+            }).then(response => {
+                if (response.status === 200) {
+                    $(".popup-container").hide();
+                    getDataFrom(currentTableData.currentTable);
+                } else {
+                    response.json().then(data => {
+                        console.log(data);
+                    });
+                }
+            });
+            break;
+        case "driver":
+            fetch('http://localhost:5000/add-driver', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bodyData)
+            }).then(response => {
+                if (response.status === 200) {
+                    $(".popup-container").hide();
+                    getDataFrom(currentTableData.currentTable);
+                } else {
+                    response.json().then(data => {
+                        console.log(data);
+                    });
+                }
+            });
+            break;
+        case "tourist_spot":
+            fetch('http://localhost:5000/add-tourist-spot', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bodyData)
+            }).then(response => {
+                if (response.status === 200) {
+                    $(".popup-container").hide();
+                    getDataFrom(currentTableData.currentTable);
+                } else {
+                    response.json().then(data => {
+                        console.log(data);
+                    });
                 }
             });
             break;
