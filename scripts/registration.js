@@ -74,13 +74,13 @@ function validate()
           } else if (response.status === 400) {
             console.log(response);
             if (response.errCode === 1000) {
-              span[1].innerText = "Email already registered!";
-              span[1].style.color = "red";
+              span[3].innerText = "Email already registered!";
+              span[3].style.color = "red";
               email.style.border = "1px red solid";
               console.log("here");
             } else {
-              span[2].innerText = "Phone number already registered!";
-              span[2].style.color = "red";
+              span[4].innerText = "Phone number already registered!";
+              span[4].style.color = "red";
               phone.style.border = "1px red solid";
               console.log("here1");
             }
