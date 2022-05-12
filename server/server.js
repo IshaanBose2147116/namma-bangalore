@@ -113,6 +113,25 @@ ROUTER.get('/', (req, res) => {
 .get('/health', (req, res) => {
     res.sendFile(path.join(__dirname, '../health.html'));
 })
+.get('/parks', (req, res) => {
+    res.sendFile(path.join(__dirname, '../parks.html'));
+})
+.get('/admin/:uid', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('select is_admin from general_user where uid=?', [ req.params.uid ], (err, result) => {
+                if (result.length === 0 || result[0].is_admin === 0) {
+                    res.sendStatus(401);
+                } else {
+                    res.sendFile(path.join(__dirname, '../admin_dashboard.html'));
+                }
+            });
+        }
+    });
+})
 .get('/booked-vehicles/:uid?', (req, res) => {
     if (!req.params.uid) {
         res.sendFile(path.join(__dirname, '../booked_vehicles.html'));
@@ -248,8 +267,7 @@ ROUTER.get('/', (req, res) => {
             res.status(500).send(err);
         } else {
             conn.query(`select uid, password, salt_value from user where phone_num="${ req.body.phonenum }"`, (err, result) => {
-                const uid = result[0].uid;
-
+                
                 if (err) {
                     console.log(err);
                     res.status(500).send(err);
@@ -257,13 +275,15 @@ ROUTER.get('/', (req, res) => {
                     if (result.length === 0) {
                         res.status(404).send({ msg: "Invalid phone number", errCode: 1012 });
                     } else {
+                        const uid = result[0].uid;
+                        
                         crypto.scrypt(req.body.password, result[0].salt_value, 32, (err, derivedKey) => {
                             if (err) {
                                 console.log(err);
                                 res.status(500).send(err);
                             } else {
                                 if (result[0].password === derivedKey.toString('base64')) {
-                                    conn.query('select fname, mname, lname from general_user where uid=?', uid, (err, result) => {
+                                    conn.query('select concat_ws(" ", fname, mname, lname) as name, is_admin from general_user where uid=?', uid, (err, result) => {
                                         if (err) {
                                             console.log(err);
                                             res.status(500).send(err);
@@ -278,17 +298,7 @@ ROUTER.get('/', (req, res) => {
                                                     }
                                                 });
                                             } else {
-                                                var name = result[0].fname;
-
-                                                if (result[0].mname !== "null") {
-                                                    name = name.concat(" ", result[0].mname);
-                                                }
-
-                                                if (result[0].lname !== "null") {
-                                                    name = name.concat(" ", result[0].lname);
-                                                }
-                                                
-                                                res.status(200).send({ uid: uid, name: name });
+                                                res.status(200).send({ uid: uid, name: result[0].name, isAdmin: result[0].is_admin === 1 });
                                             }
                                         }
                                     });
@@ -483,7 +493,179 @@ ROUTER.get('/', (req, res) => {
             });
         }
     });
-});
+})
+.get('/get-vehicles', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('select * from vehicle', (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result);
+                }
+            });
+        }
+    });
+})
+.get('/get-drivers', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('select * from driver', (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result);
+                }
+            });
+        }
+    });
+})
+.get('/get-tourist-spots', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('select * from tourist_spot', (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result);
+                }
+            });
+        }
+    });
+})
+.get('/get-feedback', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('select * from feedback', (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result);
+                }
+            });
+        }
+    });
+})
+.put('/update-hotel/:hotel_id', (req, res) => {
+    if (req.params.hotel_id === undefined) {
+        res.status(400).send({ msg: "No hotel ID defined!", errCode: 2003 });
+    } else if (parseInt(req.params.hotel_id) === NaN) {
+        res.status(400).send({ msg: "Hotel ID must be an integer.", errCode: 2004 });
+    } else {
+        conn.connect(err => {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+            } else {
+                conn.query(`update hotel set hotel_id=?, name=?, address_line1=?, address_line2=?, address_line3=?,
+                pincode=?, highest_price=?, lowest_price=? where hotel_id=?`, 
+                [ req.body.hotel_id, req.body.name, req.body.address_line1, req.body.address_line2, req.body.address_line3, 
+                req.body.pincode, req.body.highest_price, req.body.lowest_price, req.params.hotel_id ], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send(err);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        });
+    }
+})
+.put('/update-vehicle/:vehicle_id', (req, res) => {
+    if (req.params.vehicle_id === undefined) {
+        res.status(400).send({ msg: "No vehicle ID defined!", errCode: 2003 });
+    } else if (parseInt(req.params.vehicle_id) === NaN) {
+        res.status(400).send({ msg: "Vehicle ID must be an integer.", errCode: 2004 });
+    } else {
+        conn.connect(err => {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+            } else {
+                conn.query(`update vehicle set vehicle_id=?, license_plate=?, colour=?, type=?, driver_id=?
+                 where vehicle_id=?`, 
+                [ req.body.vehicle_id, req.body.license_plate, req.body.colour, req.body.type, req.body.driver_id, 
+                req.params.vehicle_id ], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send(err);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        });
+    }
+})
+.put('/update-driver/:driver_id', (req, res) => {
+    if (req.params.driver_id === undefined) {
+        res.status(400).send({ msg: "No driver ID defined!", errCode: 2003 });
+    } else if (parseInt(req.params.driver_id) === NaN) {
+        res.status(400).send({ msg: "Driver ID must be an integer.", errCode: 2004 });
+    } else {
+        conn.connect(err => {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+            } else {
+                conn.query(`update driver set driver_id=?, fname=?, mname=?, lname=?, phone_num=?, license_num=?
+                 where driver_id=?`, 
+                [ req.body.driver_id, req.body.fname, req.body.mname, req.body.lname, req.body.phone_num, req.body.license_num,
+                req.params.driver_id ], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send(err);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        });
+    }
+})
+.put('/update-tourist-spot/:id', (req, res) => {
+    if (req.params.id === undefined) {
+        res.status(400).send({ msg: "No ID defined!", errCode: 2003 });
+    } else if (parseInt(req.params.id) === NaN) {
+        res.status(400).send({ msg: "ID must be an integer.", errCode: 2004 });
+    } else {
+        conn.connect(err => {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+            } else {
+                conn.query(`update hotel set hotel_id=?, name=?, address_line1=?, address_line2=?, address_line3=?,
+                pincode=?, highest_price=?, lowest_price=? where hotel_id=?`, 
+                [ req.body.hotel_id, req.body.name, req.body.address_line1, req.body.address_line2, req.body.address_line3, 
+                req.body.pincode, req.body.highest_price, req.body.lowest_price, req.params.hotel_id ], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send(err);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        });
+    }
+})
 
 function main() {
     if (fs.existsSync(dbDetailsPath)) {

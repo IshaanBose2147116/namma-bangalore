@@ -7,7 +7,6 @@ document.getElementById("login-form").onsubmit = (event) => {
 
 var phone = document.getElementById('Phone-No');
 var password= document.getElementById('password');
-var span = document.getElementsByTagName('span');
 
 phone.onkeydown = (event) => {
     if ((event.which > 58 || event.which < 47) && event.key !== 'Backspace') {
@@ -55,7 +54,11 @@ function validate() {
             } else if (response.status === 200) {
                 sessionStorage.setItem("name", response.name);
                 sessionStorage.setItem("uid", response.uid);
-                window.open('/', "_self");
+
+                if (response.isAdmin === undefined || response.isAdmin === false)
+                    window.open('/', "_self");
+                else
+                    window.open(`/admin/${ response.uid }`, "_self");
             } else {
                 alert("Internal server error! Please try again later.");
                 console.log(response); // internal server error
@@ -78,11 +81,10 @@ function validatePhone() {
         document.getElementById("phone-err").innerText = "Your number is Valid!";
         document.getElementById("phone-err").style.color = "lime";
         phone.style.border = "1px lime solid";
-        console.log("hiya");
         return true;
     }
 
-    document.getElementById("phone-err").innertext = "Invalid Phone number";
+    document.getElementById("phone-err").innerText = "Invalid Phone number";
     document.getElementById("phone-err").style.color = "red";
     phone.style.border = "1px red solid";
     
