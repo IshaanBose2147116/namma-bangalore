@@ -1,247 +1,350 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Namma Bengaluru ">
-        <meta name="author" content="Ananya Mitra, Ishaan Bose, Logesh N">
-        <title>Namma Bengaluru</title>
-        <link rel="icon" type="image/x-icon" href="./assests/logo/favicon-16x16.png">
-        
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Namma Bengaluru ">
+    <meta name="author" content="Ananya Mitra, Ishaan Bose, Logesh N">
 
-        <link href="./styles/bootstrap.min.css" rel="stylesheet">
-        <link href="./styles/bootstrap-icons.css" rel="stylesheet">
-        <link href="./styles/magnific-popup.css" rel="stylesheet">
-        <link href="./styles/aos.css" rel="stylesheet">
-        <link href="./styles/templatemo-nomad-force.css" rel="stylesheet">
-        <link href="./styles/index.css" rel="stylesheet">
-        <link href="./styles/mystyle.css" rel="stylesheet">
-        <link href="./styles/offers.css" rel="stylesheet">
-        
-        <style>
-            h5{
-                color: white;
-            }
-        </style>
-<!--
+    <title>Namma Bengaluru - Offers</title>
 
-TemplateMo 567 Nomad Force
+    <link rel="icon" type="image/x-icon" href="./assests/logo/favicon-16x16.png">
 
-https://templatemo.com/tm-567-nomad-force
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap"
+        rel="stylesheet">
 
--->
-    </head>
-    <body>
-        <main>
+    <link href="./styles/bootstrap.min.css" rel="stylesheet">
+    <link href="./styles/bootstrap-icons.css" rel="stylesheet">
+    <link href="./styles/magnific-popup.css" rel="stylesheet">
+    <link href="./styles/aos.css" rel="stylesheet">
+    <link href="./styles/templatemo-nomad-force.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"
+        rel="stylesheet">
 
-            <nav class="navbar navbar-expand-lg bg-light shadow-lg">
-                <div class="cust-container">
-                    <div>
-                        <a class="navbar-brand" id="phone-logo" href="/">
-                            <img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75" height="50">
-                        </a>
-    
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="margin-left: auto;">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-    
-                    </div>
-                    <div>
-                        <a class="navbar-brand" id="laptop-logo" href="/">
-                            <img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75" height="50">
-                        </a>
+    <link href="./styles/common_vehicle.css" rel="stylesheet">
+    <link href="./styles/vehicle_booking.css" rel="stylesheet">
+    <link href="./styles/index.css" rel="stylesheet">
 
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                            <ul class="navbar-nav mx-auto">
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="/#hero">Home</a>
-                                </li>
-    
-                                <li class="dropdown">
-                                    <span class="nav-link">About Bengaluru</span>
-                                    <div class="dropdown-content">
-                                        <a href="/introduction">Introduction</a>
-                                        <a href="/history-and-heritage">History and Heritage</a>
-                                        <a href="/economy">Economy</a>
-                                        <a href="/festival">Festivals</a>
-                                        <a href="/sports">Sports</a>
-                                        <a href="/health">Health And Medicine</a>
-                                    </div>
-                                </li>
-    
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/#hotels">Hotels</a>
-                                </li>
-    
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/#travel">Travel & Tourism</a>
-                                </li>
-    
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/vehicle-booking">Book a Vehicle</a>
-                                </li>
-    
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/#travel">Local Employment</a>
-                                </li>
-    
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/offers">Offers</a>
-                                </li>
-    
-                                <li class="nav-item">
-                                    <a class="nav-link" id="login-link" href="/login">Login</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div>
-                        <span id="user-name"></span>
-                    </div>
-                </div>
-            </nav>
+    <link href="./styles/mystyle.css" rel="stylesheet">
+    <link href="./styles/index.css" rel="stylesheet">
+    <style>
+        h5 {
+            color: white;
+        }
+    </style>
+</head>
 
-            <section class="travel-detail section-padding">
-                <div class="container">
-                    <div class="row">
-                        <div class="support-grid"></div>
-                            <div class="band">
-                                <div class="item-1">
-                                        <a href="./assests/images/bang-images/offers/offer-img1.jpg" class="card">
-                                            <div class>
-                                                <a src="./assests/images/bang-images/offers/offer-img1.jpg" class="card"></a>
-                                            </div>23
-                                            <article>
-                                            <h1>International Artist Feature: Malaysia</h1>
-                                            <span>Mary Winkler</span>
-                                            </article>
-                                        </a>
-                                </div>
-                                    <div class="item-2">
-                                        <a href="https://webdesign.tutsplus.com/articles/how-to-conduct-remote-usability-testing--cms-27045" class="card">
-                                            <div class="thumb" style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/users-2.png);"></div>
-                                            <article>
-                                            <h1>How to Conduct Remote Usability Testing</h1>
-                                            <span>Harry Brignull</span>
-                                            </article>
-                                        </a>
-                                    </div>
-                                    <div class="item-3">
-                                    <a href="https://design.tutsplus.com/articles/envato-tuts-community-challenge-created-by-you-july-edition--cms-26724" class="card">
-                                        <div class="thumb" style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/flex-5.jpg);"></div>
-                                        <article>
-                                        <h1>Created by You, July Edition</h1>
-                                        <p>Welcome to our monthly feature of fantastic tutorial results created by you, the Envato Tuts+ community! </p>
-                                        <span>Melody Nieves</span>
-                                        </article>
-                                    </a>
-                                    </div>
-                                    <div class="item-4">
-                                        <a href="https://webdesign.tutsplus.com/tutorials/how-to-code-a-scrolling-alien-lander-website--cms-26826" class="card">
-                                            <div class="thumb" style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/landing.png);"></div>
-                                            <article>
-                                            <h1>How to Code a Scrolling “Alien Lander” Website</h1>
-                                            <p>We’ll be putting things together so that as you scroll down from the top of the page you’ll see an “Alien Lander” making its way to touch down.</p>
-                                            <span>Kezz Bracey</span>
-                                            </article>
-                                        </a>
-                                    </div>
-                                    <div class="item-5">
-                                        <a href="https://design.tutsplus.com/tutorials/stranger-things-inspired-text-effect--cms-27139" class="card">
-                                            <div class="thumb" style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/strange.jpg);"></div>
-                                            <article>
-                                            <h1>How to Create a “Stranger Things” Text Effect in Adobe Photoshop</h1>
-                                            <span>Rose</span>
-                                            </article>
-                                        </a>
-                                    </div>
-                                    <div class="item-6">
-                                    <a href="https://photography.tutsplus.com/articles/5-inspirational-business-portraits-and-how-to-make-your-own--cms-27338" class="card">
-                                        <div class="thumb" style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/flor.jpg);"></div>
-                                        <article>
-                                        <h1>5 Inspirational Business Portraits and How to Make Your Own</h1>
-                                        
-                                        <span>Marie Gardiner</span>
-                                        </article>
-                                    </a>
-                                    </div>
-                                    <div class="item-7">
-                                    <a href="https://webdesign.tutsplus.com/articles/notes-from-behind-the-firewall-the-state-of-web-design-in-china--cms-22281" class="card">
-                                        <div class="thumb" style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/china.png);"></div>
-                                        <article>
-                                        <h1>Notes From Behind the Firewall: The State of Web Design in China</h1>
-                                        <span>Kendra Schaefer</span>
-                                        </article>
-                                    </a>
-                                    </div>
+<body>
+    <nav class="navbar navbar-expand-lg bg-light shadow-lg">
+        <div class="cust-container">
+            <div>
+                <a class="navbar-brand" id="phone-logo" href="/">
+                    <img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75"
+                        height="50">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                    style="margin-left: auto;">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+            </div>
+            <div>
+                <a class="navbar-brand" id="laptop-logo" href="/">
+                    <img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75"
+                        height="50">
+                </a>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+
+                        
+
+                        <li class="dropdown">
+                            <span class="nav-link">About Bengaluru</span>
+                            <div class="dropdown-content">
+                                <a href="/introduction">Introduction</a>
+                                <a href="/history-and-heritage">History and Heritage</a>
+                                <a href="/economy">Economy</a>
+                                <a href="/festival">Festivals</a>
+                                <a href="/sports">Sports</a>
+                                <a href="/health">Health And Medicine</a>
+                                <a href="/parks">Parks And Recreation</a>
+
                             </div>
-                        </div>
-                    </div>
-                </div>  
-            </section>
+                        </li>
 
-            <section class="related-travel section-padding">
-                <div class="container">
-                    <div class="row">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#portfolio">Hotels</a>
+                        </li>
 
-                        <div class="col-lg-8 col-10 mx-auto text-center">
-                            
-                        </div>
-                    </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#news">Travel & Tourism</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/vehicle-booking">Book a Vehicle</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#news">Local Employment</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#news">Offers</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" id="login-link" href="/login">Login</a>
+                        </li>
+                    </ul>
                 </div>
-            </section>
-
-        </main>
-
-        <footer class="site-footer">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-12">
-                        <h5 class="text-white">
-                            <i class="bi-geo-alt-fill me-2"></i>
-                            Bengaluru, Karnataka, India.
-                        </h5>
-
-                        <a href="mailto:nammabengaluru.com" class="custom-link mt-3 mb-5">
-                            nammabengaluru.com
-                        </a>
-                    </div>
-
-                    <div class="col-6">
-                        <p class="copyright-text mb-0">Copyright © Namma Bengaluru 2021             
-                    </div>
-
-                    <div class="col-lg-3 col-5 ms-auto">
-                        <ul class="social-icon">
-                            <li><a href="#" class="social-icon-link bi-facebook"></a></li>
-
-                            <li><a href="#" class="social-icon-link bi-twitter"></a></li>
-
-                            <li><a href="#" class="social-icon-link bi-whatsapp"></a></li>
-
-                            <li><a href="#" class="social-icon-link bi-instagram"></a></li>
-
-                            <li><a href="#" class="social-icon-link bi-youtube"></a></li>
-                        </ul>
-                    </div>
-
-                </div>
-            </section>
-        </footer>
-
-        <!-- JAVASCRIPT FILES -->
-        <script src="./scripts/jquery.min.js"></script>
-        <script src="./scripts/bootstrap.bundle.min.js"></script>
-        <script src="./scripts/jquery.sticky.js"></script>
-        <script src="./scripts/aos.js"></script>
-        <script src="./scripts/jquery.magnific-popup.min.js"></script>
-        <script src="./scripts/magnific-popup-options.js"></script>
-        <script src="./scripts/scrollspy.min.js"></script>
-        <script src="./scripts/custom.js"></script>
-
+            </div>
+            <div>
+                <span id="user-name"></span>
+            </div>
+        </div>
+    </nav>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+        * {
+          box-sizing: border-box;
+        }
+        
+        body {
+          background-color: #f1f1f1;
+          padding: 20px;
+          font-family: Arial;
+        }
+        
+        /* Center website */
+        .main {
+          max-width: 1000px;
+          margin: auto;
+        }
+        
+        h1 {
+          font-size: 50px;
+          word-break: break-all;
+        }
+        
+        .row {
+          margin: 10px -16px;
+        }
+        
+        /* Add padding BETWEEN each column */
+        .row,
+        .row > .column {
+          padding: 8px;
+        }
+        
+        /* Create three equal columns that floats next to each other */
+        .column {
+          float: left;
+          width: 33.33%;
+          display: none; /* Hide all elements by default */
+        }
+        
+        /* Clear floats after rows */ 
+        .row:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+        
+        /* Content */
+        .content {
+          background-color: white;
+          padding: 10px;
+        }
+        
+        /* The "show" class is added to the filtered elements */
+        .show {
+          display: block;
+        }
+        
+        /* Style the buttons */
+        .btn {
+          border: none;
+          outline: none;
+          padding: 12px 16px;
+          background-color: white;
+          cursor: pointer;
+        }
+        
+        .btn:hover {
+          background-color: #ddd;
+        }
+        
+        .btn.active {
+          background-color: #666;
+          color: white;
+        }
+        </style>
+        </head>
+        <body>
+        
+        <!-- MAIN (Center website) -->
+        <div class="main">
+        <br><br>
+        <h1>FIND OFFERS HERE</h1>
+        <hr>
+        
+        <h2>OFFERS</h2>
+        
+        <div id="myBtnContainer">
+          <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+          <button class="btn" onclick="filterSelection('Apparels')"> Apparels</button>
+          <button class="btn" onclick="filterSelection('Grocery')"> Grocery</button>
+          <button class="btn" onclick="filterSelection('fruits')">fruits</button>
+        </div>
+        
+        <!-- Portfolio Gallery Grid -->
+        <div class="row">
+          <div class="column Apparels">
+            <div class="content">
+              <img src="/assests/images/apparel1.png" alt="apparel1" style="width:100%">
+              <h4>Clothes</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+          <div class="column Apparels">
+            <div class="content">
+            <img src="/assests/images/apparel2.jpg" alt="apparel2" style="width:100%">
+              <h4>Bangalore Trends</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+          <div class="column Apparels">
+            <div class="content">
+            <img src="/assests/images/apparel4.jpg" alt="Apparels" style="width:80%">
+              <h4>Ugadi offers</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+          
+          <div class="column Grocery">
+            <div class="content">
+              <img src="/assests/images/grocery1.jpg" alt="Car" style="width:100%">
+              <h4>grocery</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+          <div class="column Grocery">
+            <div class="content">
+            <img src="/assests/images/grocery2.jpg" alt="Car" style="width:100%">
+              <h4>Bazaar Cart</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+          <div class="column Grocery">
+            <div class="content">
+            <img src="/assests/images/grocery3.jpg" alt="Car" style="width:100%">
+              <h4>Veggies and grocries</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+        
+          <div class="column Grocery">
+            <div class="content">
+            <img src="/assests/images/grocery4.webp" alt="Car" style="width:100%">
+              <h4>Condiments</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+          <div class="column Grocery">
+            <div class="content">
+            <img src="/assests/images/grocery5.jpg" alt="Car" style="width:100%">
+              <h4>Classic</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+          <div class="column fruits">
+            <div class="content">
+              <img src="/assests/images/fruits1.jpg" alt="Car" style="width:100%">
+              <h4>West Zone Fresh</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+          <div class="column fruits">
+            <div class="content">
+            <img src="/assests/images/fruits5.jpg" alt="Car" style="width:100%">
+              <h4>Local Fruit Market</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+          <div class="column fruits">
+            <div class="content">
+            <img src="/assests/images/fruits3.jpg" alt="Car" style="width:100%">
+              <h4>Weekend Offer</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+          <div class="column fruits">
+            <div class="content">
+            <img src="/assests/images/fruits4.jpg" alt="Car" style="width:100%">
+              <h4>Fruit offers</h4>
+              <!-- <p>Lorem ipsum dolor..</p> -->
+            </div>
+          </div>
+        <!-- END GRID -->
+        </div>
+        
+        <!-- END MAIN -->
+        </div>
+        
+        <script>
+        filterSelection("all")
+        function filterSelection(c) {
+          var x, i;
+          x = document.getElementsByClassName("column");
+          if (c == "all") c = "";
+          for (i = 0; i < x.length; i++) {
+            w3RemoveClass(x[i], "show");
+            if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+          }
+        }
+        
+        function w3AddClass(element, name) {
+          var i, arr1, arr2;
+          arr1 = element.className.split(" ");
+          arr2 = name.split(" ");
+          for (i = 0; i < arr2.length; i++) {
+            if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+          }
+        }
+        
+        function w3RemoveClass(element, name) {
+          var i, arr1, arr2;
+          arr1 = element.className.split(" ");
+          arr2 = name.split(" ");
+          for (i = 0; i < arr2.length; i++) {
+            while (arr1.indexOf(arr2[i]) > -1) {
+              arr1.splice(arr1.indexOf(arr2[i]), 1);     
+            }
+          }
+          element.className = arr1.join(" ");
+        }
+        
+        
+        // Add active class to the current button (highlight it)
+        var btnContainer = document.getElementById("myBtnContainer");
+        var btns = btnContainer.getElementsByClassName("btn");
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].addEventListener("click", function(){
+            var current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            this.className += " active";
+          });
+        }
+        </script>
+        
     </body>
 </html>

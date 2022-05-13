@@ -20,7 +20,7 @@ $(document).ready(() => {
 
 function viewBookings() {
     ServerAPI.getBookedVehicles(sessionStorage.getItem("uid"), response => {
-        document.querySelector(".booked-vehicles-container").innerHTML = "";
+        document.querySelector(".booked-vehicles-container").innerHTML = ""; 
 
         if (response.status === 200) {
             var data = response.data;
@@ -33,8 +33,10 @@ function viewBookings() {
                 var toDate = data[i].till_date.replace("T", " ");
                 toDate = toDate.split(".")[0];
 
+                var isOutdated = (new Date(data[i].from_date) - new Date()) <= 0;
+
                 var vehicleBox = `
-                <div class="car-container">
+                <div class="${ isOutdated ? "car-container old" : "car-container" }">
                     <div>
                         From: <span id="from-time">${ fromDate }</span> <br/>
                         To: <span id="to-time">${ toDate }</span> <br/>
@@ -46,7 +48,7 @@ function viewBookings() {
                         Driver's Name: <span id="driver-name">${ data[i].driver_name }</span> <br/>
                         Phone Number: <span id="phone-number">${ data[i].phone_num }</span>
                     </div>
-                    <button class="action-button" id="${ data[i].booking_id }">Cancel Booking</button>
+                    <button class="action-button" id="${ data[i].booking_id }">${ isOutdated ? "Remove Booking" : "Cancel Booking" }</button>
                 </div>
                 `;
 

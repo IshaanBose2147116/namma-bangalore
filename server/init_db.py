@@ -137,8 +137,8 @@ def createTables():
         ("create table vehicle("
         "vehicle_id int primary key,"
         "license_plate varchar(10) not null,"
-        "colour varchar(20),"
-        "type varchar(20),"
+        "colour varchar(20) not null,"
+        "type varchar(20) not null,"
         "driver_id int not null,"
         "unique (license_plate),"
         "foreign key (driver_id) references driver(driver_id))")
