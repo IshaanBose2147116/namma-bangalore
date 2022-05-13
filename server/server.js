@@ -494,13 +494,13 @@ ROUTER.get('/', (req, res) => {
         }
     });
 })
-.get('/get-vehicles', (req, res) => {
+.get('/get/:table', (req, res) => {
     conn.connect(err => {
         if (err) {
             console.log(err);
             res.status(500).send(err);
         } else {
-            conn.query('select * from vehicle', (err, result) => {
+            conn.query(`select * from ${ req.params.table }`, (err, result) => {
                 if (err) {
                     console.log(err);
                     res.status(500).send(err);
@@ -511,230 +511,106 @@ ROUTER.get('/', (req, res) => {
         }
     });
 })
-.get('/get-drivers', (req, res) => {
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query('select * from driver', (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                } else {
-                    res.status(200).send(result);
-                }
-            });
-        }
-    });
-})
-.get('/get-tourist-spots', (req, res) => {
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query('select * from tourist_spot', (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                } else {
-                    res.status(200).send(result);
-                }
-            });
-        }
-    });
-})
-.get('/get-feedback', (req, res) => {
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query('select * from feedback', (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                } else {
-                    res.status(200).send(result);
-                }
-            });
-        }
-    });
-})
-.put('/update-hotel/:hotel_id', (req, res) => {
-    if (req.params.hotel_id === undefined) {
-        res.status(400).send({ msg: "No hotel ID defined!", errCode: 2003 });
-    } else if (parseInt(req.params.hotel_id) === NaN) {
-        res.status(400).send({ msg: "Hotel ID must be an integer.", errCode: 2004 });
+.put('/update/:table/:id', (req, res) => {
+    let query, data;
+    let invalidParams = false;
+
+    switch (req.params.table) {
+        case "hotel":
+            query = `update hotel set hotel_id=?, name=?, address_line1=?, address_line2=?, address_line3=?, 
+                pincode=?, highest_price=?, lowest_price=? where hotel_id=?`;
+            data = [ req.body.hotel_id, req.body.name, req.body.address_line1, req.body.address_line2,
+                req.body.address_line3, req.body.pincode, req.body.highest_price, req.body.lowest_price, req.params.id ];
+            break;
+        case "vehicle":
+            query = `update vehicle set vehicle_id=?, license_plate=?, colour=?, type=?, driver_id=? where vehicle_id=?`;
+            data = [ req.body.vehicle_id, req.body.license_plate, req.body.colour, req.body.type, req.body.driver_id, 
+                req.params.id ];
+            break;
+        case "driver":
+            query = `update driver set driver_id=?, fname=?, mname=?, lname=?, phone_num=?, license_num=? where driver_id=?`;
+            data = [ req.body.driver_id, req.body.fname, req.body.mname, req.body.lname, req.body.phone_num, 
+                req.body.license_num, req.params.id ];
+            break;
+        case "tourist_spot":
+            query = `update tourist_spot set id=?, name=?, address_line1=?, address_line2=?, address_line3=?, pincode=?, 
+                description=?, opening_time=?, closing_time=? where id=?`;
+            data = [ req.body.id, req.body.name, req.body.address_line1, req.body.address_line2, req.body.address_line3, 
+                req.body.pincode, req.body.description, req.body.opening_time, req.body.closing_time, req.params.id ];
+            break;
+        default:
+            invalidParams = true;
+    }
+
+    if (invalidParams) {
+        res.status(400).send({ msg: "Unsupported table name", errCode: 2004 });
     } else {
         conn.connect(err => {
             if (err) {
                 console.log(err);
                 res.status(500).send(err);
             } else {
-                conn.query(`update hotel set hotel_id=?, name=?, address_line1=?, address_line2=?, address_line3=?,
-                pincode=?, highest_price=?, lowest_price=? where hotel_id=?`, 
-                [ req.body.hotel_id, req.body.name, req.body.address_line1, req.body.address_line2, req.body.address_line3, 
-                req.body.pincode, req.body.highest_price, req.body.lowest_price, req.params.hotel_id ], (err, result) => {
+                conn.query(query, data, (err, result) => {
                     if (err) {
-                        console.log(err);
-                        res.status(500).send(err);
-                    } else {
-                        res.sendStatus(200);
-                    }
-                });
+                         console.log(err);
+                         res.status(500).send(err);
+                     } else {
+                         res.sendStatus(200);
+                     }
+                 });
             }
         });
     }
 })
-.put('/update-vehicle/:vehicle_id', (req, res) => {
-    if (req.params.vehicle_id === undefined) {
-        res.status(400).send({ msg: "No vehicle ID defined!", errCode: 2003 });
-    } else if (parseInt(req.params.vehicle_id) === NaN) {
-        res.status(400).send({ msg: "Vehicle ID must be an integer.", errCode: 2004 });
+.post('/add/:table', (req, res) => {
+    let query, data;
+    let invalidParams = false;
+
+    switch (req.params.table) {
+        case "hotel":
+            query = 'insert into hotel values (?, ?, ?, ?, ?, ?, ?, ?)';
+            data = [ req.body.hotel_id, req.body.name, req.body.address_line1, req.body.address_line2,
+                req.body.address_line3, req.body.pincode, req.body.highest_price, req.body.lowest_price ];
+            break;
+        case "vehicle":
+            query = 'insert into vehicle values (?, ?, ?, ?, ?)';
+            data = [ req.body.vehicle_id, req.body.license_plate, req.body.colour, req.body.type, 
+                req.body.driver_id ];
+            break;
+        case "driver":
+            query = 'insert into driver values (?, ?, ?, ?, ?, ?)';
+            data = [ req.body.driver_id, req.body.fname, req.body.mname, req.body.lname, req.body.phone_num, 
+                req.body.license_num ];
+            break;
+        case "tourist_spot":
+            query = 'insert into tourist_spot values (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            data = [ req.body.id, req.body.name, req.body.address_line1, req.body.address_line2, 
+                req.body.address_line3, req.body.pincode, req.body.description, req.body.opening_time, 
+                req.body.closing_time ];
+            break;
+        default:
+            invalidParams = true;
+    }
+
+    if (invalidParams) {
+        res.status(400).send({ msg: "Unsupported table name", errCode: 2004 });
     } else {
         conn.connect(err => {
             if (err) {
                 console.log(err);
                 res.status(500).send(err);
             } else {
-                conn.query(`update vehicle set vehicle_id=?, license_plate=?, colour=?, type=?, driver_id=?
-                 where vehicle_id=?`, 
-                [ req.body.vehicle_id, req.body.license_plate, req.body.colour, req.body.type, req.body.driver_id, 
-                req.params.vehicle_id ], (err, result) => {
+                conn.query(query, data, (err, result) => {
                     if (err) {
-                        console.log(err);
-                        res.status(500).send(err);
-                    } else {
-                        res.sendStatus(200);
-                    }
-                });
+                         console.log(err);
+                         res.status(500).send(err);
+                     } else {
+                         res.status(200).send(result);
+                     }
+                 });
             }
         });
     }
-})
-.put('/update-driver/:driver_id', (req, res) => {
-    if (req.params.driver_id === undefined) {
-        res.status(400).send({ msg: "No driver ID defined!", errCode: 2003 });
-    } else if (parseInt(req.params.driver_id) === NaN) {
-        res.status(400).send({ msg: "Driver ID must be an integer.", errCode: 2004 });
-    } else {
-        conn.connect(err => {
-            if (err) {
-                console.log(err);
-                res.status(500).send(err);
-            } else {
-                conn.query(`update driver set driver_id=?, fname=?, mname=?, lname=?, phone_num=?, license_num=?
-                 where driver_id=?`, 
-                [ req.body.driver_id, req.body.fname, req.body.mname, req.body.lname, req.body.phone_num, req.body.license_num,
-                req.params.driver_id ], (err, result) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send(err);
-                    } else {
-                        res.sendStatus(200);
-                    }
-                });
-            }
-        });
-    }
-})
-.put('/update-tourist-spot/:id', (req, res) => {
-    if (req.params.id === undefined) {
-        res.status(400).send({ msg: "No ID defined!", errCode: 2003 });
-    } else if (parseInt(req.params.id) === NaN) {
-        res.status(400).send({ msg: "ID must be an integer.", errCode: 2004 });
-    } else {
-        conn.connect(err => {
-            if (err) {
-                console.log(err);
-                res.status(500).send(err);
-            } else {
-                conn.query(`update tourist_spot set id=?, name=?, address_line1=?, address_line2=?, address_line3=?,
-                pincode=?, description=?, opening_time=?, closing_time=? where id=?`, 
-                [ req.body.id, req.body.name, req.body.address_line1, req.body.address_line2, req.body.address_line3, 
-                req.body.pincode, req.body.opening_time, req.body.closing_time, req.params.id ], (err, result) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send(err);
-                    } else {
-                        res.sendStatus(200);
-                    }
-                });
-            }
-        });
-    }
-})
-.post('/add-hotel', (req, res) => {
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query('insert into hotel values (?, ?, ?, ?, ?, ?, ?, ?)', [ req.body.hotel_id, req.body.name, 
-            req.body.address_line1, req.body.address_line2, req.body.address_line3, req.body.pincode, 
-            req.body.highest_price, req.body.lowest_price ], (err, result) => {
-                if (err) {
-                    res.status(400).send(err);
-                } else {
-                    res.sendStatus(200);
-                }
-            });
-        }
-    });
-})
-.post('/add-vehicle', (req, res) => {
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query('insert into vehicle values (?, ?, ?, ?, ?)', [ req.body.vehicle_id, req.body.license_plate, 
-            req.body.colour, req.body.type, req.body.driver_id ], (err, result) => {
-                if (err) {
-                    res.status(400).send(err);
-                } else {
-                    res.sendStatus(200);
-                }
-            });
-        }
-    });
-})
-.post('/add-driver', (req, res) => {
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query('insert into driver values (?, ?, ?, ?, ?, ?)', [ req.body.driver_id, req.body.fname, 
-            req.body.mname, req.body.lname, req.body.phone_num, req.body.license_num ], (err, result) => {
-                if (err) {
-                    res.status(400).send(err);
-                } else {
-                    res.sendStatus(200);
-                }
-            });
-        }
-    });
-})
-.post('/add-tourist-spot', (req, res) => {
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query('insert into tourist_spot values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [ req.body.id, req.body.name, 
-            req.body.address_line1, req.body.address_line2, req.body.address_line3, req.body.pincode, 
-            req.body.description, req.body.opening_time, req.body.closing_time ], (err, result) => {
-                if (err) {
-                    res.status(400).send(err);
-                } else {
-                    res.sendStatus(200);
-                }
-            });
-        }
-    });
 })
 .delete('/delete/:table/:idname/:id', (req, res) => {
     conn.connect(err => {

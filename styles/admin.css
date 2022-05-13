@@ -26,6 +26,8 @@ html, body {
     border-right: 5px solid black;
     height: 100%;
     overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ffc107 rgb(227, 227, 227);
 }
 
 .menu-title {
@@ -133,6 +135,8 @@ html, body {
     width: 100%;
     overflow-x: auto;
     padding: 1em;
+    scrollbar-color: black rgb(227, 227, 227);
+    scrollbar-width: thin;
 }
 
 .table-container table {
