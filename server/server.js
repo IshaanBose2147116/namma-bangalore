@@ -119,6 +119,9 @@ ROUTER.get('/', (req, res) => {
 })
 .get('/offers', (req, res) => {
     res.sendFile(path.join(__dirname, '../offers.html'));
+})
+.get('/profile', (req, res) => {
+    res.sendFile(path.join(__dirname, '../profile_details.html'));
 });
 
 // GET method endpoints
