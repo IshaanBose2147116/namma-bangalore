@@ -87,7 +87,7 @@ ROUTER.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../login.html'));
 })
 .get('/tourism', (req, res) => {
-    res.sendFile(path.join(__dirname, '../tourism.html'));
+    res.sendFile(path.join(__dirname, '../travel.html'));
 })
 .get('/vehicle-booking', (req, res) => {
     res.sendFile(path.join(__dirname, '../vehicle_booking.html'));
@@ -115,6 +115,9 @@ ROUTER.get('/', (req, res) => {
 })
 .get('/parks', (req, res) => {
     res.sendFile(path.join(__dirname, '../parks.html'));
+})
+.get('/offers', (req, res) => {
+    res.sendFile(path.join(__dirname, '../offers.html'));
 })
 .get('/admin/:uid', (req, res) => {
     conn.connect(err => {
