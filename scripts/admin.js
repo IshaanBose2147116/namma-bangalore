@@ -124,6 +124,9 @@ $(document).ready(() => {
     $("#logout").click(() => {
         sessionStorage.removeItem("name");
         sessionStorage.removeItem("uid");
+        sessionStorage.removeItem("isadmin");
+        sessionStorage.removeItem("isbusiness");
+
         window.open("/", "_self");
     });
 

@@ -62,15 +62,6 @@ function validate()
           } else if (response.status === 400) {
             console.log(response);
             if (response.errCode === 1000) {
-<<<<<<< HEAD
-              span[3].innerText = "Email already registered!";
-              span[3].style.color = "red";
-              email.style.border = "1px red solid";
-              console.log("here");
-            } else {
-              span[4].innerText = "Phone number already registered!";
-              span[4].style.color = "red";
-=======
               document.getElementById("email-err").innerText = "Email already registered!";
               document.getElementById("email-err").style.color = "red";
               email.style.border = "1px red solid";
@@ -78,7 +69,6 @@ function validate()
             } else {
               document.getElementById("phone-err").innerText = "Phone number already registered!";
               document.getElementById("phone-err").style.color = "red";
->>>>>>> main
               phone.style.border = "1px red solid";
               console.log("here1");
             }
