@@ -227,7 +227,7 @@ function validateEmail() {
 // hereby validating adhaar no..
 function validateadhaar() {
   if (adhaar.value.trim() == "" || adhaar.value.trim() == null) {
-    document.getElementById("aadhaar-err").innerText = "*i";
+    document.getElementById("aadhaar-err").innerText = "*mandatory";
     document.getElementById("aadhaar-err").style.color = "red";
     adhaar.style.border = "1px red solid";
 
@@ -250,7 +250,7 @@ function validateadhaar() {
 
 function validateaddress() {
   if (address1.value == "" || address1.value == null) {
-    document.getElementById("address-err").innerText = "Blank Space not allowed";
+    document.getElementById("address-err").innerText = "*mandatory";
     document.getElementById("address-err").style.color = "red";
     address1.style.border = "1px red solid";
     return false;
@@ -265,7 +265,7 @@ function validateaddress() {
 
 function validatePincode() {
   if (pincode.value == "" || pincode.value == null) {
-    document.getElementById("pincode-err").innerText = "Blank Space not allowed";
+    document.getElementById("pincode-err").innerText = "*mandatory";
     document.getElementById("pincode-err").style.color = "red";
     pincode.style.border = "1px red solid";
     return false;
