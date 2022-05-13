@@ -948,7 +948,7 @@ url("../assests/fonts/bootstrap-icons.woff?856008caa5eb66df68595e734e59580d") fo
 .bi-music-note::before { content: "\f4a0"; }
 .bi-music-player-fill::before { content: "\f4a1"; }
 .bi-music-player::before { content: "\f4a2"; }
-.bi-newspaper::before { content: "\f4a3"; }
+.bi-travelpaper::before { content: "\f4a3"; }
 .bi-node-minus-fill::before { content: "\f4a4"; }
 .bi-node-minus::before { content: "\f4a5"; }
 .bi-node-plus-fill::before { content: "\f4a6"; }
