@@ -39,3 +39,7 @@ rangeInput.forEach((input) => {
     }
   });
 });
+
+function open() {
+  window.open("https://www.lemontreehotels.com/", "_blank");
+}
