@@ -13,7 +13,7 @@ const navLinks = {
             <a class="nav-link" href="/#travel">Local Employment</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/#travel">Offers</a>
+            <a class="nav-link" href="/offers">Offers</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="login-link" href="/login">Login</a>
@@ -29,7 +29,7 @@ const navLinks = {
             <a class="nav-link" href="/#travel">Local Employment</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/#travel">Offers</a>
+            <a class="nav-link" href="/offers">Offers</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/profile">Profile Details</a>
