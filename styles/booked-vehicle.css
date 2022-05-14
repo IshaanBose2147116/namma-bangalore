@@ -6,3 +6,7 @@
 .details-container div .action-button {
     margin-left: 0;
 }
+
+.car-container.old {
+    background-color: rgba(255, 0, 0, 0.46);
+}

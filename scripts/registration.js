@@ -62,6 +62,15 @@ function validate()
           } else if (response.status === 400) {
             console.log(response);
             if (response.errCode === 1000) {
+<<<<<<< HEAD
+              span[3].innerText = "Email already registered!";
+              span[3].style.color = "red";
+              email.style.border = "1px red solid";
+              console.log("here");
+            } else {
+              span[4].innerText = "Phone number already registered!";
+              span[4].style.color = "red";
+=======
               document.getElementById("email-err").innerText = "Email already registered!";
               document.getElementById("email-err").style.color = "red";
               email.style.border = "1px red solid";
@@ -69,6 +78,7 @@ function validate()
             } else {
               document.getElementById("phone-err").innerText = "Phone number already registered!";
               document.getElementById("phone-err").style.color = "red";
+>>>>>>> main
               phone.style.border = "1px red solid";
               console.log("here1");
             }
@@ -217,7 +227,7 @@ function validateEmail() {
 // hereby validating adhaar no..
 function validateadhaar() {
   if (adhaar.value.trim() == "" || adhaar.value.trim() == null) {
-    document.getElementById("aadhaar-err").innerText = "*i";
+    document.getElementById("aadhaar-err").innerText = "*mandatory";
     document.getElementById("aadhaar-err").style.color = "red";
     adhaar.style.border = "1px red solid";
 
@@ -240,7 +250,7 @@ function validateadhaar() {
 
 function validateaddress() {
   if (address1.value == "" || address1.value == null) {
-    document.getElementById("address-err").innerText = "Blank Space not allowed";
+    document.getElementById("address-err").innerText = "*mandatory";
     document.getElementById("address-err").style.color = "red";
     address1.style.border = "1px red solid";
     return false;
@@ -255,7 +265,7 @@ function validateaddress() {
 
 function validatePincode() {
   if (pincode.value == "" || pincode.value == null) {
-    document.getElementById("pincode-err").innerText = "Blank Space not allowed";
+    document.getElementById("pincode-err").innerText = "*mandatory";
     document.getElementById("pincode-err").style.color = "red";
     pincode.style.border = "1px red solid";
     return false;
