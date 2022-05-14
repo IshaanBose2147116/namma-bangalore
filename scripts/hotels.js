@@ -1,3 +1,10 @@
+// import ServerAPI from "./server_api";
+// ServerAPI.getHotelsWithinRange(lowerRange, higherRange, response => {
+//     if (response.status === 200)
+//         // response.data contains array of all hotels within range
+//     else
+// });
+
 const rangeInput = document.querySelectorAll(".range-input input"),
   priceInput = document.querySelectorAll(".price-input input"),
   range = document.querySelector(".slider .progress");
