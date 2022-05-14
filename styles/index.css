@@ -1,11 +1,11 @@
-.cust-container {
+.cust-nav-container {
     width: 100%;
     display: flex;
     padding: 1em;
     flex-direction: column;
 }
 
-.cust-container div {
+.cust-nav-container div {
     display: flex;
 }
 

@@ -89,6 +89,12 @@ const tableHeader = {
         <th>Salary</th>
         <th>Starts By</th>
         <th>Ends By</th>
+        <th></th>`,
+    verify_lb_certificate:
+        `<th>UID</th>
+        <th>Certificate</th>
+        <th>Is Verified?</th>
+        <th>Verified By</th>
         <th></th>`
 };
 
@@ -107,9 +113,21 @@ const tableCols = {
 }
 
 // for tables where admin shouldn't be able to edit values
-const excludeEdit = [ "feedback" ];
+const excludeEdit = [ "feedback", "lb_certificate" ];
 
 let currentTableData = undefined;
+
+const cyrb53 = function(str, seed = 0) {
+    let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+    for (let i = 0, ch; i < str.length; i++) {
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1>>>16), 2246822507) ^ Math.imul(h2 ^ (h2>>>13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2>>>16), 2246822507) ^ Math.imul(h1 ^ (h1>>>13), 3266489909);
+    return 4294967296 * (2097151 & h2) + (h1>>>0);
+};
 
 $(document).ready(() => {
     if (sessionStorage.getItem("name") === null) {
@@ -124,6 +142,9 @@ $(document).ready(() => {
     $("#logout").click(() => {
         sessionStorage.removeItem("name");
         sessionStorage.removeItem("uid");
+        sessionStorage.removeItem("isadmin");
+        sessionStorage.removeItem("isbusiness");
+
         window.open("/", "_self");
     });
 
@@ -164,15 +185,64 @@ function displayTableHeader(id) {
 }
 
 function getDataFrom(table) {
-    fetch(`http://localhost:5000/get/${ table }`, {
-        method: 'GET',
-        headers: { "Content-Type": "application/json" }
+    if (table === 'verify_lb_certificate') {
+        fetch(`http://localhost:5000/get-certificates`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        }).then(response => {
+            response.json().then(data => {
+                currentTableData = data;
+                console.log(currentTableData);
+                displayCertificateVerification();
+            });
+        });
+    } else {
+        fetch(`http://localhost:5000/get/${ table }`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        }).then(response => {
+            response.json().then(data => {
+                currentTableData = data;
+                currentTableData.currentTable = table;
+                displayData(data);
+            });
+        });
+    }
+}
+
+function displayCertificateVerification() {
+    const tbody = document.getElementsByTagName("tbody")[0];
+    tbody.innerHTML = "";
+    currentTableData.hashMap = {};
+
+    for (let i = 0; currentTableData.certificates.length; i++) {
+        tbody.innerHTML += 
+        `<tr>
+            <td>${ currentTableData.certificates[i].uid }</td>
+            <td><a href=".${ currentTableData.certificates[i].link }" target="_blank">Click to check</a></td>
+            <td>${ currentTableData.certificates[i].isVerified }</td>
+            <td>${ currentTableData.certificates[i].verifiedBy }</td>
+            <td>${ currentTableData.certificates[i].isVerified ? "" : 
+                `<button id=${ cyrb53(currentTableData.certificates[i].link) } class='action-button'>Verify</button>` 
+            }</td>
+        </tr>`;
+
+        currentTableData.hashMap[cyrb53(currentTableData.certificates[i].link)] = currentTableData.absolute[i];
+
+        $(document).on('click', `#${ cyrb53(currentTableData.certificates[i].link) }`, verifyCertificate);
+    }
+}
+
+function verifyCertificate(evt) {
+    fetch(`http://localhost:5000/verify-certificate/${ sessionStorage.getItem("uid") }`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'text/plain'},
+        body: currentTableData.hashMap[evt.currentTarget.id]
     }).then(response => {
-        response.json().then(data => {
-            currentTableData = data;
-            currentTableData.currentTable = table;
-            displayData(data);
-        })
+        if (response.status === 200)
+            location.reload();
+        else
+            alert("Could not verify.");
     });
 }
 
@@ -181,13 +251,9 @@ function displayData(data) {
     tbody.innerHTML = "";
 
     for (let i = 0; i < data.length; i++) {
-        let saveIndex = true;
         var row = '<tr>';
 
         for (let key in data[i]) {
-            if (saveIndex)
-                saveIndex = false;
-
             row += `<td>${ data[i][key] }</td>`;
         }
 
@@ -220,19 +286,36 @@ function deleteRow(evt) {
     console.log(evt.currentTarget.id);
     const row = currentTableData[evt.currentTarget.id.split('-')[1]];
 
-    fetch(`http://localhost:5000/delete/${ currentTableData.currentTable }/${ Object.keys(row)[0] }/${ row[Object.keys(row)[0]] }`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" }
-    }).then(response => {
-        if (response.status === 200) {
-            getDataFrom(currentTableData.currentTable);
-        } else {
-            response.json().then(data => {
-                alert("Could not delete, check console or server for error.");
-                console.log(data);
-            });
-        }
-    });
+    if (currentTableData.currentTable === 'lb_certificate') {
+        fetch(`http://localhost:5000/delete-certificate`, {
+            method: 'DELETE',
+            headers: { "Content-Type": "text/plain" },
+            body: row.certificate
+        }).then(response => {
+            if (response.status === 200) {
+                getDataFrom(currentTableData.currentTable);
+            } else {
+                response.json().then(data => {
+                    alert("Could not delete, check console or server for error.");
+                    console.log(data);
+                });
+            }
+        });
+    } else {
+        fetch(`http://localhost:5000/delete/${ currentTableData.currentTable }/${ Object.keys(row)[0] }/${ row[Object.keys(row)[0]] }`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" }
+        }).then(response => {
+            if (response.status === 200) {
+                getDataFrom(currentTableData.currentTable);
+            } else {
+                response.json().then(data => {
+                    alert("Could not delete, check console or server for error.");
+                    console.log(data);
+                });
+            }
+        });
+    }
 }
 
 function showEditPopup(evt) {

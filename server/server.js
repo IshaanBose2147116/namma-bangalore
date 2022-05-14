@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const crypto = require('crypto');
 const fs = require('fs');
-const { get } = require('https');
+const fileupload = require('express-fileupload')
 const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -62,6 +62,7 @@ function registerLocalBusiness(conn, data, callback) {
 }
 
 app.use(bodyParser.json());
+app.use(fileupload({ createParentPath: true }));
 
 app.use("/styles", express.static(path.join(__dirname, '../styles')));
 app.use("/scripts", express.static(path.join(__dirname, '../scripts')));
@@ -74,6 +75,7 @@ const ROUTER = express.Router({
 
 app.use(ROUTER);
 
+// retrieving pages
 ROUTER.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 })
@@ -87,7 +89,7 @@ ROUTER.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../login.html'));
 })
 .get('/tourism', (req, res) => {
-    res.sendFile(path.join(__dirname, '../travel.html'));
+    res.sendFile(path.join(__dirname, '../tourism.html'));
 })
 .get('/vehicle-booking', (req, res) => {
     res.sendFile(path.join(__dirname, '../vehicle_booking.html'));
@@ -119,7 +121,12 @@ ROUTER.get('/', (req, res) => {
 .get('/offers', (req, res) => {
     res.sendFile(path.join(__dirname, '../offers.html'));
 })
-.get('/admin/:uid', (req, res) => {
+.get('/profile', (req, res) => {
+    res.sendFile(path.join(__dirname, '../profile_details.html'));
+});
+
+// GET method endpoints
+ROUTER.get('/admin/:uid', (req, res) => {
     conn.connect(err => {
         if (err) {
             console.log(err);
@@ -164,7 +171,215 @@ ROUTER.get('/', (req, res) => {
         });
     }
 })
-.post('/register-user/:type', (req, res) => {
+.get('/available-vehicles', (req, res) => {
+    if (Object.keys(req.query).length < 2) {
+        res.status(400).send({ 
+            msg: "Query string must contain at least 2 arguments." ,
+            errCode: 2000
+        });
+    } else if (Object.keys(req.query).length > 3) {
+        res.status(400).send({ 
+            msg: "Query string cannot have more than 3 arguments." ,
+            errCode: 2001
+        });
+    } else {
+        if (req.query.from_time === undefined || req.query.to_time === undefined) {
+            res.status(400).send({ 
+                msg: "Invalid arguments passed! Arguments allowed: 'from_time' (required), 'to_time' (required), and 'type'." ,
+                errCode: 2002
+            });
+        } else {
+            var query;
+
+            if (req.query.type === undefined) {
+                query = 
+                    `select v.vehicle_id, v.license_plate, v.colour, v.type, 
+                    concat_ws(' ', d.fname, d.mname, d.lname) as driver_name, d.phone_num from vehicle v join driver d 
+                    on v.driver_id=d.driver_id where v.vehicle_id not in 
+                    (select b.vehicle_id from vehicle_booking b where b.from_date <= ? and b.till_date >= ?)`;
+            } else {
+                query = 
+                    `select v.vehicle_id, v.license_plate, v.colour, v.type, 
+                    concat_ws(' ', d.fname, d.mname, d.lname) as driver_name, d.phone_num from vehicle v join driver d 
+                    on v.driver_id=d.driver_id where v.vehicle_id not in 
+                    (select b.vehicle_id from vehicle_booking b where b.from_date <= ? and b.till_date >= ?) and type = ?`;
+            }
+
+            conn.connect((err) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    var filters = [ req.query.to_time, req.query.from_time ];
+                    
+                    if (req.query.type !== undefined)
+                        filters.push(req.query.type);
+                    
+                    conn.query(query, filters, (err, result) => {
+                        if (err) {
+                            if (err.errno === 1525) {
+                                res.status(400).send({
+                                    msg: err.sqlMessage,
+                                    errCode: 1020
+                                });
+                            } else {
+                                console.log(err);
+                                res.status(500).send(err);
+                            }
+                        } else {
+                            var resResults = [];
+                            console.log(result);
+
+                            for (var i = 0; i < result.length; i++) {
+                                resResults.push({
+                                    vehicle_details: {
+                                        vehicle_id: result[i].vehicle_id,
+                                        license_plate: result[i].license_plate,
+                                        colour: result[i].colour,
+                                        type: result[i].type
+                                    },
+                                    driver_details: {
+                                        name: result[i].driver_name,
+                                        phone: result[i].phone_num
+                                    }
+                                });
+                            }
+
+                            res.status(200).send(resResults);
+                        }
+                    });
+                }
+            });
+        }
+    }
+})
+.get("/get-hotels-info", (req, res) => {
+    let query = null;
+    let filters = [];
+
+    if (Object.keys(req.query).length == 2) {
+        if (req.params.lowest_price === undefined || req.params.highest_price === undefined) {
+            res.status(400).send({ msg: "Query string must contain 'lowest_price' and 'highest_price'.", errCode: 2002 });
+            return;
+        }
+
+        query = 'select * from hotel where lowest_price >= ? and highest_price <= ?';
+        filters.push(parseFloat(req.params.lowest_price));
+        filters.push(parseFloat(req.params.highest_price));
+    } else {
+        query = 'select * from hotel';
+    }
+
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query(query, filters, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result);
+                }
+            });
+        }
+    });
+})
+.get('/feedback-on/:id', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query(`select f.comment, f.rating, f.given_on, concat_ws(" ", u.fname, u.mname, u.lname) as name
+            from feedback f join general_user u on f.given_by=u.uid where f.feedback_for=?`, [ req.params.id ], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result);
+                }
+            });
+        }
+    });
+})
+.get('/get/:table', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query(`select * from ${ req.params.table }`, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result);
+                }
+            });
+        }
+    });
+})
+.get('/get-business-details/:uid', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('select * from local_business where uid=?', [ req.params.uid ], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result[0]);
+                }
+            });
+        }
+    });
+})
+.get('/get-certificates/:id?', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            let query, data = [];
+
+            if (req.params.id === undefined) {
+                query = 'select * from lb_certificate';
+            } else {
+                query = 'select * from lb_certificate where uid=?';
+                data.push(req.params.id);
+            }
+
+            conn.query(query, data, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    const certificates = [];
+                    const absolute = [];
+
+                    for (let i = 0; i < result.length; i++) {
+                        certificates.push({
+                            uid: result[i].uid,
+                            link: result[i].certificate.replace(path.join(__dirname, '..'), '.'),
+                            isVerified: result[i].is_verified === 1,
+                            verifiedBy: result[i].verified_by
+                        });
+                        absolute.push(result[i].certificate);
+                    }
+                    
+                    res.status(200).send({ certificates: certificates, absolute: absolute });
+                }
+            });
+        }
+    });
+});
+
+// POST method endpoints
+ROUTER.post('/register-user/:type', (req, res) => {
     conn.connect((err) => {
         if (err) {
             console.log(err);
@@ -297,7 +512,7 @@ ROUTER.get('/', (req, res) => {
                                                         console.log(err);
                                                         res.status(500).send(err);
                                                     } else {
-                                                        res.status(200).send({ uid: uid, name: result[0].business_name });
+                                                        res.status(200).send({ uid: uid, name: result[0].business_name, isBusiness: true });
                                                     }
                                                 });
                                             } else {
@@ -315,88 +530,6 @@ ROUTER.get('/', (req, res) => {
             });
         }
     });
-})
-.get('/available-vehicles', (req, res) => {
-    if (Object.keys(req.query).length < 2) {
-        res.status(400).send({ 
-            msg: "Query string must contain at least 2 arguments." ,
-            errCode: 2000
-        });
-    } else if (Object.keys(req.query).length > 3) {
-        res.status(400).send({ 
-            msg: "Query string cannot have more than 3 arguments." ,
-            errCode: 2001
-        });
-    } else {
-        if (req.query.from_time === undefined || req.query.to_time === undefined) {
-            res.status(400).send({ 
-                msg: "Invalid arguments passed! Arguments allowed: 'from_time' (required), 'to_time' (required), and 'type'." ,
-                errCode: 2002
-            });
-        } else {
-            var query;
-
-            if (req.query.type === undefined) {
-                query = 
-                    `select v.vehicle_id, v.license_plate, v.colour, v.type, 
-                    concat_ws(' ', d.fname, d.mname, d.lname) as driver_name, d.phone_num from vehicle v join driver d 
-                    on v.driver_id=d.driver_id where v.vehicle_id not in 
-                    (select b.vehicle_id from vehicle_booking b where b.from_date <= ? and b.till_date >= ?)`;
-            } else {
-                query = 
-                    `select v.vehicle_id, v.license_plate, v.colour, v.type, 
-                    concat_ws(' ', d.fname, d.mname, d.lname) as driver_name, d.phone_num from vehicle v join driver d 
-                    on v.driver_id=d.driver_id where v.vehicle_id not in 
-                    (select b.vehicle_id from vehicle_booking b where b.from_date <= ? and b.till_date >= ?) and type = ?`;
-            }
-
-            conn.connect((err) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                } else {
-                    var filters = [ req.query.to_time, req.query.from_time ];
-                    
-                    if (req.query.type !== undefined)
-                        filters.push(req.query.type);
-                    
-                    conn.query(query, filters, (err, result) => {
-                        if (err) {
-                            if (err.errno === 1525) {
-                                res.status(400).send({
-                                    msg: err.sqlMessage,
-                                    errCode: 1020
-                                });
-                            } else {
-                                console.log(err);
-                                res.status(500).send(err);
-                            }
-                        } else {
-                            var resResults = [];
-                            console.log(result);
-
-                            for (var i = 0; i < result.length; i++) {
-                                resResults.push({
-                                    vehicle_details: {
-                                        vehicle_id: result[i].vehicle_id,
-                                        license_plate: result[i].license_plate,
-                                        colour: result[i].colour,
-                                        type: result[i].type
-                                    },
-                                    driver_details: {
-                                        name: result[i].driver_name,
-                                        phone: result[i].phone_num
-                                    }
-                                });
-                            }
-
-                            res.status(200).send(resResults);
-                        }
-                    });
-                }
-            });
-        }
-    }
 })
 .post('/book-vehicle', (req, res) => {
     conn.connect((err) => {
@@ -428,142 +561,6 @@ ROUTER.get('/', (req, res) => {
             });
         }
     });
-})
-.delete('/cancel-booking/:booking_id', (req, res) => {
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query('delete from vehicle_booking where booking_id=?', [ req.params.booking_id ], (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                } else {
-                    res.sendStatus(200);
-                }
-            });
-        }
-    });
-})
-.get("/get-hotels-info", (req, res) => {
-    let query = null;
-    let filters = [];
-
-    if (Object.keys(req.query).length == 2) {
-        if (req.params.lowest_price === undefined || req.params.highest_price === undefined) {
-            res.status(400).send({ msg: "Query string must contain 'lowest_price' and 'highest_price'.", errCode: 2002 });
-            return;
-        }
-
-        query = 'select * from hotel where lowest_price >= ? and highest_price <= ?';
-        filters.push(parseFloat(req.params.lowest_price));
-        filters.push(parseFloat(req.params.highest_price));
-    } else {
-        query = 'select * from hotel';
-    }
-
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query(query, filters, (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                } else {
-                    res.status(200).send(result);
-                }
-            });
-        }
-    });
-})
-.get('/feedback-on/:id', (req, res) => {
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query(`select f.comment, f.rating, f.given_on, concat_ws(" ", u.fname, u.mname, u.lname) as name
-            from feedback f join general_user u on f.given_by=u.uid where f.feedback_for=?`, [ req.params.id ], (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                } else {
-                    res.status(200).send(result);
-                }
-            });
-        }
-    });
-})
-.get('/get/:table', (req, res) => {
-    conn.connect(err => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            conn.query(`select * from ${ req.params.table }`, (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                } else {
-                    res.status(200).send(result);
-                }
-            });
-        }
-    });
-})
-.put('/update/:table/:id', (req, res) => {
-    let query, data;
-    let invalidParams = false;
-
-    switch (req.params.table) {
-        case "hotel":
-            query = `update hotel set hotel_id=?, name=?, address_line1=?, address_line2=?, address_line3=?, 
-                pincode=?, highest_price=?, lowest_price=? where hotel_id=?`;
-            data = [ req.body.hotel_id, req.body.name, req.body.address_line1, req.body.address_line2,
-                req.body.address_line3, req.body.pincode, req.body.highest_price, req.body.lowest_price, req.params.id ];
-            break;
-        case "vehicle":
-            query = `update vehicle set vehicle_id=?, license_plate=?, colour=?, type=?, driver_id=? where vehicle_id=?`;
-            data = [ req.body.vehicle_id, req.body.license_plate, req.body.colour, req.body.type, req.body.driver_id, 
-                req.params.id ];
-            break;
-        case "driver":
-            query = `update driver set driver_id=?, fname=?, mname=?, lname=?, phone_num=?, license_num=? where driver_id=?`;
-            data = [ req.body.driver_id, req.body.fname, req.body.mname, req.body.lname, req.body.phone_num, 
-                req.body.license_num, req.params.id ];
-            break;
-        case "tourist_spot":
-            query = `update tourist_spot set id=?, name=?, address_line1=?, address_line2=?, address_line3=?, pincode=?, 
-                description=?, opening_time=?, closing_time=? where id=?`;
-            data = [ req.body.id, req.body.name, req.body.address_line1, req.body.address_line2, req.body.address_line3, 
-                req.body.pincode, req.body.description, req.body.opening_time, req.body.closing_time, req.params.id ];
-            break;
-        default:
-            invalidParams = true;
-    }
-
-    if (invalidParams) {
-        res.status(400).send({ msg: "Unsupported table name", errCode: 2004 });
-    } else {
-        conn.connect(err => {
-            if (err) {
-                console.log(err);
-                res.status(500).send(err);
-            } else {
-                conn.query(query, data, (err, result) => {
-                    if (err) {
-                         console.log(err);
-                         res.status(500).send(err);
-                     } else {
-                         res.sendStatus(200);
-                     }
-                 });
-            }
-        });
-    }
 })
 .post('/add/:table', (req, res) => {
     let query, data;
@@ -615,6 +612,53 @@ ROUTER.get('/', (req, res) => {
         });
     }
 })
+.post('/save-certificate/:id', (req, res) => {
+    const filename = req.files.img.name;
+    const filepath = path.join(__dirname, `../assests/images/local_business_certificates/${ req.params.id }`, filename);
+    console.log(filepath);
+
+    req.files.img.mv(filepath, err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.connect(err => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    conn.query('insert into lb_certificate values (?, ?, 0, NULL)', [ req.params.id, filepath ], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).send(err);
+                        } else {
+                            res.sendStatus(200);
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+// DELETE method endpoints
+ROUTER.delete('/cancel-booking/:booking_id', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('delete from vehicle_booking where booking_id=?', [ req.params.booking_id ], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
+        }
+    });
+})
 .delete('/delete/:table/:idname/:id', (req, res) => {
     conn.connect(err => {
         if (err) {
@@ -631,6 +675,112 @@ ROUTER.get('/', (req, res) => {
             });
         }
     });
+})
+.delete('/delete-certificate', bodyParser.text({ type: '*/*' }), (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('delete from lb_certificate where certificate=?', [ req.body ], (err, result) => {
+                if (err) { 
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    fs.unlink(req.body, err => {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).send(err);
+                        } else {
+                            res.sendStatus(200);
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+// PUT method endpoints
+ROUTER.put('/update/:table/:id', (req, res) => {
+    let query, data;
+    let invalidParams = false;
+    console.log(req.params.table);
+
+    switch (req.params.table) {
+        case "hotel":
+            query = `update hotel set hotel_id=?, name=?, address_line1=?, address_line2=?, address_line3=?, 
+                pincode=?, highest_price=?, lowest_price=? where hotel_id=?`;
+            data = [ req.body.hotel_id, req.body.name, req.body.address_line1, req.body.address_line2,
+                req.body.address_line3, req.body.pincode, req.body.highest_price, req.body.lowest_price, req.params.id ];
+            break;
+        case "vehicle":
+            query = `update vehicle set vehicle_id=?, license_plate=?, colour=?, type=?, driver_id=? where vehicle_id=?`;
+            data = [ req.body.vehicle_id, req.body.license_plate, req.body.colour, req.body.type, req.body.driver_id, 
+                req.params.id ];
+            break;
+        case "driver":
+            query = `update driver set driver_id=?, fname=?, mname=?, lname=?, phone_num=?, license_num=? where driver_id=?`;
+            data = [ req.body.driver_id, req.body.fname, req.body.mname, req.body.lname, req.body.phone_num, 
+                req.body.license_num, req.params.id ];
+            break;
+        case "tourist_spot":
+            query = `update tourist_spot set id=?, name=?, address_line1=?, address_line2=?, address_line3=?, pincode=?, 
+                description=?, opening_time=?, closing_time=? where id=?`;
+            data = [ req.body.id, req.body.name, req.body.address_line1, req.body.address_line2, req.body.address_line3, 
+                req.body.pincode, req.body.description, req.body.opening_time, req.body.closing_time, req.params.id ];
+            break;
+        case "local_business":
+            query = `update local_business set address_line1=?, address_line2=?, address_line3=?, pincode=?, business_name=?,
+                aadhaar_num=?`;
+            data = [ req.body.address_line1, req.body.address_line2, req.body.address_line3, req.body.pincode, 
+                req.body.business_name, req.body.aadhaar_num ];
+            break;
+        default:
+            invalidParams = true;
+    }
+
+    if (invalidParams) {
+        res.status(400).send({ msg: "Unsupported table name", errCode: 2004 });
+    } else {
+        conn.connect(err => {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+            } else {
+                conn.query(query, data, (err, result) => {
+                    if (err) {
+                         console.log(err);
+                         res.status(500).send(err);
+                     } else {
+                         res.sendStatus(200);
+                     }
+                 });
+            }
+        });
+    }
+})
+.put('/verify-certificate/:verified_by', bodyParser.text({ type: '*/*' }), (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('update lb_certificate set is_verified=1, verified_by=? where certificate=?', [ req.params.verified_by,
+                req.body ], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send(err);
+                    } else {
+                        res.sendStatus(200);
+                    }
+            });
+        }
+    });
+});
+
+app.use((req, res, next) => {
+    res.sendStatus(404);
 });
 
 function main() {
@@ -657,9 +807,5 @@ function main() {
         });
     }
 }
-
-app.use((req, res, next) => {
-    res.sendStatus(404);
-});
 
 main();

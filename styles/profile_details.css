@@ -1,0 +1,65 @@
+.cust-container {
+    width: 100%;
+    display: flex;
+    padding: 3em 1.5em;
+    /* flex-direction: column; */
+    /* align-items: center; */
+}
+
+.container-half {
+    width: 50%;
+    padding: 1em;
+}
+
+.container-half div {
+    display: flex;
+    margin: 1em 0;
+    flex-direction: column;
+}
+
+.action-button {
+    border: none;
+    background-color: #ffc107;
+    padding: 0.2em 0.5em;
+    border-radius: 5px;
+}
+
+.action-button:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px #6f5400;
+    color: rgb(55, 55, 55);
+}
+
+#certificate-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+}
+
+#certificate-container a {
+    color: rgb(0, 145, 255);
+}
+
+#certificate-container a:hover {
+    color:rgb(66, 173, 255);
+    text-decoration: underline;
+}
+
+#certificate-container div {
+    display: flex;
+    flex-direction: row;
+}
+
+.delete {
+    margin-left: 0.2em;
+}
+
+.delete:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.err-text {
+    color: red;
+    font-size: 0.8em;
+}

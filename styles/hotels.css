@@ -383,13 +383,14 @@ h2{
   Custom CSS
   */
 
-  .cust-container {
-      width: 100;
+  .cust-container-hotel {
+      width: 100%;
+      display: flex;
       flex-direction: column;
       align-items: center;
   }
 
-  .cust-container h3 {
+  .cust-container-hotel h3 {
       margin: 1em 0;
   }
 
