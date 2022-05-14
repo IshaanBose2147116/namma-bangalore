@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const crypto = require('crypto');
 const fs = require('fs');
-const { get } = require('https');
+const fileupload = require('express-fileupload')
 const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -62,6 +62,7 @@ function registerLocalBusiness(conn, data, callback) {
 }
 
 app.use(bodyParser.json());
+app.use(fileupload({ createParentPath: true }));
 
 app.use("/styles", express.static(path.join(__dirname, '../styles')));
 app.use("/scripts", express.static(path.join(__dirname, '../scripts')));
@@ -88,7 +89,7 @@ ROUTER.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../login.html'));
 })
 .get('/tourism', (req, res) => {
-    res.sendFile(path.join(__dirname, '../travel.html'));
+    res.sendFile(path.join(__dirname, '../tourism.html'));
 })
 .get('/vehicle-booking', (req, res) => {
     res.sendFile(path.join(__dirname, '../vehicle_booking.html'));
@@ -315,6 +316,62 @@ ROUTER.get('/admin/:uid', (req, res) => {
                     res.status(500).send(err);
                 } else {
                     res.status(200).send(result);
+                }
+            });
+        }
+    });
+})
+.get('/get-business-details/:uid', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('select * from local_business where uid=?', [ req.params.uid ], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(result[0]);
+                }
+            });
+        }
+    });
+})
+.get('/get-certificates/:id?', (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            let query, data = [];
+
+            if (req.params.id === undefined) {
+                query = 'select * from lb_certificate';
+            } else {
+                query = 'select * from lb_certificate where uid=?';
+                data.push(req.params.id);
+            }
+
+            conn.query(query, data, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    const certificates = [];
+                    const absolute = [];
+
+                    for (let i = 0; i < result.length; i++) {
+                        certificates.push({
+                            uid: result[i].uid,
+                            link: result[i].certificate.replace(path.join(__dirname, '..'), '.'),
+                            isVerified: result[i].is_verified === 1,
+                            verifiedBy: result[i].verified_by
+                        });
+                        absolute.push(result[i].certificate);
+                    }
+                    
+                    res.status(200).send({ certificates: certificates, absolute: absolute });
                 }
             });
         }
@@ -554,6 +611,34 @@ ROUTER.post('/register-user/:type', (req, res) => {
             }
         });
     }
+})
+.post('/save-certificate/:id', (req, res) => {
+    const filename = req.files.img.name;
+    const filepath = path.join(__dirname, `../assests/images/local_business_certificates/${ req.params.id }`, filename);
+    console.log(filepath);
+
+    req.files.img.mv(filepath, err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.connect(err => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    conn.query('insert into lb_certificate values (?, ?, 0, NULL)', [ req.params.id, filepath ], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).send(err);
+                        } else {
+                            res.sendStatus(200);
+                        }
+                    });
+                }
+            });
+        }
+    });
 });
 
 // DELETE method endpoints
@@ -590,12 +675,37 @@ ROUTER.delete('/cancel-booking/:booking_id', (req, res) => {
             });
         }
     });
+})
+.delete('/delete-certificate', bodyParser.text({ type: '*/*' }), (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('delete from lb_certificate where certificate=?', [ req.body ], (err, result) => {
+                if (err) { 
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    fs.unlink(req.body, err => {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).send(err);
+                        } else {
+                            res.sendStatus(200);
+                        }
+                    });
+                }
+            });
+        }
+    });
 });
 
 // PUT method endpoints
 ROUTER.put('/update/:table/:id', (req, res) => {
     let query, data;
     let invalidParams = false;
+    console.log(req.params.table);
 
     switch (req.params.table) {
         case "hotel":
@@ -620,6 +730,12 @@ ROUTER.put('/update/:table/:id', (req, res) => {
             data = [ req.body.id, req.body.name, req.body.address_line1, req.body.address_line2, req.body.address_line3, 
                 req.body.pincode, req.body.description, req.body.opening_time, req.body.closing_time, req.params.id ];
             break;
+        case "local_business":
+            query = `update local_business set address_line1=?, address_line2=?, address_line3=?, pincode=?, business_name=?,
+                aadhaar_num=?`;
+            data = [ req.body.address_line1, req.body.address_line2, req.body.address_line3, req.body.pincode, 
+                req.body.business_name, req.body.aadhaar_num ];
+            break;
         default:
             invalidParams = true;
     }
@@ -643,6 +759,24 @@ ROUTER.put('/update/:table/:id', (req, res) => {
             }
         });
     }
+})
+.put('/verify-certificate/:verified_by', bodyParser.text({ type: '*/*' }), (req, res) => {
+    conn.connect(err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            conn.query('update lb_certificate set is_verified=1, verified_by=? where certificate=?', [ req.params.verified_by,
+                req.body ], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send(err);
+                    } else {
+                        res.sendStatus(200);
+                    }
+            });
+        }
+    });
 });
 
 app.use((req, res, next) => {

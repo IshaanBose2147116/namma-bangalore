@@ -13,6 +13,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap"
 		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 	<link href="./styles/bootstrap.min.css" rel="stylesheet" />
 	<link href="./styles/bootstrap-icons.css" rel="stylesheet" />
@@ -21,6 +22,7 @@
 	<link href="./styles/templatemo-nomad-force.css" rel="stylesheet" />
 	<link href="./styles/index.css" rel="stylesheet" />
 	<link href="./styles/mystyle.css" rel="stylesheet" />
+    <link href="./styles/profile_details.css" rel="stylesheet" />
 
 	<style>
 		h5 {
@@ -31,7 +33,7 @@
 
 <body>
 	<nav class="navbar navbar-expand-lg bg-light shadow-lg">
-		<div class="cust-container">
+		<div class="cust-nav-container">
 			<div>
 				<a class="navbar-brand" id="phone-logo" href="/">
 					<img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75"
@@ -76,6 +78,38 @@
 			</div>
 		</div>
 	</nav>
+    <div class="cust-container">
+        <div class="container-half">
+            <div>
+                <span>Business Name: </span><input type="text" id="business_name" />
+				<span id="bname-err" class="err-text"></span>
+            </div>
+            <div>
+                <span>Address Line 1: </span><input type="text" id="add-line-1" />
+				<span id="add-err" class="err-text"></span>
+            </div>
+            <div>
+                <span>Address Line 2: </span><input type="text" id="add-line-2" />
+            </div>
+            <div>
+                <span>Address Line 3: </span><input type="text" id="add-line-3" />
+            </div>
+            <div>
+                <span>Pincode: </span><input type="number" id="pincode" />
+				<span id="pincode-err" class="err-text"></span>
+            </div>
+            <div>
+                <span>Aadhaar Number: </span><input type="number" id="aadhaar" />
+				<span id="aadhaar-err" class="err-text"></span>
+            </div>
+			<button id="save-changes" class="action-button">Save Changes</button>
+        </div>
+		<div class="container-half">
+			<h3>Certificates</h3>
+			<div id="certificate-container"></div>
+			<button id="upload-cert" class="action-button">Upload Certificate</button>
+		</div>
+    </div>
 
 	<!-- JAVASCRIPT FILES -->
 	<script src="./scripts/jquery.min.js"></script>
@@ -87,6 +121,7 @@
 	<script src="./scripts/scrollspy.min.js"></script>
 	<script src="./scripts/custom.js"></script>
 	<script src="./scripts/index.js"></script>
+    <script src="./scripts/profile_details.js"></script>
 </body>
 
 </html>

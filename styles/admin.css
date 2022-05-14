@@ -118,7 +118,7 @@ html, body {
     padding: 1em;
 }
 
-.table-actions .action-button {
+.action-button {
     background-color: var(--primary-color);
     border: none;
     border-radius: 5px;
@@ -126,7 +126,7 @@ html, body {
     padding: 0.5em 1em;
 }
 
-.table-actions .action-button:hover {
+.action-button:hover {
     color: white;
     cursor: pointer;
 }
