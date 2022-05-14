@@ -62,19 +62,19 @@ function validate()
           } else if (response.status === 400) {
             console.log(response);
             if (response.errCode === 1000) {
-              document.getElementById("email-err").innerText = "Email already registered!";
-              document.getElementById("email-err").style.color = "red";
-              email.style.border = "1px red solid";
-              console.log("here");
+				document.getElementById("email-err").innerText = "Email already registered!";
+				document.getElementById("email-err").style.color = "red";
+				email.style.border = "1px red solid";
+				console.log("here");
             } else {
-              document.getElementById("phone-err").innerText = "Phone number already registered!";
-              document.getElementById("phone-err").style.color = "red";
-              phone.style.border = "1px red solid";
-              console.log("here1");
+				document.getElementById("phone-err").innerText = "Phone number already registered!";
+				document.getElementById("phone-err").style.color = "red";
+				phone.style.border = "1px red solid";
+				console.log("here1");
             }
           } else {
-            console.log(response);
-            alert("Internal server error! Please try again later.");
+			console.log(response);
+			alert("Internal server error! Please try again later.");
           }
         });
     }
@@ -263,6 +263,13 @@ function validatePincode() {
   
   if (pincode.value.includes('-')) {
     document.getElementById("pincode-err").innerText = "Negative numbers not allowed";
+    document.getElementById("pincode-err").style.color = "red";
+    pincode.style.border = "1px red solid";
+    return false;
+  }
+
+  if (pincode.value.length !== 6) {
+	document.getElementById("pincode-err").innerText = "Pincode must be 6 digits long";
     document.getElementById("pincode-err").style.color = "red";
     pincode.style.border = "1px red solid";
     return false;

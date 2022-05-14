@@ -13,19 +13,16 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap"
 		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 	<link href="./styles/bootstrap.min.css" rel="stylesheet" />
 	<link href="./styles/bootstrap-icons.css" rel="stylesheet" />
 	<link href="./styles/magnific-popup.css" rel="stylesheet" />
 	<link href="./styles/aos.css" rel="stylesheet" />
 	<link href="./styles/templatemo-nomad-force.css" rel="stylesheet" />
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"
-		rel="stylesheet" />
-
-	<link href="./styles/booked-vehicle.css" rel="stylesheet" />
-	<link href="./styles/common_vehicle.css" rel="stylesheet" />
 	<link href="./styles/index.css" rel="stylesheet" />
 	<link href="./styles/mystyle.css" rel="stylesheet" />
+    <link href="./styles/profile_details.css" rel="stylesheet" />
 
 	<style>
 		h5 {
@@ -39,17 +36,21 @@
 		<div class="cust-nav-container">
 			<div>
 				<a class="navbar-brand" id="phone-logo" href="/">
-					<img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75" height="50">
+					<img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75"
+						height="50">
 				</a>
 
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="margin-left: auto;">
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+					aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+					style="margin-left: auto;">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
 			</div>
 			<div>
 				<a class="navbar-brand" id="laptop-logo" href="/">
-					<img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75" height="50">
+					<img src="./assests/images/bang-images/Namma-bang-logo.png" alt="namma-bengaluru-logo" width="75"
+						height="50">
 				</a>
 
 				<div class="collapse navbar-collapse" id="navbarNav">
@@ -77,36 +78,38 @@
 			</div>
 		</div>
 	</nav>
-
-	<div class="content-container">
-		<div class="no-login" id="no-login">
-			<h1>Not logged in!</h1>
-			<div>
-				You need to be logged in to view your bookings.
-				<a href="/login">Login.</a>
-			</div>
+    <div class="cust-container">
+        <div class="container-half">
+            <div>
+                <span>Business Name: </span><input type="text" id="business_name" />
+				<span id="bname-err" class="err-text"></span>
+            </div>
+            <div>
+                <span>Address Line 1: </span><input type="text" id="add-line-1" />
+				<span id="add-err" class="err-text"></span>
+            </div>
+            <div>
+                <span>Address Line 2: </span><input type="text" id="add-line-2" />
+            </div>
+            <div>
+                <span>Address Line 3: </span><input type="text" id="add-line-3" />
+            </div>
+            <div>
+                <span>Pincode: </span><input type="number" id="pincode" />
+				<span id="pincode-err" class="err-text"></span>
+            </div>
+            <div>
+                <span>Aadhaar Number: </span><input type="number" id="aadhaar" />
+				<span id="aadhaar-err" class="err-text"></span>
+            </div>
+			<button id="save-changes" class="action-button">Save Changes</button>
+        </div>
+		<div class="container-half">
+			<h3>Certificates</h3>
+			<div id="certificate-container"></div>
+			<button id="upload-cert" class="action-button">Upload Certificate</button>
 		</div>
-		<div class="top-banner">
-			<h1>Want to book another vehicle?</h1>
-			<a href="/vehicle-booking">Click here book more vehicles!</a>
-		</div>
-		<div class="booked-vehicles-container"></div>
-	</div>
-
-	<div class="confirmation-popup-container">
-		<div class="confirmation-popup">
-			<div class="popup-header">
-				<span>Cancel Booking</span>
-				<button id="close-popup"><span class="icon-close"></span></button>
-			</div>
-			<div class="details-container">
-				<div>Are you you want to cancel this booking?</div>
-				<div>
-					<button class="action-button">Confirm</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    </div>
 
 	<!-- JAVASCRIPT FILES -->
 	<script src="./scripts/jquery.min.js"></script>
@@ -118,7 +121,7 @@
 	<script src="./scripts/scrollspy.min.js"></script>
 	<script src="./scripts/custom.js"></script>
 	<script src="./scripts/index.js"></script>
-	<script type="module" src="./scripts/booked_vehicles.js"></script>
+    <script src="./scripts/profile_details.js"></script>
 </body>
 
 </html>

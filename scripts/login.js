@@ -54,7 +54,11 @@ function validate() {
             } else if (response.status === 200) {
                 sessionStorage.setItem("name", response.name);
                 sessionStorage.setItem("uid", response.uid);
-                sessionStorage.setItem("isadmin", response.isAdmin);
+
+                if (response.isAdmin !== undefined)
+                    sessionStorage.setItem("isadmin", response.isAdmin);
+                else
+                    sessionStorage.setItem("isbusiness", response.isBusiness);
 
                 if (response.isAdmin === undefined || response.isAdmin === false)
                     window.open('/', "_self");
